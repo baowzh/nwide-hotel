@@ -1,0 +1,88 @@
+{include file="public/head" /}
+
+<body class="hotel">
+	<section class="order-fill">
+		<!-- 房间数 -->
+		<div class="room-number">
+			<label for="room-number"></label>
+			<div class="label">房间数</div>
+			<div class="content list-input">
+				<input type="text" readonly="readonly" class="cert-type createorder"
+					id="room-number" name="roomcount" value="1" data-events="click"
+					style="width: 30px;"> <span><i class="icon-left"></i></span>
+			</div>
+
+		</div>
+
+		<!-- 入住人 -->
+		<div class="contact-person">
+			<ul>
+				<li><label for="cusname1"></label>
+					<div class="label">入住人(房间1)</div>
+					<div class="content list-input">
+						<input type="text" class="createorder" name="customernames"
+							id="cusname1" placeholder="填写入住人姓名" value="">
+					</div></li>
+			</ul>
+			<div class="add-person-button" data-events="click">
+				<div class="person-choose"></div>
+			</div>
+		</div>
+
+		<!-- 联系电话 -->
+		<div class="order-contact">
+			<div class="tel-text">
+				<span class="tel-person">联系电话</span> <label for="area-code"></label>
+				<div class="area-address">
+					<input type="text" readonly="readonly" id="area-code"
+						class="area-code createorder" name="areacodeconnect" value="1"
+						title="中国大陆+86" data-events="click" data-value=""> <span
+						class="icon-bottom" style="left: 30px;"></span> <input type="tel"
+						maxlength="25" class="area-number createorder"
+						name="connectormobile" placeholder="用于接收通知" id="contactormobile"
+						value="">
+					<div class="tel-choose" style="color: rgb(220, 220, 220);">
+						<span class="icon-choose"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 到店时间 -->
+		<div class="time-reserve"
+			data-tj="{&quot;cspot&quot;:&quot;timereserve&quot;}">
+			<div class="time-reserve-body">
+				<label for="room-reservation"></label>
+				<div class="label">预计到店</div>
+				<div class="content list-input">
+					<input type="text" readonly="readonly" class="cert-type"
+						id="room-reservation" value="" data-events="click"
+						style="font-size: 14px;"> <span><i
+						class="icon-left"></i></span>
+				</div>
+			</div>
+		</div>
+
+
+		<!--本单可享 BOF-->
+		<!--本单可享 EOF-->
+
+		<div class="invoice-switch">
+			<ul>
+				<li class="margin">
+					<div class="label">发票</div>
+					<div class="content list-input border-none">
+						<span class="selected-invoice"> 如需发票请到酒店前台索取 </span>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="invoice-elong tip" id="invoice-elong">如需发票请到酒店前台咨询</div>
+		<div class="invoice-elong tip" id="einvoice-tip"></div>
+		<div class="invoice-elong cancle-desc2" style="display: block;">取消规则：
+			订单一经确认成功，不可取消或变更；如未能如约入住，同程艺龙将收取全额房费作为违约费用。</div>
+		<!-- booking产品 预定说明 -->
+		<div class="guarantee-payment" style="display: none;">因房量紧张，酒店需要您支付预订担保金</div>
+	</section>
+</body>
+{include file="public/footer" /}
+</html>

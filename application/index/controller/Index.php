@@ -19,6 +19,12 @@ class Index extends Controller {
 		$this->assign ( 'kefangs', $list );
 		return $this->fetch ();
 	}
+	public function toOrder($dengji){
+		$this->assign ( 'dengji', $dengji );
+		return $this->fetch ('order');
+		
+		
+	}
 	/**
 	 * 把客房相关的视频文件读出来并写入本地磁盘，同时返回相对路径用于播放视频
 	 */
