@@ -1,0 +1,99 @@
+ <!-- 头部 -->
+	{include file='public/header'}
+<!-- 头部 --> 
+			<div class="content">
+				<div class="tips_msg none"><span class="tips">保存成功</span><span class="close_tips"></span></div>
+				<div class="edit_title"><i class="fa fa-{$now.font|default=''}"></i>{$meta_title|default=""}</div>
+				<div class="search">
+					<form class="search-form"  action="{:url()}" method="post">
+					  <div class="group">
+					       名称：<input type="text" name="username" class="search_ipt" value="{:input('username')}"/>
+					  
+					  </div>
+						  <div class="group">
+					     报名号：<input type="text" name="numbers"  class="search_ipt" value="{:input('numbers')}"/>
+					  </div>
+					   <div class="group">
+					     手机号：<input type="text" name="mobile"  class="search_ipt" value="{:input('mobile')}"/>
+						  </div>
+						  <div class="group"> 类型：
+							<input type="text" name="type"  class="search_ipt end" value="{:input('type')}"/>
+							<input type="button" class="search_btn"value="搜索" onclick="$('.search-form').submit()">
+						  </div>
+					</form>
+					</div>
+				<div class="table">
+					<div class="edit">
+						<div class="edit_left ">
+							<a href="{:U('add')}" class="add cur">新增</a>
+							<a data-url="{:U('del')}" class="delete cur">删除</a>
+						</div>
+						<div class="search_right">
+							<input type="text" value="{:input('title')}"/>
+							<div class="search_btn"></div>
+						</div>
+					</div>
+					<table class="list_table">
+			
+				 <tr>	
+						<th class="check"><input class="checkbox check-all" type="checkbox">
+											
+                                                </th>
+										<th>id</th>
+										
+											 <th>用户名称</th>
+											 <th>手机号</th>
+											 <th>性别</th>	
+                                              <th>报名号</th>
+											  <th>高考分数</th>
+										 <th>毕业学校	</th>
+											 <th>省份</th>	
+                                              <th>城市</th>
+											    <th>选择专业</th>
+                                            <th>是否调剂</th>
+												<th>操作</th>
+				
+                                            </tr>
+				     {volist name="res.list" id="vo" }
+
+                                            <tr class="even gradeC">
+                                             <td>   
+											<input class="ids row-selected" type="checkbox" name="id[]" value="{$vo.id}">
+                                                </td> 
+												<td>{$vo.id|default=""}</td>
+                                               <td>{$vo.username|default=""}</td>
+											   <td>{$vo.mobile|default=""}</td>
+											  <td>{$vo.sex|default=""} </td>
+                                           	  <td> {$vo.numbers|default=""}</td>  
+                                             <td>{$vo.score|default=""}</td>
+											  <td>{$vo.graduate|default=""} </td>
+                                           	  <td> {$vo.province|default=""}</td> 
+											   <td> {$vo.city|default=""}</td> 
+											    <td> {$vo.professional|default=""}</td> 
+											<td>{$vo.is}</td>
+			                            <td class="list_opr">
+		
+                                                    <span class="opr_box">
+									 <a href="{:url('edit?id='.$vo['id'])}" class="edit_btn cur">编辑</a>
+									 <a data-url="{:url('del?id='.$vo['id'])}" class="del_btn cur">删除</a>
+								
+                                        </span>          
+                </td>
+                                            </tr>
+											
+										{/volist}
+					</table>
+					<!--分页-->
+					<ul class="pagination">
+						 {$res.page}
+					</ul>
+				</div>
+				
+			</div>
+		</div>
+		   <script src="__JS__/style.js"></script> 	
+		
+	
+ <!-- 尾部 -->
+	{include file='public/footer'}
+ <!-- 尾部 -->

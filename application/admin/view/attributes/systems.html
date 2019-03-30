@@ -1,0 +1,116 @@
+ <!-- 头部 -->
+	{include file='public/header'}
+<!-- 头部 -->  
+			<div class="content">
+			<div class="tips_msg none"><span class="tips">保存成功</span><span class="close_tips"></span></div>
+				
+				<div class="edit_box">
+					<div class="edit_title">{$meta_title|default=""}</div>
+					<div class="edit_tab">
+				{foreach name="groups" item="vo"}
+			      <div class="tab_option {eq name='type' value='$key'}on{/eq}"><a href="{:U('?group='.$key)}">{$vo}配置</a></div>
+		     	{/foreach}
+					</div>
+					<div class="edit_content">
+							 <form class="group-form"  action="{:url('')}" method="post">
+							 <div class="edit_content_tab">
+						 	{volist name="list" id="config"} 
+						  	{switch name="config.type"}
+			                {case value="text"}
+						    <div class="input_title">{$config.title}<span>({$config.remark})</span></div>
+							<input type="text" name="config[{$config.name}]" class="input_box" value="{$config.value}"/>
+							{/case}	
+						    {case value="textarea"}
+						    <div class="input_title">{$config.title}<span>({$config.remark})</span></div>
+							<textarea name="config[{$config.name}]"/>{$config.value}</textarea>
+							{/case}	
+                           {case value="radio"}
+						    <div class="input_title">{$config.title}<span>({$config.remark})</span></div>
+							<input type="radio" name="config[{$config.name}]" value="{$config.value}"/>
+							{/case}	
+							 {case value="select"}
+						    <div class="input_title">{$config.title}<span>({$config.remark})</span></div>
+							<select name="config[{$config.name}]">
+				              {volist name=":parse_config_attr($config['extra'])" id="vo"}
+					           <option value="{$key}" {eq name="config.value" value="$key"}selected{/eq}>{$vo}</option>
+				           {/volist}
+			              </select>
+							
+							{/case}	
+				      	  {case value="picture"}
+						   <div class="upload_div">
+								<div class="input_title">{$config.title}<span>({$config.remark})</span></div>
+								<div class="upload_btn_group">
+									<div class="upload_btn">上传图片</div>
+									<input type="file" class="upload_file" id="uploads"/>
+								</div>
+								<div class="upload_imgs h50">
+									<input type="hidden" name="config[{$config.name}]" id="{$config.name}" value="{$config.value}"	>
+									  <span class="upload_imgs_wrap">
+							          {notempty name="$config.value"}  
+									  <div class="upload-pre-item"> 
+									    <img src="{$config.value}"/>
+						                </div>
+									  {/notempty}
+									</span>
+								</div>
+							</div>
+					     <script type="text/javascript" src="__COMMON__/uploadify/jquery.uploadify.min.js"></script>											
+					    <script type="text/javascript">
+				    /* 初始化上传插件 */
+					$(".upload_file").uploadify({
+				        "height"          : 30,
+				        "swf"             : "__COMMON__/uploadify/uploadify.swf",
+				        "fileObjName"     : "download",
+				        "buttonText"      : "上传图片",
+				        "uploader"        : "{:url('File/uploadPicture',array('session_id'=>session_id()))}",
+				        "width"           : 150,
+				        'removeTimeout'	  : 10,
+				        'fileTypeExts'	  : '*.jpg; *.png; *.gif;',
+				        "onUploadSuccess" : uploadPicture,
+				        'onFallback' : function() {
+				            alert('未检测到兼容版本的Flash.');
+				        }
+				    });
+					function uploadPicture(file, data){
+				    	var data = $.parseJSON(data);
+				    	var src = '';
+				        if(data.status){
+				        	src = data.url || data.path;
+							$("#{$config.name}").val(src);
+				        	$('.upload_imgs_wrap').append(
+				        		' <div class="upload-pre-item"><img src="' + src + '"/> </div>'
+				        	);
+				        } else {
+				        	updateAlert(data.info);
+				        	setTimeout(function(){
+				                $('#top-alert').find('button').click();
+				                $(that).removeClass('disabled').prop('disabled',false);
+				            },1500);
+				        }
+				    }
+					</script>
+                     {/case}
+
+					 
+					 {/switch}
+					{/volist}	
+						</div>
+						<div class="edit_content_tab none">
+							
+						</div>
+						<div class="btn_group">
+						    <input type="hidden" name="id" value="{$info.id|default=""}">
+							<div class="confirm_btn">确认</div>
+							<div class="cancel_btn">返回</div>
+						</div></form> 
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	
+    <script src="__JS__/edit.js"></script>
+ <!-- 头部 -->
+	{include file='public/footer'}
+<!-- 头部 --> 

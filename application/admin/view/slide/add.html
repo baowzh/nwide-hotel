@@ -1,0 +1,177 @@
+ <!-- 头部 -->
+	{include file='public/header'}
+<!-- 头部 --> 
+   <!-- 侧边导航栏 -->
+	{include file='Public/sidebar'}
+ <!-- 侧边导航栏 -->
+
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+
+        
+
+            <div class="row-content am-cf">
+
+
+             
+
+                <div class="row">
+
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">{:isset($info['id'])?'编辑':'新增'}文章</div>
+                                <div class="widget-function am-fr">
+                                    <a href="javascript:;" class="am-icon-cog"></a>
+                                </div>
+                            </div>
+                            <div class="widget-body am-fr">
+
+                                <form class="am-form tpl-form-border-form"  action="{:url('')}" method="post">
+                                    <div class="am-form-group">
+                                        <label for="user-name" class="am-u-sm-12 am-form-label am-text-left">名称<span class="tpl-form-line-small-title">Title</span></label>
+                                        <div class="am-u-sm-12">
+                                            <input type="text" class="tpl-form-input am-margin-top-xs" id="user-name" name="title" value="{$info.title|default=''}">
+                                           
+                                        </div>
+                                    </div>
+
+
+                                               
+                <div class="am-form-group">
+                                        <label for="user-phone" class="am-u-sm-12 am-form-label am-text-left">商品分类 <span class="tpl-form-line-small-title">PID</span></label>
+                                        <div class="am-u-sm-12  am-margin-top-xs">
+                                     
+	
+   
+	<select id="fid" name="fid" data-am-selected="{searchBox: 1}"  id="ss"style="display: none;" onchange="showList(this,1,2);" style="width:200px;float:left"> 
+  <option value="-1">选择一级分类</option>{volist name="list" id="vo"} 
+  <option  value="{$vo.id}" >{$vo.title}</option>  
+   {/volist}
+  </select> 
+
+   <select  id="city" name="sid" data-am-selected="{searchBox: 1}"  id="ss"style="display: none;" style="width:200px;;float:left" onchange="showList(this,2,3);">
+   <option value="-1">选择二级分类</option>
+   
+
+   </select>
+   
+ <select id="area" name="category id" data-am-selected="{searchBox: 1}"  id="ss"style="display: none;"style="width:200px;;float:left" onchange="showList(this,3,4);">
+  <option value="-1">选择三级分类</option>
+   </select>
+
+                                        </div>
+                                    </div>
+
+      <script>
+	  	function showList(obj,level,sort){
+	      var pid=$(obj).val();
+	      var next=$("select").eq(level);
+	     $.post('{:U("change")}',{pid:pid},function(data,textStatus){
+						if(data){
+							var data = $.parseJSON(data);
+						    $(next).empty();//清空原有的数据
+                            $("<option value='-1'>选择"+sort+"级分类</option>").appendTo(next);
+								$.each(data, function(i,n){
+								$("<option value='"+n.id+"'>"+n.title+"</option>").appendTo(next);
+							});
+							
+						}else{
+							
+						}
+		  });
+		  
+	}
+	
+
+				</script>	
+ <div class="am-form-group">
+                                        <label for="user-name" class="am-u-sm-12 am-form-label am-text-left">排序 <span class="tpl-form-line-small-title">Title</span></label>
+                                        <div class="am-u-sm-12">
+                                            <input type="text" class="tpl-form-input am-margin-top-xs" id="user-name" name="place" value="{$info.place|default=''}">
+                                           
+                                        </div>
+                                    </div>
+									
+									
+									<div class="am-form-group">
+                                        <label for="user-name" class="am-u-sm-12 am-form-label am-text-left">图片 <span class="tpl-form-line-small-title">Title</span></label>
+                                        <div class="am-u-sm-12">
+                                         <input type="file" id="upload_picture">
+						<input type="hidden" name="cover_id" id="cover_id" value="{$info['cover_id']|default=''}"/>
+						<div class="upload-img-box">
+						{notempty name="info['cover_id']"}
+							<div class="upload-pre-item"><img src="{$info.cover_id|get_cover='path'}"/></div>
+						{/notempty}
+						</div>     
+                                        </div>
+                                    </div>	
+					<script type="text/javascript" src="__STATIC__/uploadify/jquery.uploadify.min.js"></script>				
+						<script type="text/javascript">
+				    /* 初始化上传插件 */
+					$("#upload_picture").uploadify({
+				        "height"          : 30,
+				        "swf"             : "__STATIC__/uploadify/uploadify.swf",
+				        "fileObjName"     : "download",
+				        "buttonText"      : "上传图片",
+				        "uploader"        : "{:url('File/uploadPicture',array('session_id'=>session_id()))}",
+				        "width"           : 120,
+				        'removeTimeout'	  : 0,
+				        'fileTypeExts'	  : '*.jpg; *.png; *.gif;',
+				        "onUploadSuccess" : uploadPicture,
+				        'onFallback' : function() {
+				            alert('未检测到兼容版本的Flash.');
+				        }
+				    });
+					function uploadPicture(file, data){
+				    	var data = $.parseJSON(data);
+				    	var src = '';
+				        if(data.status){
+				        	$("#cover_id").val(data.id);
+				        	src = data.url || data.path;
+				        	$('.upload-img-box').html(
+				        		'<div class="upload-pre-item"><img src="' + src + '"/></div>'
+				        	);
+				        } else {
+				        	updateAlert(data.info);
+				        	setTimeout(function(){
+				                $('#top-alert').find('button').click();
+				                $(that).removeClass('disabled').prop('disabled',false);
+				            },1500);
+				        }
+				    }
+					</script>		
+									
+<input type="hidden" name="id" value="{$info.id|default=""}">
+                                    <div class="am-form-group">
+                                        <div class="am-u-sm-12 am-u-sm-push-12">
+                                            <button type="button"  ONCLICK="$('form').submit();"class="am-btn am-btn-primary tpl-btn-bg-color-success ">提交</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    </div>
+    <script src="__JS__/amazeui.min.js"></script>
+    <script src="__JS__/amazeui.datatables.min.js"></script>
+    <script src="__JS__/dataTables.responsive.min.js"></script>
+    <script src="__JS__/app.js"></script>
+   <script type="text/javascript">
+     $("select[name='cate_id']").val("{$info.cate_id|default='-1'}");
+  $("select[name='fid']").val("{$cate[1]|default='-1'}");
+	
+    </script>
+    
+
+	
+
+</body>
+
+</html>

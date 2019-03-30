@@ -1,0 +1,103 @@
+ <!-- 头部 -->
+	{include file='public/header'}
+<!-- 头部 --> 
+			<div class="content">
+			<div class="tips_msg none"><span class="tips">保存成功</span><span class="close_tips"></span></div>
+				<div class="edit_title">{$meta_title|default=""}</div>
+				<div class="edit_box">
+					<div class="edit_tab">
+						<div class="tab_option on">基础</div>
+						<div class="tab_option">收货人信息</div>
+							<div class="tab_option">折扣信息</div>
+						<div class="tab_option">发票信息</div>
+							<div class="tab_option">到货信息</div>
+						<div class="tab_option">发货信息</div>
+					</div>
+					<div class="edit_content">
+							 <form class="group-form"  action="{:url('')}" method="post">
+							 <div class="edit_content_tab">
+						          
+								  <div class="form-group">
+									<label>订单编号<span>(订单编号)</span></label>
+									   <div class="form-input">
+									      <input type="text" name="order_sn" value="{$info.order_sn|default=""}">
+									   </div>
+								  </div> 
+
+                                  <div class="form-group">
+									<label>订单金额<span>(金额)</span></label> 
+									 <div class="form-input">
+									     <input type="text"  name="toal_money" value="{$info.toal_money|default=""}">
+									  </div>
+								  </div>  
+								  
+								 <div class="form-group w100">
+									<label>内容<span>(详细内容)</span></label>	
+									<div class="form-input">
+									<textarea class="am-validate" id="content" name="content" required>{$info.content|default=""}</textarea>	
+									<link rel="stylesheet" href="__COMMON__/kindeditor/default/default.css" />
+									<script charset="utf-8" src="__COMMON__/kindeditor/kindeditor-min.js"></script>
+									<script charset="utf-8" src="__COMMON__/kindeditor/zh_CN.js"></script>
+									<script type="text/javascript">
+										var editor_content;
+										KindEditor.ready(function(K) {
+											editor_content = K.create('textarea[name="content"]', {
+												allowFileManager : false,
+												themesPath: K.basePath,
+												width: '90%',
+												height: '350',
+												resizeType:1,
+												pasteType : 2,
+												urlType : 'absolute',
+												fileManagerJson : '{:url('fileManagerJson')}',
+												uploadJson : '{:url("Uploads/ke_upimg")}'
+											});
+										});
+
+										$(function(){
+											$('textarea[name="content"]').closest('form').submit(function(){
+												editor_content.sync();
+											});
+										})
+								    </script>
+								</div>
+                            </div>
+							
+							
+				     
+						</div>
+							<div class="edit_content_tab none">
+							
+							 <div class="form-group">
+									<label>状态<span>(0-禁用，1-正常)</span></label>
+									<div class="form-input">
+									   <input type="text" name="status" value="{$info.status|default="1"}"/>
+									</div>
+							   </div>
+						
+                                </div>
+					
+				
+						<div class="btn_group">
+						    <input type="hidden" name="id" value="{$info.id|default=""}">
+							<div class="confirm_btn">确认</div>
+							<div class="cancel_btn">返回</div>
+						</div></form> 
+					</div>
+				</div>
+			</div>
+		</div>
+	 <script type="text/javascript">
+  
+	$("select[name='invoice_content']").val("{$info.invoice_content|default=''}");
+	$("select[name='invoice_header']").val("{$info.invoice_header|default=''}");
+	$("select[name='is_invoice']").val("{$info.is_invoice|default=''}");
+	$("select[name='isdao']").val("{$info.isdao|default=''}");
+	$("select[name='type']").val("{$info.type|default=''}");	
+    </script>
+
+ <script src="__JS__/edit.js"></script>
+
+<!-- 尾部 -->
+	{include file='public/footer'}
+    <!-- 尾部 --> 

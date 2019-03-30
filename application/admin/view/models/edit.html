@@ -1,0 +1,97 @@
+ <!-- 头部 -->
+	{include file='public/header'}
+<!-- 头部 --> 
+			<div class="content">
+			<div class="tips_msg none"><span class="tips">保存成功</span><span class="close_tips"></span></div>
+				
+				<div class="edit_box">
+					<div class="edit_title">{$meta_title|default=""}</div>
+					<div class="edit_tab">
+						<div class="tab_option on">基础</div>
+						<div class="tab_option">高级</div>
+					</div>
+					<div class="edit_content">
+							 <form class="group-form"  action="{:url('')}" method="post">
+							 <div class="edit_content_tab">
+						         <div class="form-group">
+									<label>名称<span>(标题)</span></label>
+									   <div class="form-input">
+									      <input type="text" name="title" value="{$info.title|default=""}">
+									   </div>
+								  </div> 
+								  
+								  <div class="form-group">
+									<label>英文名称<span>(英文名称)</span></label>
+									   <div class="form-input">
+									      <input type="text" name="name" value="{$info.name|default=""}">
+									   </div>
+								  </div> 
+
+
+							  
+							  <div class="form-group">
+									<label>状态<span>(0-禁用，1-正常)</span></label>
+									<div class="form-input">
+									   <input type="text" name="status" value="{$info.status|default="1"}"/>
+									</div>
+							   </div>
+
+
+				      		 <div class="form-group cf">
+								<label class="item-label">表单显示排序<span class="check-tips">（直接拖动进行排序）</span></label>
+								{volist name="attrlist" id="v" key="k"}
+									<div class="edit_sort">
+										<span class="tit">{$v.title}</span>
+										<ul class="dragsort" data-id="{$k}">
+											 {volist name="v['data']" id="vo"}
+													<li>
+														<span data="{$vo['id']}">{$vo['title']} [{$vo['name']}]</span>
+														<input type="hidden" name="json[{$k}][]" value="{$vo['id']}"/>
+													</li>
+											{/volist}
+										</ul>
+									</div>
+								{/volist}
+					</div>		
+						</div>
+
+						<div class="edit_content_tab none">
+					
+						        <div class="form-group">
+									<label>排序<span>(排序)</span></label>
+									<div class="form-input">
+									   <input type="text" name="sort" value="{$info.sort|default=""}">
+									</div>
+								  </div>
+
+						</div>
+						<div class="btn_group">
+						    <input type="hidden" name="id" value="{$info.id|default=""}">
+							<div class="confirm_btn">确认</div>
+							<div class="cancel_btn">返回</div>
+						</div></form> 
+					</div>
+				</div>
+			</div>
+		</div>
+	<script type="text/javascript" src="__COMMON__/jquery.dragsort.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+
+//拖曳插件初始化
+$(function(){
+	$(".dragsort").dragsort({
+	     dragSelector:'li',
+	     placeHolderTemplate: '<li class="draging-place">&nbsp;</li>',
+	     dragBetween:true,	//允许拖动到任意地方
+	     dragEnd:function(){
+	    	 var self = $(this);
+	    	 self.find('input').attr('name', 'json[' + self.closest('ul').data('id') + '][]');
+	     }
+	 });
+})
+</script>
+		 <script src="__JS__/edit.js"></script>
+
+<!-- 尾部 -->
+	{include file='public/footer'}
+    <!-- 尾部 --> 

@@ -1,0 +1,250 @@
+ <!-- 头部 -->
+	{include file='public/header'}
+<!-- 头部 --> 
+
+		
+	  <script type="text/javascript" src="__COMMON__/laydate/laydate.js"></script>
+	 
+			<div class="content">
+			    <div class="tips_msg none"><span class="tips">保存成功</span><span class="close_tips"></span></div>
+			   <div class="edit_title">当前位置:{$info.category_id|get_place}</div>
+				<div class="edit_box">
+					<div class="edit_tab">
+						<div class="tab_option on">基础</div>
+						<div class="tab_option">高级</div>
+					</div>
+					<div class="edit_content">
+						<form class="group-form"  action="{:url('')}" method="post">
+						    {foreach name="list" item="v" key="k"}
+							   <div class="edit_content_tab {if condition='$k eq 1'}none{/if}">
+							      {volist name="v['data']" id="vo"}
+							           {switch name="vo.type"}
+											{case value="num"}
+											 <div class="form-group">
+												<label>{$vo.title}<span>({$vo.remark})</span></label>
+												<div class="form-input">
+													 <input type="text" name="{$vo.name}"  value="{$info[$vo['name']]|default=''}"/>
+												 </div>
+											 </div>
+										   {/case}
+											
+
+										    {case value="string"}
+											  <div class="form-group">
+												<label>{$vo.title}<span>({$vo.remark})</span></label>
+												<div class="form-input">
+													<input type="text" name="{$vo.name}"  value="{$info[$vo['name']]|default=''}"/> 
+												</div>
+											 </div>
+										   {/case}
+										   {case value="textarea"}
+											 <div class="form-group">
+												<label>{$vo.title}<span>({$vo.remark})</span></label>
+												 <div class="form-input">
+													<textarea name="{$vo.name}"/>{$info[$vo['name']]|default=''}</textarea> 
+												 </div>
+											</div>
+										   {/case}
+
+										   {case value="editor"}
+											<div class="form-group w100">
+										    <label>{$vo.title}<span>({$vo.remark})</span></label>
+											  <textarea  id="{$vo.name}" name="{$vo.name}" required></textarea>		
+											   <link rel="stylesheet" href="__COMMON__/kindeditor/default/default.css" />
+											<script charset="utf-8" src="__COMMON__/kindeditor/kindeditor-min.js"></script>
+											<script charset="utf-8" src="__COMMON__/kindeditor/zh_CN.js"></script>
+											<script type="text/javascript">
+												var editor_content;
+												
+												KindEditor.ready(function(K) {
+													editor_content = K.create('textarea[name="{$vo.name}"]', {
+														allowFileManager : false,
+														themesPath: K.basePath,
+														width: '90%',
+														height: '300',
+														resizeType:1,
+														pasteType : 2,
+														urlType : 'absolute',
+														fileManagerJson : '{:url('fileManagerJson')}',
+														uploadJson : '{:url("Uploads/ke_upimg")}'
+													});
+												});
+
+												$(function(){
+													$('textarea[name="{$vo.name}"]').closest('form').submit(function(){
+														editor_content.sync();
+													});
+												})
+											</script> </div>
+											{/case}
+											{case value="file"}
+											    <div class="form-group">
+												     <label>{$vo.title}<span>({$vo.remark})</span></label> 
+												     <input type="hidden" name="{$vo.name}"  value="{$info[$vo['name']]|default=''}">
+													 <div id="{$vo.name}" class="container">
+														<div id="file_{$vo.name}">你的浏览器不支持flash,Silverlight或者HTML5！</div>
+														<input type="hidden" name="{$vo.name}"  value="{$info[$vo['name']]|default=''}">
+														<input type="text" name="file_path"  class="ipt" value="">
+														<a id="select_{$vo.name}" href="javascript:void(0);" class='btn_upload'>选择文件</a>
+														<a id="post_{$vo.name}" href="javascript:void(0);" class='btn_upload'>开始上传</a>
+													 </div>
+							
+														
+												    <script type="text/javascript">  
+													var field="{$vo.name}";
+													upload(field);
+												   </script> 	
+											  </div>
+							                {/case}
+
+											{case value="video"}
+											    <div class="form-group">
+												     <label>{$vo.title}<span>({$vo.remark})</span></label> 
+												     <input type="hidden" name="{$vo.name}"  value="{$info[$vo['name']]|default=''}">
+													 <div id="{$vo.name}" class="container">
+														<div id="file_{$vo.name}">你的浏览器不支持flash,Silverlight或者HTML5！</div>
+														<input type="hidden" name="{$vo.name}"  value="{$info[$vo['name']]|default=''}">
+														<input type="text" name="file_path"  class="ipt" value="">
+														<a id="select_{$vo.name}" href="javascript:void(0);" class='btn_upload'>选择文件</a>
+														<a id="post_{$vo.name}" href="javascript:void(0);" class='btn_upload'>开始上传</a>
+													 </div>
+							
+													<video src="movie.ogg" poster="" controls="controls">
+															  您的浏览器不支持 video 标签。
+													</video>	
+												    <script type="text/javascript">  
+													var field="{$vo.name}";
+													uploadVideo(field);
+												   </script> 	
+											  </div>
+										 {/case}
+
+										 {case value="picture"}
+										   <div class="form-group">
+												<label>{$vo.title}<span>({$vo.remark})</span></label> 
+														<div id="{$vo.name}" class="container">
+															<div id="file_{$vo.name}">你的浏览器不支持flash,Silverlight或者HTML5！</div>
+															<input type="hidden" name="{$vo.name}"  value="{$info[$vo['name']]|default=''}">
+															<input type="text" name="file_path"  class="ipt" value="">
+															<a id="select_{$vo.name}" href="javascript:void(0);" class='btn_upload'>选择文件</a>
+															<a id="post_{$vo.name}" href="javascript:void(0);" class='btn_upload'>开始上传</a>
+														</div>
+							
+													  <div class="uploader_preview">
+													   {notempty name="info[$vo['name']]"}
+														   <div class="upload-pre-item"> <img src="{$info[$vo['name']]|get_cover_path}"/>
+														   </div>
+														{/notempty}
+													 </div>
+											 
+											   <script type="text/javascript">  
+													var field="{$vo.name}";
+													upload(field);
+												</script>	
+											  </div>
+										{/case}
+
+									   {case value="photo"}
+										  <div class="form-group">
+												<label>{$vo.title}<span>({$vo.remark})</span></label> 
+												<input type="hidden" name="{$vo.name}"  value="{$info.{$vo.name}|default=""}">
+													  <div id="{$vo.name}" class="container">
+															<div id="file_{$vo.name}">你的浏览器不支持flash,Silverlight或者HTML5！</div>
+															<input type="hidden" name="{$vo.name}"  value="{$info[$vo['name']]|default=''}">
+															<input type="text" name="file_path"  class="ipt" value="">
+															<a id="select_{$vo.name}" href="javascript:void(0);" class='btn_upload'>选择文件</a>
+															<a id="post_{$vo.name}" href="javascript:void(0);" class='btn_upload'>开始上传</a>
+														</div>
+													   <div class="uploader_preview">
+															{notempty name="info['src']"}
+															  <div class="uploader-pre-item"> <img src="{$info['{$vo.name}']|get_path}"/>
+															 </div>
+														   {/notempty}
+														</div>
+											
+											   <script type="text/javascript">  
+													var field="{$vo.name}";
+													uploads(field);
+												</script>	
+											  </div>						
+
+										
+											{/case}
+											 {case value="select"}
+										  <div class="form-group">
+											  <label>{$vo.title}<span>({$vo.remark})</span></label>
+											  <div class="form-input">
+											   <select name="{$vo.name}" >
+												{volist name=":parse_config_attr($vo['extra'])" id="vo1"}
+													<option value="{$key}">{$vo1}</option>
+												{/volist}
+											   </select>
+											   </div>
+											   <script type="text/javascript">
+												$("select[name='{$vo.name}']").val("{$info[$vo['name']]|default='0'}");
+											   </script>
+									   </div>
+									{/case}
+
+									{case value="radio"}
+										   <div class="form-group">
+											  <label>{$vo.title}<span>({$vo.remark})</span></label>
+											  <div class="form-input">
+												{volist name=":parse_attr($vo['extra'])" id="vo1"}
+													<input type="radio" value="{$key}" {eq name="$info[$vo['name']]" value="$key"}checked{/eq}>{$vo1}</option>
+												{/volist} 
+												</div>
+										 </div>
+									{/case}
+
+									{case value="date"}
+									  <div class="form-group">
+										<label>{$vo.title}<span>({$vo.remark})</span></label> 
+										<div class="form-input">
+											 <input type="text" name="{$vo.name}" id="{$vo.name}" class="laydate-icon" value="{notempty name='info.id'}{$info[$vo['name']]|time_format}{/notempty}"/> 
+										</div>
+											<script>
+											laydate({
+											  elem: '#{$vo.name}',
+											  format: 'YYYY-MM-DD hh:mm:ss', 
+											  min: laydate.now(), //设定最小日期为当前日期//目标元素。由于laydate.js封装了一个轻量级的选择器引擎，因此elem还允许你传入class、tag但必须按照这种方式 '#id .class'
+											  event: 'focus' //响应事件。如果没有传入event，则按照默认的click
+											});
+											</script>
+									  </div>
+									{/case}
+								{/switch}
+							 {/volist}
+							</div>
+							{/foreach}
+						 <div class="btn_group"> 
+						    <input type="hidden" name="category_id" value="{$info.category_id|default=""}">
+						    <input type="hidden" name="model_id" value="{$cate.model_id|default=""}">
+							<input type="hidden" name="id" value="{$info.id|default=""}">
+							<div class="confirm_btn">确认</div>
+							<div class="cancel_btn">返回</div>
+						</div>
+						</form> 
+					</div>
+				</div>
+			</div>
+		</div>
+	
+
+	
+	  <script>
+	$(".tab_option").click(function(){
+					if(!$(this).hasClass("on")){
+						var index = $(".tab_option").index($(this));
+						$($(".edit_content_tab").get(index)).removeClass("none").siblings(".edit_content_tab").addClass("none");
+						$(this).addClass("on").siblings().removeClass("on");
+					}
+					
+				});
+			
+			
+			
+		</script>	
+ <!-- 头部 -->
+	{include file='public/footer'}
+<!-- 头部 --> 
