@@ -1,7 +1,9 @@
 {include file="public/head" /}
-
+<link href="__CSS__/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__JS__/jquery-1.7.2.min.js"></script>
 <body class="hotel">
 	<ul>
+	 {volist name="kefangs" id="vo" key="k"}
 		<li class="rooms">
 			<div class="wrap">
 				<div class="left   tjclick"
@@ -11,7 +13,7 @@
 						<img src="//pavo.elongstatic.com/i/mobile750_448/nw_000cRACL.jpg">
 					</div>
 					<div class="picroom-info">
-						<div class="room">标准房B</div>
+						<div class="room">{$vo['mingcheng']}</div>
 						<div class="room-info">
 							<span>25平米</span> <span>多张床</span> <span> 有窗 </span>
 						</div>
@@ -20,100 +22,23 @@
 				</div>
 				<div class="right">
 					<div class="price">
-						<span>¥</span><span class="num">169</span>起<a href="index.php/index/toOrder?dengji=A"> 预定</a>
+						<span>¥</span><span class="num">{$vo['baofangjia']}</span>
+						 
+					</div>
+					<div class="order">
+
+						<div class="btn2 btn2_center"
+							>
+							<a href="toOrder?dengji={$vo['dengji']}">订</a>
+							<p class="btn2_yf">在线付</p>
+						</div>
 					</div>
 				</div>
-				<!--  
-				<div class="de-btn">
-					<i></i>
-                                                 预定
-				</div>
-				-->
-				<div class="rigit_activebg tjclick"
-					data-tj="{&quot;cspot&quot;:&quot;rateplanlist1&quot;}"></div>
 			</div>
-			<!--  
-			<div class="info-list">
-				<ul>
-					<li class="roomdetail  ">
-						<div class="left tjclick"
-							data-tj="{&quot;cspot&quot;:&quot;rateplandetail&quot;}">
-							<div class="bra clearfix">不含早</div>
-							<div class="subtitle">
-								<span>(预付直连特惠)</span>
-							</div>
-							<div class="xstm">
-								<span class="suppliername">同程艺龙</span> <span
-									class="suppliername"> 不可取消 </span>
-							</div>
-							<div class="act"></div>
-						</div>
-						<div class="value">
-							<div class="price">
-								¥<span>169</span>
-							</div>
-						</div>
-						<div class="book tjclick"
-							data-tj="{&quot;cspot&quot;:&quot;booking&quot;}">
-							<div class="btn2 btn2_center"
-								url="https://m.elong.com/hotel/createorder/?hotelid=00701178&amp;uniqueid=00701178%3A0075%3A22390044%3Anull%3A1&amp;roomid=0075&amp;rateplanid=22390044&amp;promotionid=_&amp;ismj=0&amp;policyid=&amp;checkindate=2019-03-30&amp;checkoutdate=2019-03-31&amp;roomtype=0&amp;mroomid=0001&amp;drvtype=0">
-								<span>订</span>
-								<p class="btn2_yf">在线付</p>
-							</div>
-						</div>
-					</li>
-					<li class="roomdetail  ">
-						<div class="left tjclick"
-							data-tj="{&quot;cspot&quot;:&quot;rateplandetail&quot;}">
-							<div class="bra clearfix">不含早</div>
-							<div class="subtitle">
-								<span>不含早（锦江直连）</span>
-							</div>
-							<div class="xstm">
-								<span class="suppliername">同程艺龙</span> <span
-									class="suppliername"> 不可取消 </span>
-							</div>
-							<div class="act"></div>
-						</div>
-						<div class="value">
-							<div class="price">
-								¥<span>218</span>
-							</div>
-						</div>
-						<div class="book tjclick"
-							data-tj="{&quot;cspot&quot;:&quot;booking&quot;}">
-							<div class="btn2"
-								url="https://m.elong.com/hotel/createorder/?hotelid=00701178&amp;uniqueid=00701178%3A0005%3A22792983%3Anull%3A1&amp;roomid=0005&amp;rateplanid=22792983&amp;promotionid=_&amp;ismj=0&amp;policyid=&amp;checkindate=2019-03-30&amp;checkoutdate=2019-03-31&amp;roomtype=0&amp;mroomid=0001&amp;drvtype=0">
-								<span>订</span>
-								<p>到店付</p>
-								<div class="pret">担保</div>
-							</div>
-						</div>
-					</li>
-				</ul>
-			</div>
-			-->
 		</li>
-		
-		
-		
-		
+		{/volist}
 	</ul>
 
-
-
-	<!--  
-	{volist name="kefangs" id="vo" key="k"}
-	<li>
-	 <div  style="">
-	    
-	 </div>
-	测试酒店应用 {$vo['dengji']}
-	
-	</li> 
-	
-	{/volist}
-	-->
 </body>
 {include file="public/footer" /}
 </html>

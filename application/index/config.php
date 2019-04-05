@@ -203,10 +203,10 @@ return [
     'view_replace_str'       => [ 
 	'__COMMON__'=>'public/common',
     '__ROOT__' => '/',
-	'__CSS__'=>'public/index/css',
-	'__JS__'=>'public/index/js',
-	'__IMG__'=>'public/index/v2/img',
-	'__v2__'=>'public/index/v2'
+	'__CSS__'=>INSTALL_PATH.'public/index/css',
+	'__JS__'=>INSTALL_PATH.'public/index/js',
+	'__IMG__'=>INSTALL_PATH.'public/index/v2/img',
+	'__v2__'=>INSTALL_PATH.'public/index/v2'
 	],
     // 默认跳转页面对应的模板文件
     'dispatch_success_tmpl'  => APP_PATH . 'index' . DS . 'view/public/success.tpl',

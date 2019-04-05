@@ -1,88 +1,302 @@
 {include file="public/head" /}
-
-<body class="hotel">
-	<section class="order-fill">
-		<!-- 房间数 -->
-		<div class="room-number">
-			<label for="room-number"></label>
-			<div class="label">房间数</div>
-			<div class="content list-input">
-				<input type="text" readonly="readonly" class="cert-type createorder"
-					id="room-number" name="roomcount" value="1" data-events="click"
-					style="width: 30px;"> <span><i class="icon-left"></i></span>
-			</div>
-
-		</div>
-
-		<!-- 入住人 -->
-		<div class="contact-person">
-			<ul>
-				<li><label for="cusname1"></label>
-					<div class="label">入住人(房间1)</div>
-					<div class="content list-input">
-						<input type="text" class="createorder" name="customernames"
-							id="cusname1" placeholder="填写入住人姓名" value="">
-					</div></li>
-			</ul>
-			<div class="add-person-button" data-events="click">
-				<div class="person-choose"></div>
-			</div>
-		</div>
-
-		<!-- 联系电话 -->
-		<div class="order-contact">
-			<div class="tel-text">
-				<span class="tel-person">联系电话</span> <label for="area-code"></label>
-				<div class="area-address">
-					<input type="text" readonly="readonly" id="area-code"
-						class="area-code createorder" name="areacodeconnect" value="1"
-						title="中国大陆+86" data-events="click" data-value=""> <span
-						class="icon-bottom" style="left: 30px;"></span> <input type="tel"
-						maxlength="25" class="area-number createorder"
-						name="connectormobile" placeholder="用于接收通知" id="contactormobile"
-						value="">
-					<div class="tel-choose" style="color: rgb(220, 220, 220);">
-						<span class="icon-choose"></span>
+<link href="__CSS__/main.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__JS__/jquery-1.7.2.min.js"></script>
+<body>
+	<div class="pages page-fade" data-events="click">
+		<div class="page ab1181 page-on-center" data-blend="layer"
+			data-blend-id="h5_createorder"
+			data-url="/hotel/createorder/?hotelid=00701178&amp;uniqueid=00701178%3A0074%3A22390043%3Anull%3A1&amp;roomid=0074&amp;rateplanid=22390043&amp;promotionid=_&amp;ismj=0&amp;policyid=&amp;checkindate=2019-03-31&amp;checkoutdate=2019-04-01&amp;roomtype=0&amp;mroomid=0010&amp;drvtype=0"
+			id="uniq22" data-title="订单填写" data-title-id="h5_createorder"
+			data-events="click">
+			<header class="bar bar-nav createorder-header">
+				<a class="icon icon-left-nav pull-left icon-back"></a> <a
+					class="icon icon-phone pull-right" href="tel:400-666-1166"></a> <a
+					class="icon icon-house pull-right tjclick"
+					href="https://m.elong.com/"
+					data-tj="{&quot;cspot&quot;:&quot;backhome&quot;}"></a>
+				<h1 class="title">锦江之星(呼和浩特新华大街店)</h1>
+			</header>
+			<nav class="bar bar-tab create-order-bar">
+				<div class="total">
+					<div class="orderprice return middleshow">
+						定金￥<span id="wborderprice">139</span>
+					</div>
+					<div class="returnprice">
+						<div class="coupontext" style="display: block;"></div>
 					</div>
 				</div>
-			</div>
-		</div>
-		<!-- 到店时间 -->
-		<div class="time-reserve"
-			data-tj="{&quot;cspot&quot;:&quot;timereserve&quot;}">
-			<div class="time-reserve-body">
-				<label for="room-reservation"></label>
-				<div class="label">预计到店</div>
-				<div class="content list-input">
-					<input type="text" readonly="readonly" class="cert-type"
-						id="room-reservation" value="" data-events="click"
-						style="font-size: 14px;"> <span><i
-						class="icon-left"></i></span>
+				<div id="mobilesubmit" class="next commit tjclick"
+					onClick="javascript:validAndSubmit();"
+					data-tj="{&quot;cspot&quot;:&quot;nextstep&quot;}">
+					<span> 提交订单 </span> <span
+						class="preloader preloader-white button-loader"> </span>
 				</div>
-			</div>
-		</div>
+			</nav>
+			<nav class="bar record" id="record-text" style="display: none;">48小时内有38人预订该酒店</nav>
+			<!--新AB时隐藏老版本登录条-->
+			<div class="page-content  order-fill-top">
+				<div class="header-decorate"></div>
+				<section class="order-info">
+					<h1>
+						酒店详情 <span> </span>
+					</h1>
+					<div class="d-info">
+						<div class="pic">
+							<!-------------------------------------图片地址（接口）---------------------------------------------->
+							<img id="hotelcoverimg"
+								src="//pavo.elongstatic.com/i/mobp1242_1500/nw_000dhuMm.jpg"
+								width="100%" height="150"> <i class="star"><b
+								style="width: 40%"></b></i>
+						</div>
+						<div class="bwrap na">
+							<p class="name">锦江之星(呼和浩特新华大街店)</p>
+							<p class="addr">地址：新华大街61号(西提岛西餐厅、友谊医院旁)</p>
+						</div>
+						<div class="bwrap date">
+							<p>入住日期：2019年3月31日(周日)</p>
+							<p>退房日期：2019年4月1日(周一)</p>
+						</div>
+						<dl class="type">
+							<dt>房间类型：商务房B</dt>
+							<dt>不含早</dt>
+							<dd>
+								<i class="icon-net"></i>互联网
+							</dd>
+							<!-------------------------------------酒店服务（接口）---------------------------------------------->
+						</dl>
 
-
-		<!--本单可享 BOF-->
-		<!--本单可享 EOF-->
-
-		<div class="invoice-switch">
-			<ul>
-				<li class="margin">
-					<div class="label">发票</div>
-					<div class="content list-input border-none">
-						<span class="selected-invoice"> 如需发票请到酒店前台索取 </span>
+						<div class="total">
+							<div class="left">房间总价：</div>
+							<div class="right">
+								<p class="price">
+									￥<span id="wborderpricepad">139</span>
+								</p>
+								<div class="returnprice">
+									<div class="coupontext"></div>
+								</div>
+							</div>
+						</div>
 					</div>
-				</li>
-			</ul>
+					<div class="p-info   p-info-top  ">
+						<p class="type">商务房B</p>
+						<p class="date">3月31日 - 4月1日 共1晚</p>
+						<p class="info">
+							<span class="breakfast">不含早</span> |
+						</p>
+						<div class="sale_info">
+							<div class="immediatelyConfirm-enough">
+								<span>及时确认</span>订单提交后，酒店将第一时间确认您的订单
+							</div>
+						</div>
+					</div>
+				</section>
+				<!-- 新登录条 -->
+				<form action="order?dengji={$vo['等级']}" method="post" id="orderForm">
+					<article class="order-content">
+						<section class="order-fill">
+							<!-- 房间数 -->
+							<div class="room-number">
+
+								<div class="label">房间数</div>
+								<div class="content list-input">
+
+									<select id="roomcount" name="roomcount">
+										<option value="1" selected="selected">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+										<option value="4">4</option>
+										<option value="5">5</option>
+										<option value="6">6</option>
+										<option value="7">7</option>
+										<option value="8">8</option>
+										<option value="9">9</option>
+										<option value="10">10</option>
+									</select>
+
+								</div>
+
+							</div>
+
+							<!-- 预住天数 -->
+							<div class="room-number">
+
+								<div class="label">预住天数</div>
+								<div class="content list-input">
+
+									<select id="tianshu" name="tianshu">
+										<option value="1" selected="selected">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+										<option value="4">4</option>
+										<option value="5">5</option>
+										<option value="6">6</option>
+										<option value="6">7</option>
+										<option value="6">8</option>
+										<option value="6">9</option>
+										<option value="6">10</option>
+									</select>
+
+								</div>
+
+							</div>
+
+
+							<!-- 入住人 -->
+							<div class="contact-person">
+								<ul>
+									<li>
+										<div class="label">预定人</div>
+										<div class="content list-input">
+											<input type="text" class="createorder" name="xingming"
+												id="xingming" placeholder="填写预定人姓名" value="">
+										</div></li>
+								</ul>
+								<div class="add-person-button" data-events="click">
+									<div class="person-choose"></div>
+								</div>
+							</div>
+
+							<!-- 身份证号-->
+							<div class="order-contact">
+								<div class="tel-text">
+									<span class="tel-person">身份证号</span> <label for="area-code"></label>
+									<div class="area-address">
+										<input type="text" maxlength="25"
+											class="area-number createorder" name="shenfenzhenghao"
+											placeholder="用于验证是否会员" id="shenfenzhenghao" value="">
+										<div class="tel-choose" style="color: rgb(220, 220, 220);">
+											<span class="icon-choose"></span>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<!-- 联系电话 -->
+							<div class="order-contact">
+								<div class="tel-text">
+									<span class="tel-person">联系电话</span> <label for="area-code"></label>
+									<div class="area-address">
+										<input type="tel" maxlength="25"
+											class="area-number createorder" name="dianhua"
+											placeholder="用于接收通知" id="dianhua" value="">
+										<div class="tel-choose" style="color: rgb(220, 220, 220);">
+											<span class="icon-choose"></span>
+										</div>
+									</div>
+								</div>
+							</div>
+
+
+
+							<div class="room-number">
+
+								<div class="label">性别</div>
+								<div class="content list-input">
+
+									<select id="xingbie" name="xingbie">
+										<option value="1" selected="selected">男</option>
+										<option value="2">女</option>
+
+									</select>
+
+								</div>
+
+							</div>
+
+							<!-- 到场验证码-->
+							<div class="order-contact">
+								<div class="tel-text">
+									<span class="tel-person">到场验证码</span> <label for="area-code"></label>
+									<div class="area-address">
+										<input type="text" maxlength="25"
+											class="area-number createorder" name="validCode"
+											placeholder="用到场验证码" id="validCode" value="">
+										<div class="tel-choose" style="color: rgb(220, 220, 220);">
+											<span class="icon-choose"></span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- 到店时间 -->
+							<div class="time-reserve"
+								data-tj="{&quot;cspot&quot;:&quot;timereserve&quot;}">
+								<div class="time-reserve-body">
+									<label for="room-reservation"></label>
+									<div class="label">预计到店</div>
+									<div class="content list-input">
+										<input type="text" readonly="readonly" class="cert-type"
+											id="room-reservation" value="" data-events="click"
+											style="font-size: 14px;"> <span><i
+											class="icon-left"></i></span>
+									</div>
+								</div>
+							</div>
+							<input type="hidden" name="dengji" id="dengji" value="{$vo['等级']}" />
+
+							<!-- 						<div class="invoice-elong tip" id="einvoice-tip"> -->
+							<!-- 						</div> -->
+
+
+						</section>
+					</article>
+				</form>
+			</div>
+			<input type="hidden" class="createorder" name="arrivetime"
+				id="hidarriveTime" value="1">
+
 		</div>
-		<div class="invoice-elong tip" id="invoice-elong">如需发票请到酒店前台咨询</div>
-		<div class="invoice-elong tip" id="einvoice-tip"></div>
-		<div class="invoice-elong cancle-desc2" style="display: block;">取消规则：
-			订单一经确认成功，不可取消或变更；如未能如约入住，同程艺龙将收取全额房费作为违约费用。</div>
-		<!-- booking产品 预定说明 -->
-		<div class="guarantee-payment" style="display: none;">因房量紧张，酒店需要您支付预订担保金</div>
-	</section>
+	</div>
+
 </body>
+<script language="javascript">
+ var validAndSubmit=function(){
+	$('#orderForm').submit();  
+ }
+ 
+ $(document).ready(function(){
+	 // 当预定酒店房间数和预住时间发生变化时候重新计算定金
+	  $("#roomcount").change(function(){
+		  calculateDeposit($(this).val(),$('#tianshu').val());
+		  	  
+	  });
+	 
+	 $('#tianshu').change(function(){
+		 calculateDeposit($('#roomcount').val(),$('#tianshu').val());
+		 
+	 })
+	 	 
+});
+ 
+ var calculateDeposit=function(roomCount,tianshu){
+	   
+	 $.ajax({
+			type : "POST",
+			url : 'calculateDeposit',
+			data : {
+				'roomCount' : roomCount,
+				'tianshu' : tianshu,
+				'dengji':$('#dengji').val(),
+				'shenfenzhenghao':$('#shenfenzhenghao').val()
+				
+			},
+			dataType : "json",
+			success : function(data) {
+				if(data.Deposit.success){
+					alert(data.Deposit.deposit);
+				}else{
+					alert(data.Deposit.mess);
+				}
+				
+				
+			},
+			error : function(info) {
+				console.log("连接异常，请检查！")
+			}
+		});
+	  
+ }
+ 
+</script>
+
 {include file="public/footer" /}
 </html>

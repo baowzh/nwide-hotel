@@ -17,10 +17,13 @@ class Index extends Controller {
 		$djbz = new \app\index\model\Djbz ();
 		$list = $djbz->query ();
 		$this->assign ( 'kefangs', $list );
+		
 		return $this->fetch ();
 	}
 	public function toOrder($dengji){
-		$this->assign ( 'dengji', $dengji );
+		$djbz = new \app\index\model\Djbz ();
+		$djbzVo = $djbz->findDJbz ($dengji);
+		$this->assign ( 'vo', $djbzVo );
 		return $this->fetch ('order');
 		
 		
@@ -61,11 +64,24 @@ class Index extends Controller {
 		$xingbie = $this->request->param ( 'xingbie' );
 		$shenfenzhenghao = $this->request->param ( 'shenfenzhenghao' );
 		$dianhua = $this->request->param ( 'dianhua' );
-		$zhifufangshi = $this->request->param ( 'zhifufangshi' );
+		$zhifufangshi = $this->request->param ( 'zhifufangshi' ,1);
+		$roomCount = $this->request->param ( 'roomCount' ,1);
+		$tianshu = $this->request->param ( 'tianshu' ,1);
 		$djbz = new \app\index\model\Djbz ();
-		$oderIfo = $djbz->order ( $dengji, $xingming, $xingbie, $shenfenzhenghao, $dianhua, $zhifufangshi );
+		$orderForm=array();
+		$orderForm['dengji']=$dengji;
+		$orderForm['xingming']=$xingming;
+		$orderForm['xingbie']=$xingbie;
+		$orderForm['shenfenzhenghao']=$shenfenzhenghao;
+		$orderForm['dianhua']=$dianhua;
+		$orderForm['roomCount']=$roomCount;
+		$orderForm['tianshu']=$tianshu;
+		
+		$oderIfo = $djbz->order ( $orderForm);
+		return json($oderIfo);
+		/*
 		$redirect_url = urlencode ( 'http://' . $_SERVER ['HTTP_HOST'] . '/index.php' );
-		$this->redirect ( $oderIfo ['mweb_url'] . "&redirect_url=" . $redirect_url );
+		$this->redirect ( $oderIfo ['mweb_url'] . "&redirect_url=" . $redirect_url );*/
 	}
 	/**
 	 * 支付回调入口
@@ -86,6 +102,16 @@ class Index extends Controller {
 		Loader::import ( 'phpqrcode/phpqrcode', EXTEND_PATH );
 		$qr = new \QRcode();
 		$qr->png('www.baidu.com');
+	}
+	
+	public function  calculateDeposit($dengji,$roomCount,$tianshu,$shenfenzhenghao){
+		$djbz = new \app\index\model\Djbz ();
+		$deposit = $djbz->calculateDeposit ($dengji,$roomCount,$tianshu,$shenfenzhenghao);
+		header ( 'Content-Type:application/json; charset=utf-8' );
+		return json ( [
+				"success" => true,
+				'Deposit' => $deposit
+		] );
 	}
 	
 	

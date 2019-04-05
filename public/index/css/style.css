@@ -6,13 +6,12 @@
 
 .hotel ul li {
 	overflow: hidden;
-	width: 100%;
 	border-top: 1px solid #ebebeb;
 	border-bottom: 1px solid #ebebeb;
 	padding: 0px;
 	margin: 0px;
 	width: 100%;
-	height: 120px;
+	height: 100px;
 }
 
 .hotel ul li .wrap {
@@ -26,38 +25,39 @@
 }
 
 .hotel ul li .wrap .left {
-	padding: 14px 0 14px 11px;
+	padding: 5px 0 5px 11px;
 	-webkit-box-flex: 1;
 	flex: 1;
 	float: left;
 	width: 70%;
 	box-sizing: border-box;
-	-webkit-tap-highlight-color:
 }
 
 .hotel ul li .wrap .left .pic {
 	float: left;
-	width: 72px;
-	height: 72px;
-	background-image: url(source/no_pic.png);
+	width: 92px;
+	height: 90px;
+/* 	background-image: url(source/no_pic.png); */
 	background-repeat: no-repeat;
 	position: relative;
 	z-index: 1000;
-	background-size: 72px 72px;
+	background-size: 92px 92px;
 	box-sizing: border-box;
 	-webkit-tap-highlight-color: transparent;
 }
 
 .hotel ul li .wrap .left .pic img {
-	width: 72px;
-	height: 72px;
+	width: 92px;
+	height: 90px;
 }
 
 .hotel ul li .wrap .left .picroom-info {
+	
 	margin-left: 83px;
 	position: relative;
 	z-index: 1000;
 	padding-top: 3px;
+	padding-left:20px;
 	box-sizing: border-box;
 	-webkit-tap-highlight-color: transparent;
 }
@@ -77,10 +77,73 @@
 }
 
 .hotel ul li .wrap .right {
-	text-align: right;
-	vertical-align: middle;
-	display: table-cell;
+	display: block;
 	margin-right: 3px;
+	width:30%;
+	height:100%;
+	float:left;
+}
+
+.hotel .wrap .right .price{
+	line-height: 1rem;
+    font-size: .75rem;
+    color: #999;
+    white-space: nowrap;
+    height:20px;
+    text-align: right;
+    padding-right:10px;
+}
+
+.hotel .wrap .right .order{
+	line-height: 1rem;
+    font-size: .75rem;
+    color: #999;
+    white-space: nowrap;
+    height:60px;
+}
+
+.hotel .wrap .right .order .btn2{
+	width: 40px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 3px;
+    float: right;
+    right: 0;
+    margin-right: 12px;
+    font-size: .75rem;
+    color: #999;
+    white-space: nowrap;
+	
+}
+
+.hotel .wrap .right .order .btn2 a{
+	display: block;
+    line-height: 23px;
+    color: #FFF;
+     background: #f55;
+     border-radius: 3px;
+     text-align: center;
+     text-decoration: none;
+}
+
+.hotel .wrap .right .order .btn2 .btn2_yf{
+	color: #4499ff;
+    background: #e7f2ff;
+    line-height: 19px;
+    font-size: .7rem;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.hotel .wrap .right .price span{
+	color: #f55;
+    font-size: 0.75rem;
+    margin-right: 3px;
+}
+
+.hotel .wrap .right .price span .num{
+	font-size: 1.125rem;
+    margin-right: 1px;
 }
 
 .hotel ul li .wrap .de-btn {
