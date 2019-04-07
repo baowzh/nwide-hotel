@@ -127,7 +127,15 @@ class Djbz extends Model {
 		$kefangCondition ["等级"] = $orderForm ['dengji'];
 		$kefangInfo = Db::name ( 'tb_djbz' )->where ( $kefangCondition )->find ();
 		// 是否可以预定？
-		$kefngList = Db::query ( "select * from tvhk where `等级`=" . $orderForm ['dengji'] . " and ( `房态`= 'A' or `净`='') " );
+		$dbType = config ( 'vip_db' )['type'];
+		if ($dbType == 'mysql') {
+			$kefngList = Db::query ( "select * from tvhk where `等级`='" . $orderInfo ['dengji'] . "' and ( `房态`= 'A' or `净`='') " );
+		} else if ($dbType == 'sqlsrv') {
+			$kefngList = Db::query ( "select * from tvhk where [等级]='" . $orderForm ['dengji'] . "' and ( [房态]= 'A' or [净]='') " );
+		} else {
+			$kefngList = Db::query ( "select * from tvhk where `等级`='" . $orderInfo ['dengji'] . "' and ( `房态`= 'A' or `净`='') " );
+		}
+		
 		if (sizeof ( $kefngList ) < $orderForm ['roomCount']) {
 			$result ['success'] = false;
 			$result ['mess'] = '房间数不够';
@@ -147,10 +155,10 @@ class Djbz extends Model {
 		} else {
 			$isVip = false;
 		}
-		 $orderForm['deposit'] =$kefangInfo['网订价'];
+		$orderForm ['deposit'] = $kefangInfo ['网订价'];
 		// 如果是 会员用什么价格去计算？
 		if ($isVip) {
-			$orderForm['deposit'] =$kefangInfo['网会价'];
+			$orderForm ['deposit'] = $kefangInfo ['网会价'];
 		}
 		
 		$shopCondition = [ 
@@ -159,19 +167,19 @@ class Djbz extends Model {
 		// 3.查询微信支付相关参数
 		$shopInfo = Db::connect ( config ( 'config_db' ) )->name ( 'tb_shop' )->where ( $shopCondition )->find ();
 		if ($shopInfo != null && ! empty ( $shopInfo )) {
-			$orderForm['dianma']=$shopInfo['店码'];
-			$orderForm['dianming']=$shopInfo['店名'];
+			$orderForm ['dianma'] = $shopInfo ['店码'];
+			$orderForm ['dianming'] = $shopInfo ['店名'];
 		} else {
-			 return [
-			'success' => 'true',
-			 'mess'=>'未找到支付相关参数设置'		
-			 ];
+			return [ 
+					'success' => 'true',
+					'mess' => '未找到支付相关参数设置' 
+			];
 		}
-	
+		
 		// 4.生成订单
-		$orderForm['kefngList']=$kefngList;
-		$orderInfo=$this->createInnerOrder($orderForm);
-		return $orderInfo;
+		$orderForm ['kefngList'] = $kefngList;
+		$orderInfo = $this->createInnerOrder ( $orderForm );
+		//return $orderInfo;
 		/*
 		 * $qrcode_path=config('upload_path').'/'.'qrcode/'.'aa/';
 		 * $filepath=ROOT_PATH.$qrcode_path;
@@ -180,15 +188,16 @@ class Djbz extends Model {
 		 */
 		
 		$order = array (
-				'body' => '测试描述', // 商品描述（需要根据自己的业务修改）
-				'total_fee' => 1, // 订单金额 以(分)为单位（需要根据自己的业务修改）
-				'out_trade_no' => time () . rand ( 1000, 9999 ), // 订单号（需要根据自己的业务修改）
-				'product_id' => '234242342', // 商品id（需要根据自己的业务修改）
+				'body' => '宾馆客房预订资金', // 商品描述（需要根据自己的业务修改）
+				'total_fee' => $orderInfo['money'], // 订单金额 以(分)为单位（需要根据自己的业务修改）
+				'out_trade_no' =>$orderInfo['dingdanhao'] , // 订单号（需要根据自己的业务修改）
+				'product_id' => $orderInfo['dingdanhao'], // 商品id（需要根据自己的业务修改）
 				'trade_type' => 'MWEB' 
 		); // JSAPI公众号支付
-
+		   
+		return 'http://' . $_SERVER ['HTTP_HOST'] ;
 		// 统一下单 获取prepay_id
-		$redirect_url = urlencode ( 'http://' . $_SERVER ['HTTP_HOST'] . '/index.php' ); // 支付完成后跳回地址
+		$redirect_url = urlencode ( 'http://' . $_SERVER ['HTTP_HOST'] . '/index.php/index/notify' ); // 支付完成后跳回地址
 		$weixin = new \app\index\model\WeixinH4Pay ();
 		$unified_order = $weixin->unifiedOrder ( $order );
 		// $this->redirect($unified_order['mweb_url']."&redirect_url=".$redirect_url);
@@ -207,21 +216,29 @@ class Djbz extends Model {
 	 */
 	public function notify($orderId) {
 		// 查看订单表 如果有未支付的订单则
-		$result=array();
-		$condition=array();
-		$condition['dingdanhao']=$orderId;
+		$result = array ();
+		$condition = array ();
+		$condition ['dingdanhao'] = $orderId;
 		$orderInfo = Db::name ( 'order' )->where ( $condition )->find ();
-		if($orderInfo==null||empty($orderInfo)){
-			$result['success']=false;
-			return $result; 
+		if ($orderInfo == null || empty ( $orderInfo )) {
+			$result ['success'] = false;
+			return $result;
 		}
 		
 		// 查询班次
 		
 		$banci = Db::query ( "select max('班次') from tbanci" );
 		
+		$dbType = config ( 'vip_db' )['type'];
+		if ($dbType == 'mysql') {
+			$kefngList = Db::query ( "select * from tvhk where `等级`='" . $orderInfo ['dengji'] . "' and ( `房态`= 'A' or `净`='') " );
+		} else if ($dbType == 'sqlsrv') {
+			$kefngList = Db::query ( "select * from tvhk where [等级]='" . $orderInfo ['dengji'] . "' and ( [房态]= 'A' or [净]='') " );
+		} else {
+			$kefngList = Db::query ( "select * from tvhk where `等级`='" . $orderInfo ['dengji'] . "' and ( `房态`= 'A' or `净`='') " );
+		}
 		// 生成客房订单
-		$kefngList = Db::query ( "select * from tvhk where `等级`=" . $orderInfo ['dengji'] . " and ( `房态`= 'A' or `净`='') " );
+		
 		if (sizeof ( $kefngList ) < $orderInfo ['yudingshu']) {
 			$result ['success'] = false;
 			$result ['mess'] = '房间数不够';
@@ -229,7 +246,7 @@ class Djbz extends Model {
 		}
 		
 		$vipCondition = array ();
-		$vipCondition ['证件号码'] = $orderInfo['shenfenzhenghao'];
+		$vipCondition ['证件号码'] = $orderInfo ['shenfenzhenghao'];
 		$vipCondition ['证件类型'] = 1;
 		$vipInfo = Db::connect ( config ( 'vip_db' ) )->name ( 'tb_huiy' )->where ( $vipCondition )->select ();
 		$isVip = false;
@@ -244,43 +261,41 @@ class Djbz extends Model {
 		$kefangCondition ["等级"] = $orderInfo ['dengji'];
 		$kefangInfo = Db::name ( 'tb_djbz' )->where ( $kefangCondition )->find ();
 		
-		for($index=0;$index<$orderInfo['yudingshu'];$index=$index+1){
-			$kefangInfo=$kefngList[$index];
+		for($index = 0; $index < $orderInfo ['yudingshu']; $index = $index + 1) {
+			$kefangInfo = $kefngList [$index];
 			// 修改为预定
-			$updCondition=array();
-			$updCondition['id']=$kefangInfo['id'];
-			$updateFields=array();
-			$updateFields['姓名']=$orderInfo['xingming'];
-			$updateFields['性别']=$orderInfo['xingbie'];
-			$updateFields['证件']='身份证';
-			$updateFields['证件编号']=$orderInfo['shenfenzhenghao'];
-			$updateFields['入住天数']=$orderInfo['tianshu'];
-			$updateFields['入住日期']=date('Y-m-d H:i:s');
-			$updateFields['宾客电话']=$orderInfo['dianhua'];
-			$updateFields['宾客类别']='网订';
-			$updateFields['网订']='是';
-			//$updateFields['网订']='是';
-			$updateFields['房态']='E';
+			$updCondition = array ();
+			$updCondition ['id'] = $kefangInfo ['id'];
+			$updateFields = array ();
+			$updateFields ['姓名'] = $orderInfo ['xingming'];
+			$updateFields ['性别'] = $orderInfo ['xingbie'];
+			$updateFields ['证件'] = '身份证';
+			$updateFields ['证件编号'] = $orderInfo ['shenfenzhenghao'];
+			$updateFields ['入住天数'] = $orderInfo ['tianshu'];
+			$updateFields ['入住日期'] = date ( 'Y-m-d H:i:s' );
+			$updateFields ['宾客电话'] = $orderInfo ['dianhua'];
+			$updateFields ['宾客类别'] = '网订';
+			$updateFields ['网订'] = '是';
+			// $updateFields['网订']='是';
+			$updateFields ['房态'] = 'E';
 			
-			if($isVip){
-				$updateFields['预交押金']=$kefangInfo['网会价'];
-			}else{
-				$updateFields['预交押金']=$kefangInfo['网订价'];
+			if ($isVip) {
+				$updateFields ['预交押金'] = $kefangInfo ['网会价'];
+			} else {
+				$updateFields ['预交押金'] = $kefangInfo ['网订价'];
 			}
-			$updateFields['网付流水']=$orderInfo['dingdanhao'];
-			if($banci!=null && !empty($banci)){
-				$updateFields['班次']=$banci[0]['班次'];
+			$updateFields ['网付流水'] = $orderInfo ['dingdanhao'];
+			if ($banci != null && ! empty ( $banci )) {
+				$updateFields ['班次'] = $banci [0] ['班次'];
 			}
 			
-			Db::name('tvhk')->where($updCondition)->update($updateFields);
+			Db::name ( 'tvhk' )->where ( $updCondition )->update ( $updateFields );
 		}
-		
 		
 		//
 		$result ['success'] = true;
 		$result ['mess'] = '支付验证成功。';
 		return $result;
-		
 		
 		// 修改房屋状态
 	}
@@ -289,37 +304,45 @@ class Djbz extends Model {
 	 */
 	private function createInnerOrder($orderForm) {
 		// 按个数找到几个房间然后把状态改为预定
-		$order=array();
+		$orderNoandMondy=array();
+		$order = array ();
 		// 往订单表插入一条记录同时把订单id返回给微信支付环节
-		
-		$order['dingdanhao']=time().substr($orderForm['shenfenzhenghao'],-6,6);
-		$order['dianma']=$orderForm['dianma'];
-		$order['dianming']=$orderForm['dianming'];
-		$order['shenfenzhenghao']=$orderForm['shenfenzhenghao'];
-		$order['dengji']=$orderForm['dengji'];
-		$order['yudingjine']=$orderForm['deposit']*$orderForm['roomCount'];
-		$order['yudingshijian']= date('Y-m-d H:i:s');
-		$order['yudingshu']= $orderForm['roomCount'];
-		$order['xingming']= $orderForm['xingming'];
-		$order['xingbie']= $orderForm['xingbie'];
-		$order['dianhua']= $orderForm['dianhua'];
-		$order['yuzhutianshu']= $orderForm['tianshu'];
-		$order['status']= '0';
+		$order ['dingdanhao'] = time () . substr ( $orderForm ['shenfenzhenghao'], - 6, 6 );
+		$order ['dianma'] = $orderForm ['dianma'];
+		$order ['dianming'] = $orderForm ['dianming'];
+		$order ['shenfenzhenghao'] = $orderForm ['shenfenzhenghao'];
+		$order ['dengji'] = $orderForm ['dengji'];
+		$order ['yudingjine'] = $orderForm ['deposit'] * $orderForm ['roomCount'];
+		$order ['yudingshijian'] = date ( 'Y-m-d H:i:s' );
+		$order ['yudingshu'] = $orderForm ['roomCount'];
+		$order ['xingming'] = $orderForm ['xingming'];
+		$order ['xingbie'] = $orderForm ['xingbie'];
+		$order ['dianhua'] = $orderForm ['dianhua'];
+		$order ['yuzhutianshu'] = $orderForm ['tianshu'];
+		$order ['status'] = '0';
 		$orderModel = new \app\index\model\Order ();
-		$orderModel->save($order);
-		//$userId = Db::name('order')->getLastInsID();
-		return $order['dingdanhao'];
-		
+		$orderModel->save ( $order );
+		$orderNoandMondy['dingdanhao']=$order ['dingdanhao'] ;
+		$orderNoandMondy['money']=$order ['yudingjine'] ;
+		return $orderNoandMondy;
 	}
 	/**
 	 * 计算出需要交的定金金额
-	 * 
+	 *
 	 * @param unknown $dengji        	
 	 * @param unknown $roomCount        	
 	 * @param unknown $tianshu        	
 	 */
 	public function calculateDeposit($dengji, $roomCount, $tianshu, $shenfenzhenghao) {
-		$kefngList = Db::query ( "select * from tvhk where `等级`=" . $dengji . " and ( `房态`= 'A' or `净`='') " );
+		$dbType = config ( 'vip_db' )['type'];
+		if ($dbType == 'mysql') {
+			$kefngList = Db::query ( "select * from tvhk where `等级`='" . $dengji . "' and ( `房态`= 'A' or `净`='') " );
+		} else if ($dbType == 'sqlsrv') {
+			$kefngList = Db::query ( "select * from tvhk where [等级]='" . $orderForm ['dengji'] . "' and ( [房态]= 'A' or [净]='') " );
+		} else {
+			$kefngList = Db::query ( "select * from tvhk where `等级`='" . $dengji . "' and ( `房态`= 'A' or `净`='') " );
+		}
+		
 		$result = array ();
 		$result ['mess'] = $kefngList;
 		$kefangCondition = array ();
