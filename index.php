@@ -19,6 +19,7 @@ if($INSTALL_PATH==="/"){
 }
 define('INSTALL_PATH',$INSTALL_PATH);//安装目录
 define('APP_PATH', __DIR__ . '/application/');
+define('APP_ROOT_PATH', __DIR__.'\\' );
 define ( 'BIND_MODULE','index');
 // 加载框架引导文件
 require __DIR__ . '/thinkphp/start.php';

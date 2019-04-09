@@ -5,6 +5,7 @@ namespace app\index\model;
 use think\Model;
 use think\Db;
 
+
 /**
  * 文档基础模型
  */
@@ -57,6 +58,13 @@ class Djbz extends Model {
 			'shipingeshi' => '视频格式',
 			'keshou' => '可售' 
 	];
+	
+	
+	public function index(){
+		$shopInfos = Db::connect ( config ( 'config_db' ) )->name ( 'tb_shop' )->select();
+		return $shopInfos;
+		
+	}
 	/**
 	 * 查询客房信息并把汉字列转换为拼音列返回
 	 *
@@ -195,7 +203,7 @@ class Djbz extends Model {
 				'trade_type' => 'MWEB' 
 		); // JSAPI公众号支付
 		   
-		return 'http://' . $_SERVER ['HTTP_HOST'] ;
+		//return 'http://' . $_SERVER ['HTTP_HOST'] ;
 		// 统一下单 获取prepay_id
 		$redirect_url = urlencode ( 'http://' . $_SERVER ['HTTP_HOST'] . '/index.php/index/notify' ); // 支付完成后跳回地址
 		$weixin = new \app\index\model\WeixinH4Pay ();
@@ -373,6 +381,9 @@ class Djbz extends Model {
 		
 		
 	}
+	
+	
+	
 	
 	
 }

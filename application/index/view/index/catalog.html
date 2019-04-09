@@ -1,0 +1,44 @@
+{include file="public/head" /}
+<link href="__CSS__/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__JS__/jquery-1.7.2.min.js"></script>
+<body class="hotel">
+	<ul>
+	 {volist name="kefangs" id="vo" key="k"}
+		<li class="rooms">
+			<div class="wrap">
+				<div class="left   tjclick"
+					data-tj="{&quot;cspot&quot;:&quot;roomdetail&quot;}">
+					<div class="pic tjclick rpDetail"
+						data-tj="{&quot;cspot&quot;:&quot;roomimage&quot;}">
+						<img src="//pavo.elongstatic.com/i/mobile750_448/nw_000cRACL.jpg">
+					</div>
+					<div class="picroom-info">
+						<div class="room">{$vo['mingcheng']}</div>
+						<div class="room-info">
+							<span>25平米</span> <span>多张床</span> <span> 有窗 </span>
+						</div>
+						<div class="icon icon-hs"></div>
+					</div>
+				</div>
+				<div class="right">
+					<div class="price">
+						<span>¥</span><span class="num">{$vo['baofangjia']}</span>
+						 
+					</div>
+					<div class="order">
+
+						<div class="btn2 btn2_center"
+							>
+							<a href="toOrder?dengji={$vo['dengji']}">订</a>
+							<p class="btn2_yf">在线付</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</li>
+		{/volist}
+	</ul>
+
+</body>
+{include file="public/footer" /}
+</html>
