@@ -254,6 +254,7 @@ return [
 		],
 		
 		'shop_id' => '1',
+		'profile'=>'dev',
 		
 		'wechat_config' => [ 
 				'APPID' => "11",

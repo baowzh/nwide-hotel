@@ -1797,9 +1797,7 @@ form {
 
 @font-face {
   font-family: 'elong';
-  src: url(source/elong.eot);
-  src: url(source/elong.eot?#iefix-bvlfrg) format("embedded-opentype"), url(source/elong.woff) format("woff"), url(source/elong.ttf) format("truetype"), url(source/elong.svg#icomoon) format("svg");
-  font-weight: normal;
+   font-weight: normal;
   font-style: normal; }
 
 [class^="icon-"], [class*=" icon-"] {
@@ -5787,7 +5785,7 @@ form {
           background: none; }
           .ab1181 .page-content .order-info .p-info .sale_info .immediatelyConfirm-enough::before, .ab1181 .page-content .order-info .p-info .sale_info .preferential-price::before {
             content: "";
-            background: url(source/createorder-ab1181.png) -24px -3px;
+/*             background: url(source/createorder-ab1181.png) -24px -3px; */
             background-size: 150px 70px;
             width: 14px;
             height: 14px;
@@ -5808,7 +5806,7 @@ form {
     .ab1181 .page-content .login-button::before {
       content: "";
       display: block;
-      background: url(source/createorder-ab1181.png) -108px -3px;
+/*       background: url(source/createorder-ab1181.png) -108px -3px; */
       background-size: 150px 70px;
       width: 20px;
       height: 20px;
@@ -5957,7 +5955,7 @@ form {
         background: #fff;
         z-index: 9; }
         .ab1181 .page-content .order-content .order-fill .contact-person .add-person-button .person-choose {
-          background: url(source/createorder-ab1181.png) -63px -2px;
+/*           background: url(source/createorder-ab1181.png) -63px -2px; */
           background-size: 150px 70px;
           width: 18px;
           height: 18px;
@@ -6049,7 +6047,7 @@ form {
             width: 40px;
             display: none; }
             .ab1181 .page-content .order-content .order-fill .order-contact .tel-text .area-address .tel-choose .icon-choose {
-              background: url(source/createorder-ab1181.png) -1px -2px;
+/*               background: url(source/createorder-ab1181.png) -1px -2px; */
               background-size: 150px 70px;
               width: 18px;
               height: 18px;
@@ -6130,7 +6128,7 @@ form {
         text-align: left;
         padding: 0 0 0 12px; }
         .ab1181 .page-content .order-content .order-fill .order-enjoy .order-enjoy-title i {
-          background: url(source/createorder-ab1181.png) -1px -25px;
+/*           background: url(source/createorder-ab1181.png) -1px -25px; */
           background-size: 150px 70px;
           width: 20px;
           height: 20px;
@@ -6168,7 +6166,7 @@ form {
           .ab1181 .page-content .order-content .order-fill .order-enjoy .order-enjoy-footer .login-help::after {
             content: "";
             display: inline-block;
-            background: url(source/createorder-ab1181.png) -89px -4px;
+/*             background: url(source/createorder-ab1181.png) -89px -4px; */
             background-size: 150px 70px;
             width: 13px;
             height: 13px;
@@ -6210,7 +6208,7 @@ form {
       .ab1181 .page-content .order-content .order-fill .guarantee-payment::after {
         content: "";
         display: block;
-        background: url(source/createorder-ab1181.png) -44px -3px;
+/*         background: url(source/createorder-ab1181.png) -44px -3px; */
         background-size: 150px 70px;
         width: 13px;
         height: 13px;
