@@ -66,6 +66,25 @@ class Djbz extends Model {
 		return $shopInfos;
 		
 	}
+	
+	
+	public function listByCatelog($dianma,$dengji){
+		$dbConfig=$this->getkefangDBConfig($dianma);
+		//Log::record ($dbConfig );
+		$result=array();
+		// 是否可以预定？
+		$dbType = config ( 'config_db' )['type'];
+		if ($dbType == 'mysql') {
+			$kefngList = Db::connect($dbConfig)->query ( "select * from tvhk where `等级`='" . $dengji . "' and ( `房态`= 'A' or `净`='') " );
+		} else if ($dbType == 'sqlsrv') {
+			$kefngList = Db::connect($dbConfig)->query ( "select * from tvhk where [等级]='" . $dengji . "' and ( [房态]= 'A' or [净]='') " );
+		} else {
+			$kefngList = Db::connect($dbConfig)->query ( "select * from tvhk where `等级`='" . $dengji . "' and ( `房态`= 'A' or `净`='') " );
+		}
+		$result['kefngList']=$kefngList;
+		$result['vo']=$this->findDJbz($dengji, $dianma)['info'];
+       return 	$result;
+	}
 	/**
 	 * 查询客房信息并把汉字列转换为拼音列返回
 	 *
@@ -169,12 +188,32 @@ class Djbz extends Model {
 		} else {
 			$kefngList = Db::connect($dbConfig)->query ( "select * from tvhk where `等级`='" . $orderInfo ['dengji'] . "' and ( `房态`= 'A' or `净`='') " );
 		}
-		
-		if (sizeof ( $kefngList ) < $orderForm ['roomCount']) {
+		$rooms= explode (",", $orderForm ['rooms'] );
+		$roomCount=sizeof($rooms);
+		if (sizeof ( $kefngList ) < $roomCount) {
 			$result ['success'] = false;
 			$result ['mess'] = '房间数不够';
 			return $result;
 		}
+		// 校验每个房间的状态
+		foreach ( $rooms as $rowValue ) {
+			$dbType = config ( 'vip_db' )['type'];
+			if ($dbType == 'mysql') {
+				$kefngList = Db::connect($dbConfig)->query ( "select * from tvhk where `等级`='" . $orderInfo ['dengji'] . "' and ( `房态`= 'A' or `净`='')  and '房号'='".$rowValue."'" );
+			} else if ($dbType == 'sqlsrv') {
+				$kefngList = Db::connect($dbConfig)->query ( "select * from tvhk where [等级]='" . $orderForm ['dengji'] . "' and ( [房态]= 'A' or [净]='') and '[房号]'='".$rowValue."'"  );
+			} else {
+				$kefngList = Db::connect($dbConfig)->query ( "select * from tvhk where `等级`='" . $orderInfo ['dengji'] . "' and ( `房态`= 'A' or `净`='') and '房号'='".$rowValue."'" );
+			}
+			if($kefngList==null||sizeof($kefngList)==0){
+				$result ['success'] = false;
+				$result ['mess'] = '房间'.$rowValue.'已被预订，请选择其他房间';
+				return $result;
+			}
+	
+		}
+		
+		//
 		// 2.查询是否为会员
 		$vipCondition = [ 
 				'证件号码' => '',
@@ -213,29 +252,15 @@ class Djbz extends Model {
 		// 4.生成订单
 		$orderForm ['kefngList'] = $kefngList;
 		$orderInfo = $this->createInnerOrder ( $orderForm );
-		//return $orderInfo;
-		/*
-		 * $qrcode_path=config('upload_path').'/'.'qrcode/'.'aa/';
-		 * $filepath=ROOT_PATH.$qrcode_path;
-		 * $fileName=$filepath.'aaa.png';
-		 * qrcode('www.baidu.com',$fileName);
-		 */
 		
 		$order = array (
 				'body' => '宾馆客房预订资金', // 商品描述（需要根据自己的业务修改）
 				'total_fee' => $orderInfo['money'], // 订单金额 以(分)为单位（需要根据自己的业务修改）
 				'out_trade_no' =>$orderInfo['dingdanhao'] , // 订单号（需要根据自己的业务修改）
-				'product_id' => $orderInfo['dingdanhao'], // 商品id（需要根据自己的业务修改）
-				'trade_type' => 'MWEB' 
-		); // JSAPI公众号支付
+				'product_id' => $orderInfo['dingdanhao'] // 商品id（需要根据自己的业务修改）
+				//'trade_type' => 'MWEB' 
+		); 
 		   
-		//return 'http://' . $_SERVER ['HTTP_HOST'] ;
-		// 统一下单 获取prepay_id
-		//$redirect_url = urlencode ( 'http://' . $_SERVER ['HTTP_HOST'] . '/index.php/index/notify' ); // 支付完成后跳回地址
-		//$weixin = new \app\index\model\WeixinH4Pay ();
-		//$unified_order = $weixin->unifiedOrder ( $order );
-		// $this->redirect($unified_order['mweb_url']."&redirect_url=".$redirect_url);
-		//return $unified_order;
 		return $order;
 	}
 	public function findDJbz($dengji,$dianma) {
@@ -280,12 +305,39 @@ class Djbz extends Model {
 			$kefngList = Db::query ( "select * from tvhk where `等级`='" . $orderInfo ['dengji'] . "' and ( `房态`= 'A' or `净`='') " );
 		}
 		// 生成客房订单
-		
-		if (sizeof ( $kefngList ) < $orderInfo ['yudingshu']) {
+		$yudinghao=$orderInfo['yudinghao'];
+		$yudinghaos=explode (",", $yudinghao);
+		$yudingshu = sizeof($yudinghaos);
+		if (sizeof ( $kefngList ) < $yudingshu) {
 			$result ['success'] = false;
 			$result ['mess'] = '房间数不够';
 			return $result;
 		}
+		
+		
+		//
+		
+		
+		foreach ( $yudinghaos as $rowValue ) {
+			$dbType = config ( 'vip_db' )['type'];
+			if ($dbType == 'mysql') {
+				$kefngList = Db::connect($dbConfig)->query ( "select * from tvhk where `等级`='" . $orderInfo ['dengji'] . "' and ( `房态`= 'A' or `净`='')  and '房号'='".$rowValue."'" );
+			} else if ($dbType == 'sqlsrv') {
+				$kefngList = Db::connect($dbConfig)->query ( "select * from tvhk where [等级]='" . $orderForm ['dengji'] . "' and ( [房态]= 'A' or [净]='') and '[房号]'='".$rowValue."'"  );
+			} else {
+				$kefngList = Db::connect($dbConfig)->query ( "select * from tvhk where `等级`='" . $orderInfo ['dengji'] . "' and ( `房态`= 'A' or `净`='') and '房号'='".$rowValue."'" );
+			}
+			if($kefngList==null||sizeof($kefngList)==0){
+				$result ['success'] = false;
+				$result ['mess'] = '房间'.$rowValue.'已被预订，请选择其他房间';
+				return $result;
+			}
+		
+		}
+		//
+		
+		
+		
 		
 		$vipCondition = array ();
 		$vipCondition ['证件号码'] = $orderInfo ['shenfenzhenghao'];
@@ -303,13 +355,13 @@ class Djbz extends Model {
 		$kefangCondition ["等级"] = $orderInfo ['dengji'];
 		$roomTypeInfo = Db::name ( 'tb_djbz' )->where ( $kefangCondition )->find ();
 		
-		for($index = 0; $index < $orderInfo ['yudingshu']; $index = $index + 1) {
-			$kefangInfo = $kefngList [$index];
-			print_r($orderInfo);
+		foreach( $yudinghaos as $rowValue ) {
+			//$kefangInfo = $kefngList [$index];
+			//print_r($orderInfo);
 			// 修改为预定
 			$updateFields = array ();
 			$updCondition = array ();
-			$updCondition ['ID'] = $kefangInfo ['ID'];
+			$updCondition ['房号'] = $rowValue;
 			$updateFields ['姓名'] = $orderInfo ['xingming'];
 			/*
 			$updateFields ['性别'] = $orderInfo ['xingbie'];
@@ -334,12 +386,12 @@ class Djbz extends Model {
 // 			}
 			Log::record ($updCondition );
 			Log::record ($updateFields );
-			Db::execute("update tvhk set [姓名]='".$orderInfo ['xingming']."' , [性别]='".$orderInfo ['xingbie']."' , [证件] = '身份证' where ID=".$kefangInfo ['ID']);
-			Db::execute("update tvhk set [证件编号]='".$orderInfo ['shenfenzhenghao']."' , [入住天数]=".$orderInfo ['tianshu']." , [宾客电话] = '".$orderInfo ['dianhua']."' where ID=".$kefangInfo ['ID']);
-			Db::execute("update tvhk set [宾客类别]='网订' , [入住天数]=".$orderInfo ['tianshu']. " where ID=".$kefangInfo ['ID']);
-			Db::execute("update tvhk set [网付流水]='".$orderInfo ['dingdanhao']."' , [网订]='是',[房态]='E' , [预交押金] = ".$updateFields ['预交押金']."  where ID=".$kefangInfo ['ID']);
+			Db::execute("update tvhk set [姓名]='".$orderInfo ['xingming']."' , [性别]='".$orderInfo ['xingbie']."' , [证件] = '身份证' where [房号]='".$rowValue."'");
+			Db::execute("update tvhk set [证件编号]='".$orderInfo ['shenfenzhenghao']."' , [入住天数]=".$orderInfo ['tianshu']." , [宾客电话] = '".$orderInfo ['dianhua']."' where [房号]='".$rowValue."'");
+			Db::execute("update tvhk set [宾客类别]='网订' , [入住天数]=".$orderInfo ['tianshu']. " where [房号]='".$rowValue."'");
+			Db::execute("update tvhk set [网付流水]='".$orderInfo ['dingdanhao']."' , [网订]='是',[房态]='E' , [预交押金] = ".$updateFields ['预交押金']."  where I[房号]=".$rowValue."'");
 			Db::execute("update tvhk set [登记房价]='".$updateFields ['预交押金']."' , [预交押金]=".$updateFields ['预交押金'].",[房态]='E' , [网付日期] = GETDATE()
-					  where ID=".$kefangInfo ['ID']);
+					  where [房号]='".$rowValue."'");
 			
 			// 需要添加网约单号 
 			
@@ -371,7 +423,7 @@ class Djbz extends Model {
 		$order ['dengji'] = $orderForm ['dengji'];
 		$order ['yudingjine'] = $orderForm ['deposit'] * $orderForm ['roomCount'];
 		$order ['yudingshijian'] = date ( 'Y-m-d H:i:s' );
-		$order ['yudingshu'] = $orderForm ['roomCount'];
+		$order ['yudinghao'] = $orderForm ['rooms'];
 		$order ['xingming'] = $orderForm ['xingming'];
 		$order ['xingbie'] = $orderForm ['xingbie'];
 		$order ['dianhua'] = $orderForm ['dianhua'];
@@ -390,7 +442,9 @@ class Djbz extends Model {
 	 * @param unknown $roomCount        	
 	 * @param unknown $tianshu        	
 	 */
-	public function calculateDeposit($dengji, $roomCount, $tianshu, $shenfenzhenghao,$dianma) {
+	public function calculateDeposit($dengji, $rooms, $tianshu, $shenfenzhenghao,$dianma) {
+		$roomCount=$iparr = explode (",", $rooms); 
+		$roomCount=sizeof($roomCount);
 		$dbType = config ( 'vip_db' )['type'];
 		$dbConfig=$this->getkefangDBConfig($dianma);
 		if ($dbType == 'mysql') {
@@ -430,6 +484,14 @@ class Djbz extends Model {
 		return $result;
 		
 		
+	}
+	
+	public function queryOrders($phone,$validCode){
+		$condition = array ();
+		$condition ['dinahua'] = $phone;
+		$condition ['validcode'] = $validCode;
+		$orderInfo = Db::name ( 'order' )->where ( $condition )->find ();
+		return $orderInfo;
 	}
 	
 	

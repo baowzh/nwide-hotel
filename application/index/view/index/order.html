@@ -90,6 +90,7 @@
 					<article class="order-content">
 						<section class="order-fill">
 							<!-- 房间数 -->
+							<!--  
 							<div class="room-number">
 
 								<div class="label">房间数</div>
@@ -111,6 +112,7 @@
 								</div>
 
 							</div>
+							-->
 
 							<!-- 预住天数 -->
 							<div class="room-number">
@@ -212,7 +214,7 @@
 									</div>
 								</div>
 							</div>
-							<!-- 到店时间 -->
+							<!-- 到店时间 
 							<div class="time-reserve"
 								data-tj="{&quot;cspot&quot;:&quot;timereserve&quot;}">
 								<div class="time-reserve-body">
@@ -225,7 +227,9 @@
 											class="icon-left"></i></span>
 									</div>
 								</div>
-							</div>
+							</div>-->
+							
+							<input type="hidden" name="rooms" id="rooms" value="{$rooms}" />
 							<input type="hidden" name="dengji" id="dengji" value="{$vo['等级']}" />
                             <input type="hidden" name="dianma" id="dianma" value="{$dianma}" />
 							
@@ -339,7 +343,7 @@
 			type : "POST",
 			url : 'calculateDeposit',
 			data : {
-				'roomCount':roomCount,
+				'rooms':$('#rooms').val(),
 				'tianshu' : tianshu,
 				'dengji':$('#dengji').val(),
 				'shenfenzhenghao':$('#shenfenzhenghao').val(),

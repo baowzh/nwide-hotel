@@ -1,0 +1,71 @@
+{include file="public/head" /}
+<link href="__CSS__/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__JS__/jquery-1.7.2.min.js"></script>
+<body class="hotel">
+	<ul>
+		{volist name="kefangs" id="vo1" key="k"}
+		<li class="rooms">
+			<div class="wrap">
+				<div class="left   tjclick"
+					data-tj="{&quot;cspot&quot;:&quot;roomdetail&quot;}">
+					<div class="pic tjclick rpDetail"
+						data-tj="{&quot;cspot&quot;:&quot;roomimage&quot;}">
+						<img src="//pavo.elongstatic.com/i/mobile750_448/nw_000cRACL.jpg">
+					</div>
+					<div class="picroom-info">
+						<div class="room">{$vo['名称']}</div>
+						<div class="room-info">
+							<span>楼号：{$vo1['楼号']}</span> <span>房号：{$vo1['房号']}</span> <span>
+								床号：{$vo1['床号']} </span>
+						</div>
+						<div class="icon icon-hs"></div>
+					</div>
+				</div>
+				<div class="right">
+					<div class="price">
+						<span>价格：¥</span><span class="num">{$vo['包房价']}</span>
+
+					</div>
+					<div class="order">
+
+						<div class="btn2 btn2_center">
+							<input type="checkbox" name="vehicle"  value="{$vo1['房号']}" />选择
+							<!-- 							<a href="toOrder?dengji={$dengji}&dianma={$dianma}">选额</a> -->
+							<!-- 							<p class="btn2_yf">在线付</p> -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</li> {/volist}
+	</ul>
+	<div id="mobilesubmit"
+		style="display: block; position: fixed; bottom: 30px; width: 100%;">
+		<span style="display: block; margin: 5px auto; width: 100px;">
+			<a href="javascript:order();" style="margin: 1px 0 0 0;text-decoration: none; border-radius: 3px;font-weight: bold;height: 32px; line-height: 33px; padding: 2px 0 0 0; background-color: #f55; color: #fff; width: 90px; font-size: 14px;">在线订购 </a>
+		</span> <span class="preloader preloader-white button-loader"> </span>
+	</div>
+</body>
+<script language="javascript">
+ var order=function(){
+	var rooms='';
+	$("input:[name='vehicle']").each(	
+	function(){
+		if(this.checked){
+			rooms=rooms+$(this).val()+",";
+		}
+	}
+	);
+	if(rooms!=''){
+		rooms=rooms.substring(0,rooms.length-1);
+		window.location.href='toOrder?dengji={$dengji}&dianma={$dianma}&rooms='+rooms;
+	}else{
+		alert('请选择入住房间');
+	}
+	  
+ }
+
+
+
+</script>
+{include file="public/footer" /}
+</html>

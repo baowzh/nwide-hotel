@@ -50,18 +50,28 @@ class Index extends Controller {
 		$this->assign ( 'dianma', $dianma );
 		return $this->fetch ();
 	}
+	public function listByCatelog($dianma, $dengji) {
+		$djbz = new \app\index\model\Djbz ();
+		$list = $djbz->listByCatelog ( $dianma, $dengji );
+		$this->assign ( 'vo', $list ['vo'] );
+		$this->assign ( 'kefangs', $list ['kefngList'] );
+		$this->assign ( 'dianma', $dianma );
+		$this->assign ( 'dengji', $dengji );
+		return $this->fetch ( 'list' );
+	}
 	/**
 	 * 跳转到订单界面
 	 *
 	 * @param unknown $dengji        	
 	 * @return \think\mixed
 	 */
-	public function toOrder($dengji, $dianma) {
+	public function toOrder($dengji, $dianma, $rooms) {
 		$djbz = new \app\index\model\Djbz ();
-		$djbzVo = $djbz->findDJbz ( $dengji, $dianma );
-		$this->assign ( 'vo', $djbzVo['info'] );
-		$this->assign ( 'shop', $djbzVo['shopInfo'] );
+		$djbzVo = $djbz->findDJbz ( $dengji, $dianma, $rooms );
+		$this->assign ( 'vo', $djbzVo ['info'] );
+		$this->assign ( 'shop', $djbzVo ['shopInfo'] );
 		$this->assign ( 'dianma', $dianma );
+		$this->assign ( 'rooms', $rooms );
 		return $this->fetch ( 'order' );
 	}
 	/**
@@ -101,7 +111,7 @@ class Index extends Controller {
 		$shenfenzhenghao = $this->request->param ( 'shenfenzhenghao' );
 		$dianhua = $this->request->param ( 'dianhua' );
 		$zhifufangshi = $this->request->param ( 'zhifufangshi', 1 );
-		$roomCount = $this->request->param ( 'roomCount', 1 );
+		$rooms = $this->request->param ( 'rooms', '' );
 		$tianshu = $this->request->param ( 'tianshu', 1 );
 		$dianma = $this->request->param ( 'dianma', 1 );
 		$djbz = new \app\index\model\Djbz ();
@@ -111,28 +121,21 @@ class Index extends Controller {
 		$orderForm ['xingbie'] = $xingbie;
 		$orderForm ['shenfenzhenghao'] = $shenfenzhenghao;
 		$orderForm ['dianhua'] = $dianhua;
-		$orderForm ['roomCount'] = $roomCount;
+		$orderForm ['rooms'] = $rooms;
 		$orderForm ['tianshu'] = $tianshu;
 		$orderForm ['dianma'] = $dianma;
 		$oderIfo = $djbz->order ( $orderForm );
-		//调用jsapi 进行支付
+		// 调用jsapi 进行支付
 		header ( 'Content-Type:application/json; charset=utf-8' );
 		return $this->pay ( $oderIfo );
-		/*
-		 * $redirect_url = urlencode ( 'http://' . $_SERVER ['HTTP_HOST'] . '/index.php' );
-		 * $this->redirect ( $oderIfo ['mweb_url'] . "&redirect_url=" . $redirect_url );
-		 */
 	}
-	
-	private function pay($orderForm){
-		
+	private function pay($orderForm) {
 		$money = $orderForm ['total_fee'] * 100;
-		$openId=Session::get ('openId');
+		$openId = Session::get ( 'openId' );
 		$userId = $openId;
 		$input = new \WxPayUnifiedOrder ();
 		$input->SetBody ( "酒店预订" ); // 商品描述
-		
-		$input->SetOut_trade_no ($orderForm ['out_trade_no']  ); // 商户订单号
+		$input->SetOut_trade_no ( $orderForm ['out_trade_no'] ); // 商户订单号
 		$input->SetTotal_fee ( $money ); // 订单金额
 		$input->SetTime_start ( date ( "YmdHis" ) ); // 交易起始时间
 		$input->SetTime_expire ( date ( "YmdHis", time () + 600 ) ); // 交易结束时间
@@ -140,16 +143,12 @@ class Index extends Controller {
 		$input->SetNotify_url ( "http://www.nvsoft.cn/index.php/index/notify" ); // 接收回调通知地址
 		$input->SetTrade_type ( "JSAPI" ); // 支付类型
 		$input->SetOpenid ( $openId ); // 用户openid
-		$wxConfig=new \WxPayConfig();
-		Log::record ( ' order inof is： ' .$input->GetBody().$input->GetTotal_fee().'app id is :'.$wxConfig->GetAppId() );
-		$order = \WxPayApi::unifiedOrder ($wxConfig, $input ); // 统一下单，该方法中包含了签名算法
-		//Log::record ( '$jsApiParameters is： ' .$order);
-		//Log::record ( '$jsApiParameters is： ' .$order['return_msg']);
-		//return array();
-		$tools = new \JsApiPay();
+		$wxConfig = new \WxPayConfig ();
+		Log::record ( ' order inof is： ' . $input->GetBody () . $input->GetTotal_fee () . 'app id is :' . $wxConfig->GetAppId () );
+		$order = \WxPayApi::unifiedOrder ( $wxConfig, $input ); // 统一下单，该方法中包含了签名算法
+		$tools = new \JsApiPay ();
 		$jsApiParameters = $tools->GetJsApiParameters ( $order ); // 统一下单参数
-		//Log::record ( '$jsApiParameters is： ' .$jsApiParameters );
-		return json($jsApiParameters);
+		return json ( $jsApiParameters );
 	}
 	/**
 	 * 支付回调入口
@@ -157,24 +156,19 @@ class Index extends Controller {
 	public function notify() {
 		$xml = file_get_contents ( 'php://input', 'r' );
 		Log::record ( ' the notify message is: ' . $xml );
-		$notifyMess=$this->parseXml($xml);
-		$issuccess=$notifyMess['return_code'];
+		$notifyMess = $this->parseXml ( $xml );
+		$issuccess = $notifyMess ['return_code'];
 		Log::record ( ' the notify message is: ' . $issuccess );
-		if ($issuccess||$issuccess=='SUCCESS') {
+		if ($issuccess || $issuccess == 'SUCCESS') {
 			$djbz = new \app\index\model\Djbz ();
-			$out_trade_no=$notifyMess['out_trade_no'];
-			$djbz->notify($out_trade_no);
+			$out_trade_no = $notifyMess ['out_trade_no'];
+			$djbz->notify ( $out_trade_no );
 		}
 	}
-	
-	public function testNotify($orderId='1555153030032054'){
-		
+	public function testNotify($orderId = '1555153030032054') {
 		$djbz = new \app\index\model\Djbz ();
-		//$out_trade_no=$notifyMess['out_trade_no'];
-		$djbz->notify($orderId);
-		
+		$djbz->notify ( $orderId );
 	}
-	
 	private function parseXml($xml) {
 		libxml_disable_entity_loader ( true );
 		$this->values = json_decode ( json_encode ( simplexml_load_string ( $xml, 'SimpleXMLElement', LIBXML_NOCDATA ) ), true );
@@ -197,9 +191,9 @@ class Index extends Controller {
 	 * @param unknown $shenfenzhenghao        	
 	 * @return \think\response\Json
 	 */
-	public function calculateDeposit($dengji, $roomCount, $tianshu, $shenfenzhenghao, $dianma) {
+	public function calculateDeposit($dengji, $rooms, $tianshu, $shenfenzhenghao, $dianma) {
 		$djbz = new \app\index\model\Djbz ();
-		$deposit = $djbz->calculateDeposit ( $dengji, $roomCount, $tianshu, $shenfenzhenghao, $dianma );
+		$deposit = $djbz->calculateDeposit ( $dengji, $rooms, $tianshu, $shenfenzhenghao, $dianma );
 		header ( 'Content-Type:application/json; charset=utf-8' );
 		return json ( [ 
 				"success" => true,
@@ -241,5 +235,40 @@ class Index extends Controller {
 			$this->assign ( 'openId', $openId );
 			return $this->fetch ( 'recharge' );
 		}
+	}
+	/**
+	 * 到订单信息查界面
+	 * @return \think\mixed
+	 */
+	public function orderInfo() {
+		return $this->fetch ( 'orderInfo' );
+	}
+	/**
+	 * 查询订单信息
+	 * @param unknown $phone
+	 * @param unknown $validCode
+	 * @return \think\response\Json
+	 */
+	public function queryOrders($phone, $validCode) {
+		$djbz = new \app\index\model\Djbz ();
+		if ($phone == null || $phone == '') {
+			return json ( [ 
+					"success" => false,
+					'orderInfo' => '请填写手机号' 
+			] );
+		}
+		
+		if ($validCode == null || $validCode == '') {
+			return json ( [ 
+					"success" => false,
+					'orderInfo' => '请填写到场验证码' 
+			] );
+		}
+		$orderInfo->queryOrders ( $phone, $validCode );
+		header ( 'Content-Type:application/json; charset=utf-8' );
+		return json ( [ 
+				"success" => true,
+				'orderInfo' => $orderInfo 
+		] );
 	}
 }
