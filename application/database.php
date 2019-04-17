@@ -15,7 +15,7 @@ return [
 				'dsn' => '',
 				'hostname' => '127.0.0.1',
 				
-				'database' => 'kefang',
+				'database' => 'nwide_zd',
 				
 				'username' => 'root',
 				

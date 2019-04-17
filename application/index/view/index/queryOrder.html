@@ -1,0 +1,100 @@
+{include file="public/head" /}
+<link href="__CSS__/main.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__JS__/jquery-1.7.2.min.js"></script>
+<body>
+	<div class="pages page-fade" data-events="click">
+		<div class="page ab1181 page-on-center" data-blend="layer">
+			<nav class="bar bar-tab create-order-bar">
+				
+				<div id="mobilesubmit" class=" commit tjclick" style="border-radius: 3px;margin: 10px auto;text-align:center;"
+					onClick="javascript:validAndQuery();"
+					data-tj="{&quot;cspot&quot;:&quot;nextstep&quot;}">
+					<span style="text-align:center;"> 查询 </span> 
+				<span
+						class="preloader preloader-white button-loader"> </span>
+				</div>
+			</nav>
+			<div class="page-content  order-fill-top" style="padding-top:10px;">
+			
+				<form action="orderInfo" method="post" id="orderForm">
+					<article class="order-content">
+						<section class="order-fill">
+							
+							<div class="contact-person">
+								<ul>
+									<li>
+										<div class="label">身份证号码</div>
+										<div class="content list-input">
+											<input type="text" class="createorder" name="shenfenzhenghao"
+												id="shenfenzhenghao" placeholder="填写身份证号码" value="">
+										</div></li>
+								</ul>
+								<div class="add-person-button" data-events="click">
+									<div class="person-choose"></div>
+								</div>
+							</div>
+
+							<!-- 身份证号-->
+							<div class="order-contact">
+								<div class="tel-text">
+									<span class="tel-person">手机号</span> <label for="area-code"></label>
+									<div class="area-address">
+										<input type="text" maxlength="25"
+											class="area-number createorder" name="phone"
+											placeholder="手机号" id="phone" value="">
+										<div class="tel-choose" style="color: rgb(220, 220, 220);">
+											<span class="icon-choose"></span>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<!-- 到场验证码 -->
+							<div class="order-contact">
+								<div class="tel-text">
+									<span class="tel-person">到场验证码</span> <label for="area-code"></label>
+									<div class="area-address">
+										<input type="tel" maxlength="25"
+											class="area-number createorder" name="validcode"
+											placeholder="到场验证码" id="validcode" value="">
+										<div class="tel-choose" style="color: rgb(220, 220, 220);">
+											<span class="icon-choose"></span>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+						</section>
+					</article>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+<script language="javascript">
+ var validAndQuery=function(){
+	 var shenfenzhenghao=$('#shenfenzhenghao').val();
+	 var phone=$('#phone').val();
+	 var validcode=$('#validcode').val();
+	 
+	 if(shenfenzhenghao==null||shenfenzhenghao==''){
+		 alert('请填写身份证号');
+		 return ;
+	 }
+	 if(phone==null||phone==''){
+		 alert('请填写手机号');
+		 return ;
+	 }
+	 
+	 if(validcode==null||validcode==''){
+		 alert('请填写到场验证码');
+		 return ;
+	 }
+	 $('#orderForm').submit();
+	 
+ 
+ }
+</script>
+
+{include file="public/footer" /}
+</html>

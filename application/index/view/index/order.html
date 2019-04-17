@@ -17,7 +17,7 @@
 			<nav class="bar bar-tab create-order-bar">
 				<div class="total">
 					<div class="orderprice return middleshow">
-						定金￥<span id="wborderprice">{$vo['网订价']}</span>
+						定金￥<span id="wborderprice">{$deposit}</span>
 					</div>
 					<div class="returnprice">
 						<div class="coupontext" style="display: block;"></div>
@@ -52,32 +52,16 @@
 						</div>
 						<dl class="type">
 							<dt>房间类型：商务房B</dt>
-							<dt>不含早</dt>
 							<dd>
 								<i class="icon-net"></i>互联网
 							</dd>
 							
 						</dl>
-                         <!--  
-						<div class="total">
-							<div class="left">房间总价：</div>
-							<div class="right">
-								<p class="price">
-									￥<span id="wborderpricepad">139</span>
-								</p>
-								<div class="returnprice">
-									<div class="coupontext"></div>
-								</div>
-							</div>
-						</div>
-						-->
+ 
 					</div>
 					<div class="p-info   p-info-top  ">
 						<p class="type">商务房B</p>
 						<p class="date">3月31日 - 4月1日 共1晚</p>
-						<p class="info">
-							<span class="breakfast">不含早</span> |
-						</p>
 						<div class="sale_info">
 							<div class="immediatelyConfirm-enough">
 								<span>及时确认</span>订单提交后，酒店将第一时间确认您的订单
@@ -183,8 +167,6 @@
 								</div>
 							</div>
 
-
-
 							<div class="room-number">
 
 								<div class="label">性别</div>
@@ -233,8 +215,6 @@
 							<input type="hidden" name="dengji" id="dengji" value="{$vo['等级']}" />
                             <input type="hidden" name="dianma" id="dianma" value="{$dianma}" />
 							
-
-
 						</section>
 					</article>
 				</form>
@@ -281,13 +261,13 @@
 				'shenfenzhenghao':$('#shenfenzhenghao').val(),
 				'dianhua':$('#dianhua').val(),
 				'zhifufangshi':'1',
-				'roomCount':$('#roomCount').val(),
+				'rooms':$('#rooms').val(),
 				'tianshu':$('#tianshu').val(),
 				'dianma':$('#dianma').val()			
 			},
 			dataType : "json",
 			success : function(data) {
-				alert(data.appId);
+				//alert(data.appId);
 				jsApiCall(data);				
 			},
 			error : function(info) {
@@ -326,18 +306,18 @@
  $(document).ready(function(){
 	 // 当预定酒店房间数和预住时间发生变化时候重新计算定金
 	  $("#roomcount").change(function(){
-		  calculateDeposit($(this).val(),$('#tianshu').val());
+		  calculateDeposit($('#tianshu').val());
 		  	  
 	  });
 	 
 	 $('#tianshu').change(function(){
-		 calculateDeposit($('#roomcount').val(),$('#tianshu').val());
+		 calculateDeposit($('#tianshu').val());
 		 
 	 })
 	 	 
 });
  
- var calculateDeposit=function(roomCount,tianshu){
+ var calculateDeposit=function(tianshu){
 	   
 	 $.ajax({
 			type : "POST",
@@ -353,7 +333,6 @@
 			dataType : "json",
 			success : function(data) {
 				if(data.Deposit.success){
-					//alert(data.Deposit.deposit);
 					$('#wborderprice').text(data.Deposit.deposit);
 				}else{
 					alert(data.Deposit.mess);

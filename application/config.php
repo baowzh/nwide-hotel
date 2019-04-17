@@ -253,6 +253,41 @@ return [
 				'fields_strict' => true 
 		],
 		
+		'kefang_db'=>[
+				
+				'type' => 'mysql',
+				'dsn' => '',
+				'hostname' => '127.0.0.1',
+				
+				'database' => 'nwide_zd',
+				
+				'username' => 'root',
+				
+				'password' => 'root',
+				
+				'hostport' => '3306',
+				
+				'params' => [ ],
+				
+				'charset' => 'utf8',
+				
+				'prefix' => '',
+				
+				'debug' => false,
+				
+				'deploy' => 0,
+				
+				'rw_separate' => false,
+				
+				'master_num' => 1,
+				
+				'slave_no' => '',
+				
+				'fields_strict' => true
+				
+				
+		],
+		
 		'shop_id' => '1',
 		'profile'=>'dev',
 		

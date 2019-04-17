@@ -1,0 +1,52 @@
+{include file="public/head" /}
+<link href="__CSS__/main.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__JS__/jquery-1.7.2.min.js"></script>
+<style type="text/css">
+.page-fade ul {padding: 0px;
+    margin: 0px;
+    list-style-type: none;
+    display: grid;
+    width: 100%;
+    }
+    
+ .page-fade ul li{
+ padding: 0px;
+    margin: 0px;
+    display: block;
+    width: 100%;
+ }   
+.page-fade ul li label {float:left;}
+.page-fade ul li div {float:left; }
+</style>
+<body>
+	<div class="pages page-fade">
+		<ul>
+			<li><label>订单号:</label>
+				<div>{$vo['dingdanhao']}</div></li>
+			<li><label>酒店名称:</label>
+				<div>{$vo['dianming']}</div></li>
+			<li><label>姓名:</label>
+				<div>{$vo['xingming']}</div></li>
+			<li><label>身份证号:</label>
+				<div>{$vo['shenfenzhenghao']}</div></li>
+			<li><label>房间类型:</label>
+				<div>{$vo['dengjiming']}</div></li>
+			<li><label>预定时间:</label>
+				<div>{$vo['yudingshijian']}</div></li>
+			<li><label>预定房间:</label>
+				<div>{$vo['yudinghao']}</div></li>
+			<li><label>预住天数:</label>
+				<div>{$vo['yuzhutianshu']}</div></li>
+			<li><label>预定金额:</label>
+				<div>{$vo['yudingjine']}</div></li>
+			
+		</ul>
+
+
+	</div>
+
+</body>
+
+
+{include file="public/footer" /}
+</html>

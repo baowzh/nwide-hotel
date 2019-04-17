@@ -23,9 +23,12 @@ class Index extends Controller {
 		$profile = config ( 'profile' );
 		if ($profile == 'prod') {
 			$jsApiPay = new \JsApiPay ();
-			$openId = $jsApiPay->GetOpenid ();
-			Log::record ( ' the user openId is ' . $openId );
-			Session::set ( 'openId', $openId );
+			$openId = Session::get ( 'openId' );
+			if($openId==null){
+				$openId = $jsApiPay->GetOpenid ();
+				Log::record ( ' the user openId is ' . $openId );
+				Session::set ( 'openId', $openId );
+			}
 			$djbz = new \app\index\model\Djbz ();
 			$hotels = $djbz->index ();
 			$this->assign ( 'hotels', $hotels );
@@ -69,15 +72,21 @@ class Index extends Controller {
 		$djbz = new \app\index\model\Djbz ();
 		$djbzVo = $djbz->findDJbz ( $dengji, $dianma, $rooms );
 		$this->assign ( 'vo', $djbzVo ['info'] );
+		$kefangInfo= $djbzVo ['info'];
+		// 简单计算订金
+		$roomCount = explode (",", $rooms);
+		$roomCount=sizeof($roomCount);
+		$deposit = $kefangInfo ['网订价'] * $roomCount * 1;
 		$this->assign ( 'shop', $djbzVo ['shopInfo'] );
 		$this->assign ( 'dianma', $dianma );
 		$this->assign ( 'rooms', $rooms );
+		$this->assign ( 'deposit', $deposit );
 		return $this->fetch ( 'order' );
 	}
 	/**
 	 * 把客房相关的视频文件读出来并写入本地磁盘，同时返回相对路径用于播放视频
 	 */
-	public function video($id) {
+	public function video($id,$dianma) {
 		$djbz = new \app\index\model\Djbz ();
 		$videoPath = $djbz->getVideo ( $id );
 		header ( 'Content-Type:application/json; charset=utf-8' );
@@ -90,9 +99,9 @@ class Index extends Controller {
 	/**
 	 * 把客房相关的图片写入本地磁盘并返回相对路径用于显示图片
 	 */
-	public function image($id) {
+	public function image($id,$dianma) {
 		$djbz = new \app\index\model\Djbz ();
-		$imagePath = $djbz->getImage ( $id );
+		$imagePath = $djbz->getImage ( $id ,$dianma);
 		header ( 'Content-Type:application/json; charset=utf-8' );
 		return json_encode ( [ 
 				"success" => true,
@@ -125,6 +134,7 @@ class Index extends Controller {
 		$orderForm ['tianshu'] = $tianshu;
 		$orderForm ['dianma'] = $dianma;
 		$oderIfo = $djbz->order ( $orderForm );
+		Log::record ($oderIfo);
 		// 调用jsapi 进行支付
 		header ( 'Content-Type:application/json; charset=utf-8' );
 		return $this->pay ( $oderIfo );
@@ -241,7 +251,30 @@ class Index extends Controller {
 	 * @return \think\mixed
 	 */
 	public function orderInfo() {
-		return $this->fetch ( 'orderInfo' );
+		if($this->request->isGet()){
+			return $this->fetch ( 'queryOrder' );
+		}else{
+			
+			$shenfenzhenghao=$this->request->param("shenfenzhenghao");
+			$phone=$this->request->param("phone");
+			$validcode=$this->request->param("validcode");
+			if($shenfenzhenghao==null){
+				 $this->error('请填写身份证号');
+			}
+			if($phone==null){
+				 $this->error('请填写手机号');
+			}
+			if($validcode==null){
+				$this->error('到场验证码');
+			}
+			$djbz = new \app\index\model\Djbz ();
+			$order=$djbz->queryOrders($shenfenzhenghao, $phone, $validcode);
+			$this->assign('vo',$order);
+			
+			return $this->fetch('orderDetail');
+			
+		}
+		
 	}
 	/**
 	 * 查询订单信息
