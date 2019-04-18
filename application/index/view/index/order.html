@@ -9,9 +9,11 @@
 			id="uniq22" data-title="订单填写" data-title-id="h5_createorder"
 			data-events="click">
 			<header class="bar bar-nav createorder-header">
+				<!--  
 				<a
 					class="icon icon-phone pull-right" href="tel:400-666-1166">
 					</a> 
+					-->
 				<h1 class="title">{$shop['店名']}</h1>
 			</header>
 			<nav class="bar bar-tab create-order-bar">
@@ -214,6 +216,7 @@
 							<input type="hidden" name="rooms" id="rooms" value="{$rooms}" />
 							<input type="hidden" name="dengji" id="dengji" value="{$vo['等级']}" />
                             <input type="hidden" name="dianma" id="dianma" value="{$dianma}" />
+                             <input type="hidden" name="out_trade_no" id="out_trade_no" value="" />
 							
 						</section>
 					</article>
@@ -263,12 +266,21 @@
 				'zhifufangshi':'1',
 				'rooms':$('#rooms').val(),
 				'tianshu':$('#tianshu').val(),
-				'dianma':$('#dianma').val()			
+				'dianma':$('#dianma').val()	,
+				'validCode':$('#validCode').val()
 			},
 			dataType : "json",
 			success : function(data) {
+				
 				//alert(data.appId);
-				jsApiCall(data);				
+				if(data.success){
+					//alert(data.out_trade_no);
+					$('#out_trade_no').val(data.out_trade_no);
+					jsApiCall(data.data);	
+				}else{
+					alert(data.mess);
+				}
+								
 			},
 			error : function(info) {
 				console.log("连接异常，请检查！")
@@ -279,12 +291,21 @@
  
  function jsApiCall(getBrandWCPayRequest)
 	{
+	    var out_trade_no=getBrandWCPayRequest.out_trade_no;
 		WeixinJSBridge.invoke(
 			'getBrandWCPayRequest',
 			getBrandWCPayRequest,
 			function(res){
-				WeixinJSBridge.log(res.err_msg);
-				alert(res.err_code+res.err_desc+res.err_msg);
+				if(res.err_msg == "get_brand_wcpay_request:ok"){
+					alert('支付成功。');
+					
+					window.location.href='orderInfoById?orderId='+$('#out_trade_no').val();
+					//$('#out_trade_no')
+					//setTimeout(alert('orderInfo?shenfenzhenghao='+$('#shenfenzhenghao').val()+"&phone="+$('#dianhua').val()+"&validcode="+$('#validCode').val()),200);
+					//window.location.href='orderInfo?shenfenzhenghao='+$('#shenfenzhenghao').val()+"&phone="+$('#dianhua').val()+"&validcode="+$('#validCode').val();
+				}
+				//WeixinJSBridge.log(res.err_msg);
+				//alert(res.err_code+res.err_desc+res.err_msg);
 			}
 		);
 	}

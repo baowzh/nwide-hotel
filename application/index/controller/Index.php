@@ -123,6 +123,7 @@ class Index extends Controller {
 		$rooms = $this->request->param ( 'rooms', '' );
 		$tianshu = $this->request->param ( 'tianshu', 1 );
 		$dianma = $this->request->param ( 'dianma', 1 );
+		$validCode=$this->request->param ( 'validCode', '' );
 		$djbz = new \app\index\model\Djbz ();
 		$orderForm = array ();
 		$orderForm ['dengji'] = $dengji;
@@ -133,11 +134,21 @@ class Index extends Controller {
 		$orderForm ['rooms'] = $rooms;
 		$orderForm ['tianshu'] = $tianshu;
 		$orderForm ['dianma'] = $dianma;
+		$orderForm ['validCode'] = $validCode;
 		$oderIfo = $djbz->order ( $orderForm );
 		Log::record ($oderIfo);
-		// 调用jsapi 进行支付
 		header ( 'Content-Type:application/json; charset=utf-8' );
-		return $this->pay ( $oderIfo );
+		$result=array();
+		if($oderIfo['success']){
+			// 调用jsapi 进行支付
+			$result['data']= $this->pay ( $oderIfo['data'] );
+			$result['success']= true;
+			$result['out_trade_no']= $oderIfo['data']['out_trade_no'];
+			return json($result);
+		}else{
+			return   json($oderIfo); ;
+		}
+		
 	}
 	private function pay($orderForm) {
 		$money = $orderForm ['total_fee'] * 100;
@@ -158,7 +169,8 @@ class Index extends Controller {
 		$order = \WxPayApi::unifiedOrder ( $wxConfig, $input ); // 统一下单，该方法中包含了签名算法
 		$tools = new \JsApiPay ();
 		$jsApiParameters = $tools->GetJsApiParameters ( $order ); // 统一下单参数
-		return json ( $jsApiParameters );
+		return $jsApiParameters;
+		//return json ( $jsApiParameters );
 	}
 	/**
 	 * 支付回调入口
@@ -252,9 +264,18 @@ class Index extends Controller {
 	 */
 	public function orderInfo() {
 		if($this->request->isGet()){
-			return $this->fetch ( 'queryOrder' );
+			$shenfenzhenghao=$this->request->param("shenfenzhenghao");
+			$phone=$this->request->param("phone");
+			$validcode=$this->request->param("validcode");
+			if($shenfenzhenghao!=null&&$phone!=null&&$validcode!=null){
+				$djbz = new \app\index\model\Djbz ();
+				$order=$djbz->queryOrders($shenfenzhenghao, $phone, $validcode);
+				$this->assign('vo',$order);
+				return $this->fetch('orderDetail');
+			}else{
+				return $this->fetch ( 'queryOrder' );
+			}
 		}else{
-			
 			$shenfenzhenghao=$this->request->param("shenfenzhenghao");
 			$phone=$this->request->param("phone");
 			$validcode=$this->request->param("validcode");
@@ -275,6 +296,13 @@ class Index extends Controller {
 			
 		}
 		
+	}
+	
+	public  function orderInfoById($orderId){
+		$djbz = new \app\index\model\Djbz ();
+		$order=$djbz->orderInfoById($orderId);
+		$this->assign('vo',$order);
+		return $this->fetch('orderDetail');
 	}
 	/**
 	 * 查询订单信息
