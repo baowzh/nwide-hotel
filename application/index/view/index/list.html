@@ -10,7 +10,7 @@
 					data-tj="{&quot;cspot&quot;:&quot;roomdetail&quot;}">
 					<div class="pic tjclick rpDetail"
 						data-tj="{&quot;cspot&quot;:&quot;roomimage&quot;}">
-						<img src="//pavo.elongstatic.com/i/mobile750_448/nw_000cRACL.jpg">
+						<img src="<?php echo img($dengji,$dianma); ?> ">
 					</div>
 					<div class="picroom-info">
 						<div class="room">{$vo['名称']}</div>
@@ -37,12 +37,17 @@
 			</div>
 		</li> {/volist}
 	</ul>
+	{if condition="sizeof($kefangs) eq 0"}
+             房间已被订购完毕,没有可选的房间
+	{/if}
+	{if condition="sizeof($kefangs) gt 0"}
 	<div id="mobilesubmit"
 		style="display: block; position: fixed; bottom: 30px; width: 100%;">
 		<span style="display: block; margin: 5px auto; width: 100px;">
 			<a href="javascript:order();" style="margin: 1px 0 0 0;text-decoration: none; border-radius: 3px;font-weight: bold;height: 32px; line-height: 33px; padding: 2px 0 0 0; background-color: #f55; color: #fff; width: 90px; font-size: 14px;">在线订购 </a>
 		</span> <span class="preloader preloader-white button-loader"> </span>
 	</div>
+	{/if}
 </body>
 <script language="javascript">
  var order=function(){

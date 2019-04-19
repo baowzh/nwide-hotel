@@ -153,15 +153,22 @@ class Djbz extends Model {
 		$where ["等级"] = $dengji;
 		$dbConfig = $this->getkefangDBConfig ( $dianma );
 		$info = Db::connect ( $dbConfig )->name ( 'tb_djbz' )->where ( $where )->find ();
-		$extName = $info ['图片格式'] == null ? '.jpeg' : $info ['图片格式'];
-		// 已经存在视频的话不写文件
-		$filePath = ROOT_PATH . '/uploads/' . $info ['等级'] . '.' . $extName;
+		$extName = $info ['图片格式'] == null ? 'jpeg' : $info ['图片格式'];
+		$extName='jpeg';
+		// 已经存在则不写文件
+		//$filePath = ROOT_PATH . '/uploads/' . $info ['等级'] . ".jpeg" ;// . $extName;
+		$dir=ROOT_PATH . 'uploads\\'.$dianma;
+		if (!file_exists($dir)){
+			mkdir ($dir,0777,true);
+		}
+		$filePath=$dir."\\".$info ['等级'] . ".".$extName;
 		if (! file_exists ( $filePath )) {
-			$file = fopen ( ROOT_PATH . '/uploads/' . $info ['等级'] . '.' . $extName, 'w' );
+			$file = fopen ( $filePath, 'w' );
 			$txt = $info ['图片'];
+			Log::record ( $txt );
 			fwrite ( $file, $txt );
 		}
-		return '/uploads/' . $info ['等级'] . '.' . $extName;
+		return '/uploads/'.$dianma."/" . $info ['等级'] . '.' . $extName;
 	}
 	/**
 	 * 订购房间并生成微信支付订单信息
