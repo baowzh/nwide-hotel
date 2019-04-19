@@ -1,11 +1,7 @@
 <?php
 use think\Db;
 function img($dengji, $dianma){
-	$where = array ();
-	$where ["等级"] = $dengji;
-	$dbConfig = getkefangDBConfig ( $dianma );
-	$info = Db::connect ( $dbConfig )->name ( 'tb_djbz' )->where ( $where )->find ();
-	$extName = $info ['图片格式'] == null ? 'jpeg' : $info ['图片格式'];
+	
 	$extName='jpeg';
 	// 已经存在则不写文件
 	//$filePath = ROOT_PATH . '/uploads/' . $info ['等级'] . ".jpeg" ;// . $extName;
@@ -13,8 +9,15 @@ function img($dengji, $dianma){
 	if (!file_exists($dir)){
 		mkdir ($dir,0777,true);
 	}
-	$filePath=$dir."\\".$info ['等级'] . ".".$extName;
+	$filePath=$dir."\\".$dengji . ".".$extName;
 	if (! file_exists ( $filePath )) {
+		//
+		$where = array ();
+		$where ["等级"] = $dengji;
+		$dbConfig = getkefangDBConfig ( $dianma );
+		$info = Db::connect ( $dbConfig )->name ( 'tb_djbz' )->where ( $where )->find ();
+		$extName = $info ['图片格式'] == null ? 'jpeg' : $info ['图片格式'];
+		//
 		$txt = $info ['图片'];
 		if($txt!=null){
 			$file = fopen ( $filePath, 'w' );
@@ -23,7 +26,7 @@ function img($dengji, $dianma){
 			return '//pavo.elongstatic.com/i/mobile750_448/nw_000cRACL.jpg';
 		}
 	}
-	return '/uploads/'.$dianma."/" . $info ['等级'] . '.' . $extName;
+	return '/uploads/'.$dianma."/" . $dengji . '.' . $extName;
 	
 }
 
