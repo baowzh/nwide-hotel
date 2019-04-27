@@ -912,7 +912,8 @@ input[type="button"] {
   padding-top: 44px; }
 
 .bar-tab ~ .page-content {
-  padding-bottom: 50px; }
+  padding-bottom: 50px; 
+  }
 
 .bar-header-secondary ~ .page-content {
   padding-top: 88px; }
@@ -5673,7 +5674,7 @@ form {
 
 /* 2019-02 嘉良提的填写页UI改版需求(带AB测试)。以下是新版样式(命中B后会覆盖上面样式) */
 .ab1181 .createorder-header {
-  height: 39px;
+  height: 49px;
   width: 100%;
   position: relative !important;
   box-shadow: none;

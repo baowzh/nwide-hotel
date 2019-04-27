@@ -1,23 +1,135 @@
 {include file="public/head" /}
 <link href="__CSS__/main.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="__JS__/jquery-1.7.2.min.js"></script>
-<style type="text/css">
-.page-fade ul {padding: 0px;
-    margin: 0px;
-    list-style-type: none;
-    display: grid;
-    width: 100%;
-    }
-    
- .page-fade ul li{
- padding: 0px;
-    margin: 0px;
-    display: block;
-    width: 100%;
- }   
-.page-fade ul li label {float:left;}
-.page-fade ul li div {float:left; }
-</style>
+<div class="pages page-fade" data-events="click">
+	<div class="page ab1181 page-on-center" data-blend="layer">
+		<div class="page-content  order-fill-top" style="padding-top: 10px;">
+			<!-- 				<form action="orderInfo" method="post" id="orderForm"> -->
+			<article class="order-content">
+				<section class="order-fill">
+
+					<div class="contact-person">
+						<ul>
+							<li>
+								<div class="label">订单号:</div>
+								<div class="content list-input">{$vo['dingdanhao']}</div>
+							</li>
+						</ul>
+						<div class="add-person-button" data-events="click">
+							<div class="person-choose"></div>
+						</div>
+					</div>
+
+					<div class="contact-person">
+						<ul>
+							<li>
+								<div class="label">酒店名称:</div>
+								<div class="content list-input">{$vo['dianming']}</div>
+							</li>
+						</ul>
+						<div class="add-person-button" data-events="click">
+							<div class="person-choose"></div>
+						</div>
+					</div>
+					
+					<div class="contact-person">
+						<ul>
+							<li>
+								<div class="label">姓名:</div>
+								<div class="content list-input">{$vo['xingming']}</div>
+							</li>
+						</ul>
+						<div class="add-person-button" data-events="click">
+							<div class="person-choose"></div>
+						</div>
+					</div>
+					
+					
+					
+					<div class="contact-person">
+						<ul>
+							<li>
+								<div class="label">身份证号:</div>
+								<div class="content list-input">{$vo['shenfenzhenghao']}</div>
+							</li>
+						</ul>
+						<div class="add-person-button" data-events="click">
+							<div class="person-choose"></div>
+						</div>
+					</div>
+					
+					
+					<div class="contact-person">
+						<ul>
+							<li>
+								<div class="label">房间类型:</div>
+								<div class="content list-input">{$vo['dengjiming']}</div>
+							</li>
+						</ul>
+						<div class="add-person-button" data-events="click">
+							<div class="person-choose"></div>
+						</div>
+					</div>
+					
+					
+					<div class="contact-person">
+						<ul>
+							<li>
+								<div class="label">预定时间:</div>
+								<div class="content list-input">{$vo['yudingshijian']}</div>
+							</li>
+						</ul>
+						<div class="add-person-button" data-events="click">
+							<div class="person-choose"></div>
+						</div>
+					</div>
+					
+					<div class="contact-person">
+						<ul>
+							<li>
+								<div class="label">预定房间:</div>
+								<div class="content list-input">{$vo['yudinghao']}</div>
+							</li>
+						</ul>
+						<div class="add-person-button" data-events="click">
+							<div class="person-choose"></div>
+						</div>
+					</div>
+					
+					
+					<div class="contact-person">
+						<ul>
+							<li>
+								<div class="label">预住天数:</div>
+								<div class="content list-input">{$vo['yuzhutianshu']}</div>
+							</li>
+						</ul>
+						<div class="add-person-button" data-events="click">
+							<div class="person-choose"></div>
+						</div>
+					</div>
+					
+					<div class="contact-person">
+						<ul>
+							<li>
+								<div class="label">预定金额:</div>
+								<div class="content list-input">{$vo['yudingjine']}</div>
+							</li>
+						</ul>
+						<div class="add-person-button" data-events="click">
+							<div class="person-choose"></div>
+						</div>
+					</div>
+
+
+
+
+				</section>
+			</article>
+			<!-- 				</form> -->
+		</div>
+	</div>
+</div>
+<!-- 
 <body>
 	<div class="pages page-fade">
 		<ul>
@@ -45,8 +157,6 @@
 
 	</div>
 
-</body>
+</body> -->
 
-
-{include file="public/footer" /}
 </html>

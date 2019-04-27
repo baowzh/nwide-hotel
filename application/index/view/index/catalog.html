@@ -1,18 +1,16 @@
-{include file="public/head" /}
+{include file="public/head_old" /}
 <link href="__CSS__/style.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="__JS__/jquery-1.7.2.min.js"></script>
+<!-- <script type="text/javascript" src="__JS__/jquery-1.7.2.min.js"></script> -->
 <body class="hotel">
 	<ul>
-	 {volist name="kefangs" id="vo" key="k"}
+		{volist name="kefangs" id="vo" key="k"}
 		<li class="rooms">
 			<div class="wrap">
-				<div class="left   tjclick"
-					data-tj="{&quot;cspot&quot;:&quot;roomdetail&quot;}">
-					<div class="pic tjclick rpDetail"
-						data-tj="{&quot;cspot&quot;:&quot;roomimage&quot;}">
-<!-- 						<img src="//pavo.elongstatic.com/i/mobile750_448/nw_000cRACL.jpg"> -->
-					<img src="<?php echo img($vo['dengji'],$dianma); ?> "> 
-					
+				<div class="left   tjclick">
+					<div class="pic tjclick rpDetail">
+
+						<img src="<?php echo img($vo['dengji'],$dianma); ?> "/>
+
 					</div>
 					<div class="picroom-info">
 						<div class="room">{$vo['mingcheng']}</div>
@@ -24,23 +22,27 @@
 				</div>
 				<div class="right">
 					<div class="price">
-						<span>¥</span><span class="num">{$vo['baofangjia']}</span>
-						 
+						<span>¥</span><span class="num">{$vo['wangdingjia']}</span>/ <span
+							style="color: #f55; font-size: 0.6rem; margin-right: 0px;">VIP</span>
+						<span>¥</span><span class="num">{$vo['wangdingjia']}</span>
+
 					</div>
 					<div class="order">
-
+						<div class="number">可选{$vo['count']}</div>
 						<div class="btn2 btn2_center"
-							>
-							<a href="listByCatelog?dengji={$vo['dengji']}&dianma={$dianma}">订</a>
-<!-- 							<p class="btn2_yf">在线付</p> -->
+							style="width: 90%; float: right; margin: 10px 0px;">
+							<a href="#">视频</a>	
+							{if condition="$vo['count'] gt 0"}
+							 <a href="listByCatelog?dengji={$vo['dengji']}&dianma={$dianma}">选房</a>							 
+							{/if}							
+											
+							
 						</div>
 					</div>
 				</div>
 			</div>
-		</li>
-		{/volist}
+		</li> {/volist}
 	</ul>
 
 </body>
-{include file="public/footer" /}
 </html>

@@ -255,7 +255,7 @@ return [
 		
 		'kefang_db'=>[
 				
-				'type' => 'mysql',
+				'type' => 'sqlsrv',
 				'dsn' => '',
 				'hostname' => '127.0.0.1',
 				

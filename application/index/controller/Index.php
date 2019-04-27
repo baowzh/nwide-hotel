@@ -14,12 +14,14 @@ Loader::import ( 'wxpay.example.WxPay', EXTEND_PATH, '.JsApiPay.php' );
 Loader::import ( 'wxpay.example.log', EXTEND_PATH, '.php' );
 Loader::import ( 'wxpay.lib.WxPay', EXTEND_PATH, '.Config.php' );
 class Index extends Controller {
+	
 	/**
 	 * 进入酒店列表页面
 	 *
 	 * @return \think\mixed
 	 */
 	public function index() {
+		
 		$profile = config ( 'profile' );
 		if ($profile == 'prod') {
 			$jsApiPay = new \JsApiPay ();
@@ -32,6 +34,7 @@ class Index extends Controller {
 			$djbz = new \app\index\model\Djbz ();
 			$hotels = $djbz->index ();
 			$this->assign ( 'hotels', $hotels );
+			
 			return $this->fetch ();
 		} else {
 			$djbz = new \app\index\model\Djbz ();
@@ -39,6 +42,15 @@ class Index extends Controller {
 			$this->assign ( 'hotels', $hotels );
 			return $this->fetch ();
 		}
+	}
+	
+	public function jdjs($dianma){
+		$this->assign ( 'dianma', $dianma );
+		$djbz = new \app\index\model\Djbz ();
+		$jdjs=$djbz->jdjs($dianma);
+		$this->assign ( 'jdjs', $jdjs['jdjs'] );
+		$this->assign ( 'shopInfo', $jdjs['shopInfo'] );
+		return $this->fetch ('jdjs');
 	}
 	
 	/**
@@ -81,7 +93,30 @@ class Index extends Controller {
 		$this->assign ( 'dianma', $dianma );
 		$this->assign ( 'rooms', $rooms );
 		$this->assign ( 'deposit', $deposit );
+		$this->assign ( 'kefangInfo', $kefangInfo );
+		$date=date('m-d');
+		$this->assign('date',$this->convertDateFm($date));
+		$afterDay= date("m-d",strtotime("+1 day"));
+		$this->assign('afterDate',$this->convertDateFm($afterDay));
+		$weekarray=array("日","一","二","三","四","五","六");
+		$this->assign('dayOfWeek',$weekarray[date("w")]);
 		return $this->fetch ( 'order' );
+	}
+	
+	private function convertDateFm($date){
+		$month=substr($date,0,2);
+		$day=substr($date,2);
+		Log::record ($day);
+		Log::record ($month);
+		if(strpos($month,'0')== 0){
+			$month=substr($month,1);
+		}
+		$month=$month.'月';
+		if(strpos($day,'0')== 0){
+			$day=substr($day,1);
+		}
+		$day=$day.'日';
+		return $month.$day;
 	}
 	/**
 	 * 把客房相关的视频文件读出来并写入本地磁盘，同时返回相对路径用于播放视频
@@ -165,8 +200,9 @@ class Index extends Controller {
 		$input->SetTrade_type ( "JSAPI" ); // 支付类型
 		$input->SetOpenid ( $openId ); // 用户openid
 		$wxConfig = new \WxPayConfig ();
-		Log::record ( ' order inof is： ' . $input->GetBody () . $input->GetTotal_fee () . 'app id is :' . $wxConfig->GetAppId () );
+		Log::record ( ' order inof is： ' . $input->GetBody () . $input->GetTotal_fee () . '   app id is :' . $wxConfig->GetAppId () );
 		$order = \WxPayApi::unifiedOrder ( $wxConfig, $input ); // 统一下单，该方法中包含了签名算法
+		Log::record ($order  );
 		$tools = new \JsApiPay ();
 		$jsApiParameters = $tools->GetJsApiParameters ( $order ); // 统一下单参数
 		return $jsApiParameters;
@@ -216,10 +252,13 @@ class Index extends Controller {
 	public function calculateDeposit($dengji, $rooms, $tianshu, $shenfenzhenghao, $dianma) {
 		$djbz = new \app\index\model\Djbz ();
 		$deposit = $djbz->calculateDeposit ( $dengji, $rooms, $tianshu, $shenfenzhenghao, $dianma );
+		$afterDay= date("m-d",strtotime("+".$tianshu.' day'));
+		$endDate=$this->convertDateFm($afterDay);
 		header ( 'Content-Type:application/json; charset=utf-8' );
 		return json ( [ 
 				"success" => true,
-				'Deposit' => $deposit 
+				'Deposit' => $deposit ,
+				'endDate'=>$endDate 
 		] );
 	}
 	/**
@@ -267,12 +306,17 @@ class Index extends Controller {
 			$shenfenzhenghao=$this->request->param("shenfenzhenghao");
 			$phone=$this->request->param("phone");
 			$validcode=$this->request->param("validcode");
-			if($shenfenzhenghao!=null&&$phone!=null&&$validcode!=null){
+			if(!empty($shenfenzhenghao)&&!empty($phone)&&!empty($validcode)){
 				$djbz = new \app\index\model\Djbz ();
 				$order=$djbz->queryOrders($shenfenzhenghao, $phone, $validcode);
-				$this->assign('vo',$order);
+				if(!$order['success']){
+					$this->error('没有符合条件的数据');
+					
+				}
+				$this->assign('vo',$order['orderInfo']);
 				return $this->fetch('orderDetail');
 			}else{
+				
 				return $this->fetch ( 'queryOrder' );
 			}
 		}else{
@@ -281,17 +325,22 @@ class Index extends Controller {
 			$validcode=$this->request->param("validcode");
 			if($shenfenzhenghao==null){
 				 $this->error('请填写身份证号');
+				
 			}
 			if($phone==null){
 				 $this->error('请填写手机号');
+				
 			}
 			if($validcode==null){
 				$this->error('到场验证码');
+				
 			}
 			$djbz = new \app\index\model\Djbz ();
 			$order=$djbz->queryOrders($shenfenzhenghao, $phone, $validcode);
-			$this->assign('vo',$order);
-			
+			if(!$order['success']){
+				$this->error('没有符合条件的数据');
+			}
+			$this->assign('vo',$order['orderInfo']);
 			return $this->fetch('orderDetail');
 			
 		}

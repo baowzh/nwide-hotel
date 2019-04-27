@@ -29,7 +29,7 @@
 	-webkit-box-flex: 1;
 	flex: 1;
 	float: left;
-	width: 70%;
+	width: 60%;
 	box-sizing: border-box;
 }
 
@@ -37,7 +37,7 @@
 	float: left;
 	width: 92px;
 	height: 90px;
-/* 	background-image: url(source/no_pic.png); */
+	/* 	background-image: url(source/no_pic.png); */
 	background-repeat: no-repeat;
 	position: relative;
 	z-index: 1000;
@@ -52,12 +52,11 @@
 }
 
 .hotel ul li .wrap .left .picroom-info {
-	
 	margin-left: 83px;
 	position: relative;
 	z-index: 1000;
 	padding-top: 3px;
-	padding-left:20px;
+	padding-left: 20px;
 	box-sizing: border-box;
 	-webkit-tap-highlight-color: transparent;
 }
@@ -79,71 +78,80 @@
 .hotel ul li .wrap .right {
 	display: block;
 	margin-right: 3px;
-	width:30%;
-	height:100%;
-	float:left;
+	width: 40%;
+	height: 100%;
+	float: left;
 }
 
-.hotel .wrap .right .price{
+.hotel .wrap .right .price {
 	line-height: 1rem;
-    font-size: .75rem;
-    color: #999;
-    white-space: nowrap;
-    height:20px;
-    text-align: right;
-    padding-right:10px;
+	font-size: 0.75rem;
+	color: #999;
+	white-space: nowrap;
+	height: 20px;
+	text-align: right;
+	padding-right: 10px;
 }
 
-.hotel .wrap .right .order{
+.hotel .wrap .right .order {
 	line-height: 1rem;
-    font-size: .75rem;
-    color: #999;
-    white-space: nowrap;
-    height:60px;
+	font-size: .75rem;
+	color: #999;
+	white-space: nowrap;
+	height: 60px;
+	float: right;
 }
 
-.hotel .wrap .right .order .btn2{
-	width: 40px;
-    height: 40px;
-    line-height: 40px;
-    border-radius: 3px;
-    float: right;
-    right: 0;
-    margin-right: 12px;
-    font-size: .75rem;
-    color: #999;
-    white-space: nowrap;
-	
+.hotel .wrap .right .order .number{
+	float: right;
+	margin-right:10px;
 }
 
-.hotel .wrap .right .order .btn2 a{
+.hotel .wrap .right .order .btn2 {
+	/* 	width: 40px; */
+	/*     height: 40px; */
+	/*     line-height: 40px; */
+	float: right;
+	right: 0;
+	margin-right: 12px;
+	font-size: .75rem;
+	color: #999;
+	white-space: nowrap;
+}
+
+.hotel .wrap .right .order .btn2 a {
 	display: block;
-    line-height: 23px;
-    color: #FFF;
-     background: #f55;
-     border-radius: 3px;
-     text-align: center;
-     text-decoration: none;
+	line-height: 23px;
+	color: #FFF;
+	background: #f55;
+	border-radius: 3px;
+	text-align: center;
+	text-decoration: none;
+	border-radius: 3px;
+	width: 40px;
+	/* 	height: 40px; */
+	float: right;
+	margin-right: 2px;
 }
 
-.hotel .wrap .right .order .btn2 .btn2_yf{
+.hotel .wrap .right .order .btn2 .btn2_yf {
 	color: #4499ff;
-    background: #e7f2ff;
-    line-height: 19px;
-    font-size: .7rem;
-    border-bottom-left-radius: 3px;
-    border-bottom-right-radius: 3px;
+	background: #e7f2ff;
+	line-height: 19px;
+	font-size: .7rem;
+	border-bottom-left-radius: 3px;
+	border-bottom-right-radius: 3px;
 }
 
-.hotel .wrap .right .price span{
+.hotel .wrap .right .price span {
 	color: #f55;
-    font-size: 0.75rem;
-    margin-right: 3px;
+	font-size: 0.75rem;
+	margin-right: 3px;
 }
 
-.hotel .wrap .right .price span .num{
+.hotel .wrap .right .price span .num {
 	font-size: 1.125rem;
-    margin-right: 1px;
+	margin-right: 1px;
 }
 
 .hotel ul li .wrap .de-btn {
@@ -160,19 +168,17 @@
 	-webkit-tap-highlight-color: transparent;
 }
 
-
-
 .hotel ul li .wrap .de-btn i:after {
-    border-color: #888;
-    content: "";
-    width: 5px;
-    height: 5px;
-    position: absolute;
-    top: 3px;
-    left: 4px;
-    border: 1px solid #888;
-    border-width: 1px 0px 0px 1px;
-    -webkit-transform: rotate(-135deg);
-    -ms-transform: rotate(-135deg);
-    transform: rotate(-135deg);
+	border-color: #888;
+	content: "";
+	width: 5px;
+	height: 5px;
+	position: absolute;
+	top: 3px;
+	left: 4px;
+	border: 1px solid #888;
+	border-width: 1px 0px 0px 1px;
+	-webkit-transform: rotate(-135deg);
+	-ms-transform: rotate(-135deg);
+	transform: rotate(-135deg);
 }

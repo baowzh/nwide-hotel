@@ -1,75 +1,158 @@
-{include file="public/head" /}
-<link href="__CSS__/style.css" rel="stylesheet" type="text/css" />
+{include file="public/list_head" /}
 <script type="text/javascript" src="__JS__/jquery-1.7.2.min.js"></script>
-<body class="hotel">
-	<ul>
-		{volist name="kefangs" id="vo1" key="k"}
-		<li class="rooms">
-			<div class="wrap">
-				<div class="left   tjclick"
-					data-tj="{&quot;cspot&quot;:&quot;roomdetail&quot;}">
-					<div class="pic tjclick rpDetail"
-						data-tj="{&quot;cspot&quot;:&quot;roomimage&quot;}">
-						<img src="<?php echo img($dengji,$dianma); ?> ">
-					</div>
-					<div class="picroom-info">
-						<div class="room">{$vo['名称']}</div>
-						<div class="room-info">
-							<span>楼号：{$vo1['楼号']}</span> <span>房号：{$vo1['房号']}</span> 
-						</div>
-						<div class="icon icon-hs"></div>
-					</div>
-				</div>
-				<div class="right">
-					<div class="price">
-						<span>价格：¥</span><span class="num">{$vo['包房价']}</span>
+<script type="text/javascript" src="__JS__/common.js"></script>
+<body>
+<div class="wrap">
+    <div class="box">
+        <div class="header">
+         
+                <ul>
+                    <a class="fjyl01">
+                    
+                    <img src="<?php echo img($dengji,$dianma); ?>" width="150px"/>
+                    
+                    </a>
+                    <li>
+                        <p><b>{$vo['名称']}</b><i>¥{$vo['网订价']}/<em>vip {$vo['网会价']} </em></i></p>
+                        <p>25平米 有窗 多床</p>
+                    </li>
+                </ul>
 
-					</div>
-					<div class="order">
+        </div>
+        <div class="tittle">
+            <div class="t_1">
+                <span class="sp1"></span>
+                <p>可选</p>
+            </div>
+            <div class="t_2">
+                <span class="sp2"></span>
+                <p>已选</p>
+            </div>
+            <div class="t_3">
+                <span class="sp3"></span>
+                <p>已售</p>
+            </div>
+        </div>
+        <div class="content">
+           {volist name="kefangs" id="row" key="k"}
+            <div class="one" pai="1">
+                <ul>
+                 {volist name="row" id="vo1" key="L"}
+                    <li  louhao="{$vo1['楼号']}" fanghao="{$vo1['房号']}"  {if condition="$vo1['房态'] eq 'A' and $vo1['净'] eq '' "}  typ="0" {else/} typ="2" {/if}	  onClick="check(this)">
+                    {$vo1['房号']}
+                    </li>
+                 {/volist} 
+                </ul>
+            </div>
+          {/volist}
+            
+        </div>
+        <div class="zw">
+            <p>已选房间<span></span></p>
+<!--             最多可以选择5个房间</span></p> -->
+            <div class="yxz"></div>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="f_left">
+            <div class="t_left">合计：<span class="rmb">¥<span>0</span></span>
+            </div>
+            <div class="t_right">¥<span class="danjia"></span>*<span class="num">0</span></div>
+        </div>
+        <div class="f_right"><a href="javascript:order();">确认订购<a></div>
+    </div>
+</div>
+<script type="text/javascript">
+    //判断页面加载完成
+    window.onload = function () {
+        if (document.readyState == "complete") {
+            $("body").show();
+        }
+    };
+    var arr = []; //已选座位数组
+    var roomArr = []; //已选座位数组
+    var dj = {$vo['网订价']}; //电影票单价 number
+    $(".danjia").text(dj);
 
-						<div class="btn2 btn2_center">
-							<input type="checkbox" name="vehicle"  value="{$vo1['房号']}" />选择
-							<!-- 							<a href="toOrder?dengji={$dengji}&dianma={$dianma}">选额</a> -->
-							<!-- 							<p class="btn2_yf">在线付</p> -->
-						</div>
-					</div>
-				</div>
-			</div>
-		</li> {/volist}
-	</ul>
-	{if condition="sizeof($kefangs) eq 0"}
-             房间已被订购完毕,没有可选的房间
-	{/if}
-	{if condition="sizeof($kefangs) gt 0"}
-	<div id="mobilesubmit"
-		style="display: block; position: fixed; bottom: 30px; width: 100%;">
-		<span style="display: block; margin: 5px auto; width: 100px;">
-			<a href="javascript:order();" style="margin: 1px 0 0 0;text-decoration: none; border-radius: 3px;font-weight: bold;height: 32px; line-height: 33px; padding: 2px 0 0 0; background-color: #f55; color: #fff; width: 90px; font-size: 14px;">在线订购 </a>
-		</span> <span class="preloader preloader-white button-loader"> </span>
-	</div>
-	{/if}
-</body>
-<script language="javascript">
- var order=function(){
-	var rooms='';
-	$("input:[name='vehicle']").each(	
-	function(){
-		if(this.checked){
-			rooms=rooms+$(this).val()+",";
-		}
-	}
-	);
-	if(rooms!=''){
-		rooms=rooms.substring(0,rooms.length-1);
-		window.location.href='toOrder?dengji={$dengji}&dianma={$dianma}&rooms='+rooms;
-	}else{
-		alert('请选择入住房间');
-	}
-	  
- }
-
-
-
+    $(".content li").each(function (index) {
+        var typ = $(".content li").eq(index).attr("typ");
+        if (typ == "2") {
+            $(".content li").eq(index).css("background", "#0099ff");
+        }
+    });
+    //已选座位添加
+    function add(msg) {
+        var html = '<div>' + msg + '</div>';
+        return html;
+    }
+    //选座点击事件
+    function check(dom) {
+        var txt = parseInt($(dom).attr('louhao')) + "楼" + $(dom).attr('fanghao') + "房";
+        var typ = $(dom).attr("typ");
+        if (typ == "0") {
+            //if (arr.length > 4) {
+               // alert("一人只能选择5个房间！");
+               // return false;
+           // } else {
+                $(dom).css("background", "#fe3f55");
+                $(dom).attr("typ", "1");
+                arr.push(txt);
+                roomArr.push($(dom).attr('fanghao'));
+                $(".yxz").append(add(txt));
+                $(".num").text(arr.length);//已选电影票数量
+                $(".rmb span").text(dj * arr.length);//已选电影票总价
+          //  }
+        } else if (typ == "2") {
+            alert("该房间已被订购！");
+            return false;
+        } else {
+            $(dom).css("background", "#169813");
+            $(dom).attr("typ", "0");
+            var index = arr.indexOf(txt);
+            arr.removeByValue(txt);//指定数组删除
+            roomArr.removeByValue($(dom).attr('fanghao'));//指定数组删除
+            
+            $(".yxz div").eq(index).remove();
+            $(".num").text(arr.length);//已选电影票数量
+            $(".rmb span").text(dj * arr.length);//已选电影票总价
+        }
+    }
+    //数组删除指定元素方法
+    Array.prototype.removeByValue = function (val) {
+        for (var i = 0; i < this.length; i++) {
+            if (this[i] == val) {
+                this.splice(i, 1);
+                break;
+            }
+        }
+    }
+    
+   
+    
+    
+    var order=function(){
+    	var rooms='';
+    	/*
+    	$("input:[name='vehicle']").each(	
+    	function(){
+    		if(this.checked){
+    			rooms=rooms+$(this).val()+",";
+    		}
+    	}
+    	);
+    	*/
+    	for(var i=0;i<roomArr.length;i++){
+    		rooms=rooms+roomArr[i]+",";
+    	}
+    	
+    	if(rooms!=''){
+    		rooms=rooms.substring(0,rooms.length-1);
+    		window.location.href='toOrder?dengji={$dengji}&dianma={$dianma}&rooms='+rooms;
+    	}else{
+    		alert('请选择入住房间');
+    	}
+    	  
+     }
 </script>
-{include file="public/footer" /}
+</body>
 </html>

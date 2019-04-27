@@ -205,7 +205,7 @@ return [
     '__ROOT__' => '/',
 	'__CSS__'=>INSTALL_PATH.'public/index/css',
 	'__JS__'=>INSTALL_PATH.'public/index/js',
-	'__IMG__'=>INSTALL_PATH.'public/index/v2/img',
+	'__IMG__'=>INSTALL_PATH.'public/index/images',
 	'__v2__'=>INSTALL_PATH.'public/index/v2'
 	],
     // 默认跳转页面对应的模板文件

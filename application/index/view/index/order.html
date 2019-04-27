@@ -5,15 +5,10 @@
 	<div class="pages page-fade" data-events="click">
 		<div class="page ab1181 page-on-center" data-blend="layer"
 			data-blend-id="h5_createorder"
-			data-url="/hotel/createorder/?hotelid=00701178&amp;uniqueid=00701178%3A0074%3A22390043%3Anull%3A1&amp;roomid=0074&amp;rateplanid=22390043&amp;promotionid=_&amp;ismj=0&amp;policyid=&amp;checkindate=2019-03-31&amp;checkoutdate=2019-04-01&amp;roomtype=0&amp;mroomid=0010&amp;drvtype=0"
+			
 			id="uniq22" data-title="订单填写" data-title-id="h5_createorder"
 			data-events="click">
-			<header class="bar bar-nav createorder-header">
-				<!--  
-				<a
-					class="icon icon-phone pull-right" href="tel:400-666-1166">
-					</a> 
-					-->
+			<header class="bar bar-nav createorder-header">			
 				<h1 class="title">{$shop['店名']}</h1>
 			</header>
 			<nav class="bar bar-tab create-order-bar">
@@ -33,9 +28,8 @@
 				</div>
 			</nav>
 			<nav class="bar record" id="record-text" style="display: none;">
-			48小时内有38人预订该酒店
 			</nav>
-			<!--新AB时隐藏老版本登录条-->
+			
 			<div class="page-content  order-fill-top">
 				<div class="header-decorate"></div>
 				<section class="order-info">
@@ -49,11 +43,11 @@
 							<p class="addr">地址：{$shop['地址']} </p>
 						</div>
 						<div class="bwrap date">
-							<p>入住日期：2019年3月31日(周日)</p>
+							<p>入住日期：{$date}({$dayOfWeek})</p>
 							<p>退房日期：2019年4月1日(周一)</p>
 						</div>
 						<dl class="type">
-							<dt>房间类型：商务房B</dt>
+							<dt>房间类型：{$kefangInfo['名称']}</dt>
 							<dd>
 								<i class="icon-net"></i>互联网
 							</dd>
@@ -62,8 +56,8 @@
  
 					</div>
 					<div class="p-info   p-info-top  ">
-						<p class="type">商务房B</p>
-						<p class="date">3月31日 - 4月1日 共1晚</p>
+						<p class="type">{$kefangInfo['名称']}</p>
+						<p class="date">{$date} - <span id="endDate">{$afterDate}</span> 共<span id="dayCount">1</span>晚</p>
 						<div class="sale_info">
 							<div class="immediatelyConfirm-enough">
 								<span>及时确认</span>订单提交后，酒店将第一时间确认您的订单
@@ -75,31 +69,7 @@
 				<form action="order?dengji={$vo['等级']}" method="post" id="orderForm">
 					<article class="order-content">
 						<section class="order-fill">
-							<!-- 房间数 -->
-							<!--  
-							<div class="room-number">
-
-								<div class="label">房间数</div>
-								<div class="content list-input">
-
-									<select id="roomcount" name="roomcount">
-										<option value="1" selected="selected">1</option>
-										<option value="2">2</option>
-										<option value="3">3</option>
-										<option value="4">4</option>
-										<option value="5">5</option>
-										<option value="6">6</option>
-										<option value="7">7</option>
-										<option value="8">8</option>
-										<option value="9">9</option>
-										<option value="10">10</option>
-									</select>
-
-								</div>
-
-							</div>
-							-->
-
+							
 							<!-- 预住天数 -->
 							<div class="room-number">
 
@@ -113,10 +83,16 @@
 										<option value="4">4</option>
 										<option value="5">5</option>
 										<option value="6">6</option>
-										<option value="6">7</option>
-										<option value="6">8</option>
-										<option value="6">9</option>
-										<option value="6">10</option>
+										<option value="7">7</option>
+										<option value="8">8</option>
+										<option value="9">9</option>
+										<option value="10">10</option>
+										<option value="11">11</option>
+										<option value="12">12</option>
+										<option value="13">13</option>
+										<option value="14">14</option>
+										<option value="15">15</option>
+										<option value="16">16</option>
 									</select>
 
 								</div>
@@ -138,36 +114,42 @@
 									<div class="person-choose"></div>
 								</div>
 							</div>
-
-							<!-- 身份证号-->
-							<div class="order-contact">
-								<div class="tel-text">
-									<span class="tel-person">身份证号</span> <label for="area-code"></label>
-									<div class="area-address">
-										<input type="text" maxlength="25"
-											class="area-number createorder" name="shenfenzhenghao"
-											placeholder="用于验证是否会员" id="shenfenzhenghao" value="">
-										<div class="tel-choose" style="color: rgb(220, 220, 220);">
-											<span class="icon-choose"></span>
-										</div>
-									</div>
+							
+							
+							<!-- 身份证号 -->
+							<div class="contact-person">
+								<ul>
+									<li>
+										<div class="label">身份证号</div>
+										<div class="content list-input">
+											<input type="text" class="createorder" name="shenfenzhenghao"
+												id="shenfenzhenghao" placeholder="用于验证是否会员" value="">
+										</div></li>
+								</ul>
+								<div class="add-person-button" data-events="click">
+									<div class="person-choose"></div>
 								</div>
 							</div>
-
+							
+							
 							<!-- 联系电话 -->
-							<div class="order-contact">
-								<div class="tel-text">
-									<span class="tel-person">联系电话</span> <label for="area-code"></label>
-									<div class="area-address">
-										<input type="tel" maxlength="25"
-											class="area-number createorder" name="dianhua"
-											placeholder="用于接收通知" id="dianhua" value="">
-										<div class="tel-choose" style="color: rgb(220, 220, 220);">
-											<span class="icon-choose"></span>
-										</div>
-									</div>
+							<div class="contact-person">
+								<ul>
+									<li>
+										<div class="label">联系电话</div>
+										<div class="content list-input">
+											<input type="text" class="createorder" name="dianhua"
+												id="dianhua" placeholder="用于接收通知" value="">
+										</div></li>
+								</ul>
+								<div class="add-person-button" data-events="click">
+									<div class="person-choose"></div>
 								</div>
 							</div>
+
+
+
+							
 
 							<div class="room-number">
 
@@ -183,35 +165,25 @@
 								</div>
 
 							</div>
-
+							
+							
 							<!-- 到场验证码-->
-							<div class="order-contact">
-								<div class="tel-text">
-									<span class="tel-person">到场验证码</span> <label for="area-code"></label>
-									<div class="area-address">
-										<input type="text" maxlength="25"
-											class="area-number createorder" name="validCode"
-											placeholder="用到场验证码" id="validCode" value="">
-										<div class="tel-choose" style="color: rgb(220, 220, 220);">
-											<span class="icon-choose"></span>
-										</div>
-									</div>
+							<div class="contact-person">
+								<ul>
+									<li>
+										<div class="label">到场验证码</div>
+										<div class="content list-input">
+											<input type="text" class="createorder" name="validCode"
+												id="validCode" placeholder="用到场验证码" value="">
+										</div></li>
+								</ul>
+								<div class="add-person-button" data-events="click">
+									<div class="person-choose"></div>
 								</div>
 							</div>
-							<!-- 到店时间 
-							<div class="time-reserve"
-								data-tj="{&quot;cspot&quot;:&quot;timereserve&quot;}">
-								<div class="time-reserve-body">
-									<label for="room-reservation"></label>
-									<div class="label">预计到店</div>
-									<div class="content list-input">
-										<input type="text" readonly="readonly" class="cert-type"
-											id="room-reservation" value="" data-events="click"
-											style="font-size: 14px;"> <span><i
-											class="icon-left"></i></span>
-									</div>
-								</div>
-							</div>-->
+
+							
+							
 							
 							<input type="hidden" name="rooms" id="rooms" value="{$rooms}" />
 							<input type="hidden" name="dengji" id="dengji" value="{$vo['等级']}" />
@@ -355,6 +327,8 @@
 			success : function(data) {
 				if(data.Deposit.success){
 					$('#wborderprice').text(data.Deposit.deposit);
+					$('#endDate').text(data.endDate);
+					$('#dayCount').text($('#tianshu').val());
 				}else{
 					alert(data.Deposit.mess);
 				}

@@ -11,11 +11,7 @@
 				<div id="hotel-list">
 					<ol class="list">                     
                         {volist name="hotels" id="vo" key="k"}
-						<li class="list-li h91633828 " data-lat="40.821834"
-							data-lon="111.720953" data-hotel-name="{$vo['店名']}"
-							data-id="91633828" data-deshotelid="91633828"
-							data-seationid="3362" data-cityid="264"
-							data-bigpic="//pavo.elongstatic.com/i/mobile960/nw_000boomS.jpg">
+						<li class="list-li h91633828">
 							<div class="clearfix single-wrapper">
 								<a
 									onclick="_tcTraObj._tcTrackEvent('search', '13', '/detail', '|*|pos:1|*|k:null|*|locPId:0|*|locCId:0|*|cityId:264|*|filter:|*|sort:0/0|*|pgPath:/hotel/list|*|resId:91633828|*|showPrice:439.0|*|resCH:elong|*|')"
@@ -36,12 +32,12 @@
 									<h3 class="fm-Yahei">
 										<p>
 											<a
-												onclick="_tcTraObj._tcTrackEvent('search', '13', '/detail', '|*|pos:1|*|k:null|*|locPId:0|*|locCId:0|*|cityId:264|*|filter:|*|sort:0/0|*|pgPath:/hotel/list|*|resId:91633828|*|showPrice:439.0|*|resCH:elong|*|')"
+												onclick="#"
 												title="{$vo['店名']}" href="catalog?dianma={$vo['店码']}"
 												target="_blank" class="clearfix"> 
 <!-- 												<i class="num">1</i>  -->
                                               <span
-												class="title"> {$vo['店名']}<span class="star_level">
+												class="title"> {$vo['店名']} <span class="star_level">
 
 <!-- 														<span class="level diamond d4" title="高档型（同行/同程网友评定为4钻）"><em><i></i></em></span> -->
 												</span>
@@ -61,59 +57,13 @@
 								</div>
 								
 								
-								<div class="sold-out">售罄</div>
+								<div class="sold-out">
+								 <div class="oper"><a href="catalog?dianma={$vo['店码']}">选房</a></div>
+								 <div class="oper"><a href="jdjs?dianma={$vo['店码']}">详情</a></div> 
+								</div>
 								<i></i>
 							</div>
-							<!--  
-							<div class="more-map-info">
-								<div id="h_map_wrap_91633828" class="mapwrapper">
-									<div class="h_map_wrap">
-										<div id="mapDiv_91633828" class="mapdiv"></div>
-										<div class="h_map">
-											<div class="router-paner">
-												<div class="r-search-box">
-													<span class="revert-icon"></span>
-													<div class="r-search-con">
-														<div class="r-input r-start">
-															<span class="clear-icon"></span> <input type="text"
-																maxlength="256" placeholder="输入起点"
-																　class="r-start-input" id="txt_start_91633828">
-														</div>
-														<div class="r-input r-end">
-															<span class="clear-icon"></span> <input type="text"
-																maxlength="256" placeholder="输入终点" 　class="r-end-input"
-																id="txt_end_91633828">
-														</div>
-														<div class="r-btn-box">
-															<button class="r-search-btn" data-hid="91633828">查
-																询</button>
-															<a href="javascript:void(0);" class="r-clear-btn">清除路线</a>
-														</div>
-													</div>
-												</div>
-											</div>
-											<div class="landmark"></div>
-											<div class="r-map-result none">
-												<ul class="r-ways-tab" data-hid="91633828">
-													<li class="active" data-type="bus">公交</li>
-													<li data-type="car">驾车</li>
-													<li data-type="foot" class="last">步行</li>
-												</ul>
-												<div class="r-result-con" id="r_91633828_result"></div>
-											</div>
-											<div class="h_map_lp"></div>
-											<div class="h_map_show">
-												<span class="checked"><i
-													class="silder-map-checked-icon"></i>显示周边酒店</span>
-											</div>
-										</div>
-									</div>
-									<div class="slide_up clearfix">
-										<span class="right on">收起 <i class="icon_sort_arrb2"></i></span>
-									</div>
-								</div>
-							</div>
-							-->
+							
 
 						</li>
 						{/volist}
