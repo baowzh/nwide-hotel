@@ -116,7 +116,7 @@ class Djbz extends Model {
 		$shopInfo = Db::name ( 'tb_shop' )->where ( $condition )->find ();
 		$dbConfig = $this->getkefangDBConfig ( $dianma );
 		// Log::record ( $dbConfig );
-		$list = Db::connect ( $dbConfig )->name ( 'tb_djbz' )->order ( '序号' )->select ();
+		$list = Db::connect ( $dbConfig )->name ( 'tb_DJWJ' )->order ( '序号' )->select ();
 		$convertedValues = array ();
 		foreach ( $list as $rowValue ) {
 			$row = array ();
@@ -199,7 +199,7 @@ class Djbz extends Model {
 		$where = array ();
 		$where ["等级"] = $dengji;
 		$dbConfig = $this->getkefangDBConfig ( $dianma );
-		$info = Db::connect ( $dbConfig )->name ( 'tb_djbz' )->where ( $where )->find ();
+		$info = Db::connect ( $dbConfig )->name ( 'tb_DJWJ' )->where ( $where )->find ();
 		// 已经存在视频的话不写文件
 		$extName = $info ['视频格式'] == null ? 'mp4' : $info ['视频格式'];
 		$filePath = ROOT_PATH . '/uploads/' . $info ['等级'] . '.' . $extName;
@@ -222,7 +222,7 @@ class Djbz extends Model {
 		$where = array ();
 		$where ["等级"] = $dengji;
 		$dbConfig = $this->getkefangDBConfig ( $dianma );
-		$info = Db::connect ( $dbConfig )->name ( 'tb_djbz' )->where ( $where )->find ();
+		$info = Db::connect ( $dbConfig )->name ( 'tb_DJWJ' )->where ( $where )->find ();
 		$extName = $info ['图片格式'] == null ? 'jpeg' : $info ['图片格式'];
 		$extName = 'jpeg';
 		// 已经存在则不写文件
@@ -248,7 +248,7 @@ class Djbz extends Model {
 		$kefangCondition = array ();
 		$dbConfig = $this->getkefangDBConfig ( $orderForm ['dianma'] );
 		$kefangCondition ["等级"] = $orderForm ['dengji'];
-		$kefangInfo = Db::connect ( $dbConfig )->name ( 'tb_djbz' )->where ( $kefangCondition )->find ();
+		$kefangInfo = Db::connect ( $dbConfig )->name ( 'tb_DJWJ' )->where ( $kefangCondition )->find ();
 		// 是否可以预定？
 		$dbType = config ( 'vip_db' )['type'];
 		if ($dbType == 'mysql') {
@@ -345,7 +345,7 @@ class Djbz extends Model {
 		$where = array ();
 		$where ["等级"] = $dengji;
 		$dbConfig = $this->getkefangDBConfig ( $dianma );
-		$info = Db::connect ( $dbConfig )->name ( 'tb_djbz' )->where ( $where )->find ();
+		$info = Db::connect ( $dbConfig )->name ( 'tb_DJWJ' )->where ( $where )->find ();
 		$condition = array ();
 		$condition ['店码'] = $dianma;
 		$shopInfo = Db::name ( 'tb_shop' )->where ( $condition )->find ();
@@ -429,7 +429,7 @@ class Djbz extends Model {
 		//
 		$kefangCondition = array ();
 		$kefangCondition ["等级"] = $orderInfo ['dengji'];
-		$roomTypeInfo = Db::connect ( $dbConfig )->name ( 'tb_djbz' )->where ( $kefangCondition )->find ();
+		$roomTypeInfo = Db::connect ( $dbConfig )->name ( 'tb_DJWJ' )->where ( $kefangCondition )->find ();
 		
 		foreach ( $yudinghaos as $rowValue ) {
 			// $kefangInfo = $kefngList [$index];
@@ -587,7 +587,7 @@ class Djbz extends Model {
 		$result ['mess'] = $kefngList;
 		$kefangCondition = array ();
 		$kefangCondition ["等级"] = $dengji;
-		$kefangInfo = Db::connect ( $dbConfig )->name ( 'tb_djbz' )->where ( $kefangCondition )->find ();
+		$kefangInfo = Db::connect ( $dbConfig )->name ( 'tb_DJWJ' )->where ( $kefangCondition )->find ();
 		if (sizeof ( $kefngList ) < $roomCount) {
 			$result ['success'] = false;
 			$result ['mess'] = '房间数不够，总共有' . sizeof ( $kefngList ) . '间可预定房间';
@@ -628,7 +628,7 @@ class Djbz extends Model {
 		$dbConfig = $this->getkefangDBConfig ( $orderInfo ['dianma'] );
 		$dengji = $orderInfo ['dengji'];
 		$kefangCondition ["等级"] = $dengji;
-		$roomTypeInfo = Db::connect ( $dbConfig )->name ( 'tb_djbz' )->where ( $kefangCondition )->find ();
+		$roomTypeInfo = Db::connect ( $dbConfig )->name ( 'tb_DJWJ' )->where ( $kefangCondition )->find ();
 		$orderInfo ['dengjiming'] = $roomTypeInfo ['名称'];
 		$reault['success']=true;
 		$reault['orderInfo']=$orderInfo;
@@ -641,14 +641,14 @@ class Djbz extends Model {
 		$dbConfig = $this->getkefangDBConfig ( $orderInfo ['dianma'] );
 		$dengji = $orderInfo ['dengji'];
 		$kefangCondition ["等级"] = $dengji;
-		$roomTypeInfo = Db::connect ( $dbConfig )->name ( 'tb_djbz' )->where ( $kefangCondition )->find ();
+		$roomTypeInfo = Db::connect ( $dbConfig )->name ( 'tb_DJWJ' )->where ( $kefangCondition )->find ();
 		$orderInfo ['dengjiming'] = $roomTypeInfo ['名称'];
 		return $orderInfo;
 	}
 	
 	public function jdjs($dianma){
 		$dbConfig = $this->getkefangDBConfig ($dianma);
-		$jdjs = Db::connect ( $dbConfig )->name ( 'tb_sd' )->find ();
+		$jdjs = Db::connect ( $dbConfig )->name ( 'tb_sp' )->find ();
 		Log::record ($jdjs);
 		$condition = array ();
 		$condition ['店码'] = $dianma;

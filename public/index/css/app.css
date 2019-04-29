@@ -1,0 +1,281 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    background: #f3f3f3;
+}
+
+body {
+    display: none;
+    font-family: Microsoft Yahei,Arial,sans-serif;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.wrap {
+    width: 100%;
+    position: relative;
+    min-width: 320px;
+    max-width: 750px;
+    margin: auto;
+}
+
+.header {
+    background: #fdfdfd;
+}
+
+.header p {
+    font-size: .3rem;
+    line-height: .54rem;
+    color: #333333;
+    margin-left: .15rem;
+}
+
+.tittle {
+    height: .94rem;
+    line-height: .94rem;
+    border-bottom: 1px solid #535558;
+}
+
+.tittle div {
+    float: left;
+    margin-left: .34rem;
+}
+
+.tittle div p {
+    float: left;
+    color: #2f2f2f;
+    font-size: .26rem;
+    margin-left: .1rem;
+}
+
+.sp1 {
+    display: block;
+    width: .44rem;
+    height: .33rem;
+    background: #169813;
+    float: left;
+    margin-top: .31rem;
+}
+
+.sp2 {
+    display: block;
+    width: .44rem;
+    height: .33rem;
+    background: #fe3f55;
+    float: left;
+    margin-top: .31rem;
+}
+
+.sp3 {
+    display: block;
+    width: .44rem;
+    height: .33rem;
+    background: #0099ff;
+    float: left;
+    margin-top: .31rem;
+}
+
+.pingmu {
+    width: 3.13rem;
+    height: .6rem;
+    display: block;
+    margin: auto;
+}
+
+.content {
+    overflow: auto;
+    margin-top: .4rem;
+    padding: 0 .28rem;
+    border-bottom: 1px solid #505254;
+    padding-bottom: .6rem;
+}
+.content ul{
+    overflow: auto;
+}
+
+.one {
+    overflow: auto;
+}
+
+.content li {
+    display: block;
+    float: left;
+    width: .68rem;
+    height: .43rem;
+    line-height: .43rem;
+    border: 1px solid #666;
+    margin-left: .1rem;
+    margin-top: .3rem;
+    background: #169813;
+    text-align: center;
+    color: #191919;
+    font-size: .26rem;
+
+
+}
+
+/* .content li:first-child {
+    margin-left: 0;
+} */
+
+/* .one li:nth-child(6) {
+    margin-left: 1.22rem;
+}
+
+.two li:nth-child(6) {
+    margin-left: 1.24rem;
+}
+
+.three li:nth-child(6) {
+    margin-left: 1.24rem;
+}
+
+.four li:nth-child(6) {
+    margin-left: 1.24rem;
+}
+
+.five li:nth-child(6) {
+    margin-left: 1.24rem;
+}
+
+.six li:nth-child(6) {
+    margin-left: 1.24rem;
+}
+
+.seven li:nth-child(6) {
+    margin-left: 1.24rem;
+}
+
+.eight li:nth-child(6) {
+    margin-left: 1.24rem;
+} */
+
+.zw {
+    color: #191919;
+    padding: .3rem .3rem 0 .3rem;
+    line-height: .88rem;
+    font-size: .24rem;
+    overflow: auto;
+    padding-bottom: .5rem;
+}
+
+.zw p span {
+    float: right;
+    color: #666666;
+}
+
+.yxz div {
+    width: 1.6rem;
+    height: .5rem;
+    font-size: .28rem;
+    line-height: .5rem;
+    text-align: center;
+    color: #f96267;
+    border: 1px solid #f96267;
+    border-radius: .03rem;
+    float: left;
+    margin-right: .15rem;
+    margin-top: .2rem;
+}
+
+.footer {
+    height: .8rem;
+    line-height: .8rem;
+    position: fixed;
+    bottom: 0;
+}
+
+.f_left {
+    width: 4.3rem;
+    height: .8rem;
+    float: left;
+    background: #fdfdfd;
+    line-height: .8rem;
+}
+
+.t_left {
+    float: left;
+    font-size: .28rem;
+    color: #b1b2b2;
+    padding-left: .3rem;
+}
+
+.t_right {
+    float: left;
+    margin-left: .2rem;
+    color: #959595;
+    font-size: .24rem;
+}
+
+.rmb {
+    line-height: .8rem;
+    display: inline-block;
+    font-size: .28rem;
+    color: #cc3300;
+}
+
+.f_right {
+    width: 3.2rem;
+    height: .8rem;
+    float: right;
+    background: #ee1c27;
+    font-size: .28rem;
+    text-align: center;
+    color: #fff;
+}
+
+.f_right  a{
+	
+color: #fff;	
+} 
+
+.box {
+    overflow: auto;
+    margin-bottom: 1rem;
+}
+
+.header{
+    padding: 3px 8px;
+}
+.header ul{
+    display: flex;
+    border-bottom: 1px #c1c1c1 solid;
+    padding: 5px;
+    font-size: 1em;
+    color: #808080;
+    line-height: 24px;
+
+
+}
+.header ul li{
+    padding:5px 8px;
+    flex:1 1 auto;
+  }
+.header ul .fjyl01{
+    flex-basis:150px;
+
+}
+
+.header b{
+    font-size: 1.5em;
+    color: #191919;
+}
+.header i{
+    color: #ee1c27;
+    font-style:normal;
+    font-size: 1.4em;
+    padding: 0 10px;
+}
+.header em{
+    font-style:normal;
+    font-size: 0.8em;
+    color: #f06c25;
+}
+

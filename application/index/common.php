@@ -15,7 +15,7 @@ function img($dengji, $dianma){
 		$where = array ();
 		$where ["等级"] = $dengji;
 		$dbConfig = getkefangDBConfig ( $dianma );
-		$info = Db::connect ( $dbConfig )->name ( 'tb_djbz' )->where ( $where )->find ();
+		$info = Db::connect ( $dbConfig )->name ( 'tb_DJWJ' )->where ( $where )->find ();
 		$extName = $info ['图片格式'] == null ? 'jpeg' : $info ['图片格式'];
 		//
 		$txt = $info ['图片'];

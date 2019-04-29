@@ -1,0 +1,251 @@
+/*
+Site: 煤易通官网样式 http://www.meietong.cn/
+Author: wuqin
+*/
+/* 通用样式 */
+@charset "UTF-8";
+
+/*! normalize.css v3.0.2 | MIT License | git.io/normalize */
+* {
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+}
+
+html {
+	-ms-text-size-adjust: 100%;
+	-webkit-text-size-adjust: 100%;
+	 font-family: Microsoft Yahei;
+}
+
+article, aside, audio, canvas, command, datalist, details, embed,
+	figcaption, figure, footer, header, hgroup, keygen, meter, nav, output,
+	progress, section, source, video {
+	display: block;
+}
+
+mark, rp, rt, ruby, summary, time {
+	display: inline
+}
+
+figure, body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul,
+	ol, li, pre, form, fieldset, legend, button, input, textarea, th, td {
+	margin: 0;
+	padding: 0;
+	font-size: 100%;
+}
+
+body, input, select, textarea {
+	font: 14px/.87rem;
+	margin: 0 auto;
+	padding: 0;
+	max-width: 1080px;
+}
+
+/* 酒店简介 */
+.jdbj {
+	background: url(../images/jdbj01.jpg) #f2f2f2 no-repeat top center;
+	background-size: 100% auto;
+	padding: 0 4%;
+}
+
+.jdbj h3 {
+	font-size: 1rem;
+	color: #fff;
+	line-height: 2rem;
+	text-align: center;
+}
+
+.tpcj {
+	margin: 10px 0;
+	padding: 1em;
+	background: #fff;
+}
+
+.suggest {
+	padding: 1em;
+	background-color: #fff;
+}
+
+.jdbj h4 {
+	font-size: .9rem;
+	line-height: 2rem;
+	color: #191919;
+}
+
+.close_text {
+	display: -webkit-box;
+	line-height: 1.6rem;
+	color: #505050;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 3;
+	word-break: break-all;
+	overflow: hidden;
+	margin: 0 0 15px;
+	font-size: .8rem
+}
+
+.text {
+	-webkit-line-clamp: none;
+	line-clamp: none;
+}
+
+.stage {
+	line-height: 3rem;
+	color: #505050;
+}
+
+.close_text p {
+	padding: 10px 0 0;
+}
+
+.show_more_btn {
+	border-top: #d2d2d2 solid 1px;
+	line-height: 3rem;
+	text-align: center;
+	color: #fff;
+	font-size:1.2rem;
+	display: block;
+	height: 3rem;
+	background-color: #f55;
+/* 	font-size: .8rem; */
+	border-radius: 5px;
+}
+
+.show_more {
+	width: 100%;
+	text-align: right;
+}
+
+.show_more a {
+	text-decoration: none;
+}
+
+.tit03 {
+	background: url(../images/jdico01.jpg) center left no-repeat;
+	padding-left: 15px;
+	height: 32px;
+}
+
+.serve h4 {
+	line-height: 32px;
+	font-size: .9rem;
+}
+
+.serve {
+	font-size: .8rem;
+	margin: 10px 0 0;
+	background-color: #fff;
+	padding: 10px;
+}
+
+.serve02 {
+	display: inline-flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	padding: 15px 5px;
+}
+
+.serve02 span {
+	flex-grow: 1;
+	flex-basis: 33%;
+	line-height: 3rem;
+}
+
+.serve02 i {
+	font-style: normal;
+	color: #ff5a5f;
+}
+
+.serve03 {
+	padding: 15px;
+}
+
+/* 底部投诉电话 */
+.boot {
+	margin: 20px auto;
+	text-align: center;
+}
+
+.tle02, .tle01 {
+	padding: 5px 20px;
+	font-size: 1rem;
+	border-radius: 1.4em;
+	line-height: 2rem;
+	margin: 10px auto;
+	width: 60%;
+}
+
+.tle01 {
+	color: #f06c25;
+	border: #f06c25 1px dotted;
+}
+
+.tle02 {
+	color: #ff5a5f;
+	border: #ff5a5f 1px dotted;
+}
+
+.tle02 span, .tle01 span {
+	padding-right: 10px;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+/* 客房预览 */
+.kfyl {
+	background-color: #f2f2f2;
+}
+
+.jdlist {
+	padding: 5px 10px;
+}
+
+.jdlist ul {
+	display: flex;
+	border-bottom: 1px #c1c1c1 solid;
+	padding: 10px;
+	font-size: .8rem;
+	color: #808080;
+	line-height: 30px;
+}
+
+.jdlist ul li {
+	padding: 0px 10px;
+	flex: 1 1 auto;
+}
+
+.jdlist ul .fjyl01 {
+	flex-basis: 6rem;
+}
+
+.jdlist b {
+	color: #353535;
+    font-size: .938rem;
+    line-height: .938rem;
+}
+
+.jdlist i {
+	color: #ee1c27;
+	font-style: normal;
+	font-size: 0.9rem;
+	padding: 0 10px;
+}
+
+.jdlist em {
+	font-style: normal;
+	font-size: 0.9em;
+	color: #f06c25;
+}
+
+.jdlist span {
+	display: inline-block;
+	float: right;
+}
+
+.but01 {
+	background: #ee1c27;
+	padding: 5px 18px;
+	color: #fff;
+	border-radius: 5px;
+}
