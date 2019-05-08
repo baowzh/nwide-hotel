@@ -13,7 +13,7 @@
                     
                     </a>
                     <li>
-                        <p><b>{$vo['名称']}</b><i>¥{$vo['网订价']}/<em>vip {$vo['网会价']} </em></i></p>
+                        <p><b>{$vo['名称']}</b><i>¥{$vo['网订价']|number_format=2}/<em>vip {$vo['网会价']|number_format=2} </em></i></p>
                         <p>25平米 有窗 多床</p>
                     </li>
                 </ul>
@@ -55,7 +55,7 @@
     </div>
     <div class="footer">
         <div class="f_left">
-            <div class="t_left">合计：<span class="rmb">¥<span>0</span></span>
+            <div class="t_left">定金合计：<span class="rmb">¥<span>0</span></span>
             </div>
             <div class="t_right">¥<span class="danjia"></span>*<span class="num">0</span></div>
         </div>
@@ -71,7 +71,7 @@
     };
     var arr = []; //已选座位数组
     var roomArr = []; //已选座位数组
-    var dj = {$vo['网订价']}; //电影票单价 number
+    var dj = {$vo['预定金额']}; //电影票单价 number
     $(".danjia").text(dj);
 
     $(".content li").each(function (index) {

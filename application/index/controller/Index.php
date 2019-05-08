@@ -34,12 +34,14 @@ class Index extends Controller {
 			$djbz = new \app\index\model\Djbz ();
 			$hotels = $djbz->index ();
 			$this->assign ( 'hotels', $hotels );
+			$this->assign ( 'title', '酒店预览' );
 			
 			return $this->fetch ();
 		} else {
 			$djbz = new \app\index\model\Djbz ();
 			$hotels = $djbz->index ();
 			$this->assign ( 'hotels', $hotels );
+			$this->assign ( 'title', '酒店预览' );
 			return $this->fetch ();
 		}
 	}
@@ -50,6 +52,7 @@ class Index extends Controller {
 		$jdjs=$djbz->jdjs($dianma);
 		$this->assign ( 'jdjs', $jdjs['jdjs'] );
 		$this->assign ( 'shopInfo', $jdjs['shopInfo'] );
+		$this->assign ( 'title', '酒店介绍' );
 		return $this->fetch ('jdjs');
 	}
 	
@@ -63,6 +66,7 @@ class Index extends Controller {
 		$list = $djbz->query ( $dianma );
 		$this->assign ( 'kefangs', $list );
 		$this->assign ( 'dianma', $dianma );
+		$this->assign ( 'title', '客房浏览' );
 		return $this->fetch ();
 	}
 	public function listByCatelog($dianma, $dengji) {
@@ -72,6 +76,7 @@ class Index extends Controller {
 		$this->assign ( 'kefangs', $list ['kefngList'] );
 		$this->assign ( 'dianma', $dianma );
 		$this->assign ( 'dengji', $dengji );
+		$this->assign ( 'title', '选房' );
 		return $this->fetch ( 'list' );
 	}
 	/**
@@ -88,7 +93,7 @@ class Index extends Controller {
 		// 简单计算订金
 		$roomCount = explode (",", $rooms);
 		$roomCount=sizeof($roomCount);
-		$deposit = $kefangInfo ['网订价'] * $roomCount * 1;
+		$deposit = $kefangInfo ['预定金额'] * $roomCount * 1;
 		$this->assign ( 'shop', $djbzVo ['shopInfo'] );
 		$this->assign ( 'dianma', $dianma );
 		$this->assign ( 'rooms', $rooms );
@@ -100,6 +105,7 @@ class Index extends Controller {
 		$this->assign('afterDate',$this->convertDateFm($afterDay));
 		$weekarray=array("日","一","二","三","四","五","六");
 		$this->assign('dayOfWeek',$weekarray[date("w")]);
+		$this->assign ( 'title', '订单' );
 		return $this->fetch ( 'order' );
 	}
 	
@@ -220,7 +226,8 @@ class Index extends Controller {
 		if ($issuccess || $issuccess == 'SUCCESS') {
 			$djbz = new \app\index\model\Djbz ();
 			$out_trade_no = $notifyMess ['out_trade_no'];
-			$djbz->notify ( $out_trade_no );
+			$transaction_id = $notifyMess ['transaction_id'];
+			$djbz->notify ( $out_trade_no ,$transaction_id);
 		}
 	}
 	public function testNotify($orderId = '1555153030032054') {
@@ -303,45 +310,51 @@ class Index extends Controller {
 	 */
 	public function orderInfo() {
 		if($this->request->isGet()){
-			$shenfenzhenghao=$this->request->param("shenfenzhenghao");
+			//$shenfenzhenghao=$this->request->param("shenfenzhenghao");
 			$phone=$this->request->param("phone");
 			$validcode=$this->request->param("validcode");
-			if(!empty($shenfenzhenghao)&&!empty($phone)&&!empty($validcode)){
+			if(!empty($phone)&&!empty($validcode)){
 				$djbz = new \app\index\model\Djbz ();
-				$order=$djbz->queryOrders($shenfenzhenghao, $phone, $validcode);
+				$order=$djbz->queryOrders( $phone, $validcode);
 				if(!$order['success']){
+					$this->assign ( 'title', '订单查询' );
 					$this->error('没有符合条件的数据');
 					
 				}
-				$this->assign('vo',$order['orderInfo']);
-				return $this->fetch('orderDetail');
+				$this->assign('orderInfos',$order['orderInfos']);
+				$this->assign ( 'title', '订单信息' );
+				return $this->fetch('orderList');
 			}else{
-				
+				$this->assign ( 'title', '订单查询' );
 				return $this->fetch ( 'queryOrder' );
 			}
 		}else{
-			$shenfenzhenghao=$this->request->param("shenfenzhenghao");
+			//$shenfenzhenghao=$this->request->param("shenfenzhenghao");
 			$phone=$this->request->param("phone");
 			$validcode=$this->request->param("validcode");
-			if($shenfenzhenghao==null){
-				 $this->error('请填写身份证号');
+// 			if($shenfenzhenghao==null){
+// 				 $this->error('请填写身份证号');
 				
-			}
+// 			}
 			if($phone==null){
+				$this->assign ( 'title', '订单查询' );
 				 $this->error('请填写手机号');
 				
 			}
 			if($validcode==null){
+				$this->assign ( 'title', '订单查询' );
 				$this->error('到场验证码');
 				
 			}
 			$djbz = new \app\index\model\Djbz ();
-			$order=$djbz->queryOrders($shenfenzhenghao, $phone, $validcode);
+			$order=$djbz->queryOrders( $phone, $validcode);
 			if(!$order['success']){
+				$this->assign ( 'title', '订单查询' );
 				$this->error('没有符合条件的数据');
 			}
-			$this->assign('vo',$order['orderInfo']);
-			return $this->fetch('orderDetail');
+			$this->assign('orderInfos',$order['orderInfos']);
+			$this->assign ( 'title', '订单查询' );
+			return $this->fetch('orderList');
 			
 		}
 		
@@ -351,6 +364,7 @@ class Index extends Controller {
 		$djbz = new \app\index\model\Djbz ();
 		$order=$djbz->orderInfoById($orderId);
 		$this->assign('vo',$order);
+		$this->assign ( 'title', '订单信息' );
 		return $this->fetch('orderDetail');
 	}
 	/**

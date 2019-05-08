@@ -1,6 +1,5 @@
 {include file="public/head_old" /}
 <link href="__CSS__/style.css" rel="stylesheet" type="text/css" />
-<!-- <script type="text/javascript" src="__JS__/jquery-1.7.2.min.js"></script> -->
 <body class="hotel">
 	<ul>
 		{volist name="kefangs" id="vo" key="k"}
@@ -10,28 +9,29 @@
 					<div class="pic tjclick rpDetail">
 
 						<img src="<?php echo img($vo['dengji'],$dianma); ?> "/>
-
+                        <i class="icon-play" videoURL="<?php echo video($vo['dengji'],$dianma); ?>" onClick="javascript:palyVideo(this);"></i>
 					</div>
 					<div class="picroom-info">
 						<div class="room">{$vo['mingcheng']}</div>
 						<div class="room-info">
-							<span>25平米</span> <span>多张床</span> <span> 有窗 </span>
+<!-- 							<span>25平米</span> <span>多张床</span> <span> 有窗 </span> -->
+                           <span>{$vo['shuoming']}</span>
 						</div>
 						<div class="icon icon-hs"></div>
 					</div>
 				</div>
 				<div class="right">
 					<div class="price">
-						<span>¥</span><span class="num">{$vo['wangdingjia']}</span>/ <span
+						<span>¥</span><span class="num">{$vo['wangdingjia']|number_format=2} </span>/ <span
 							style="color: #f55; font-size: 0.6rem; margin-right: 0px;">VIP</span>
-						<span>¥</span><span class="num">{$vo['wangdingjia']}</span>
+						<span>¥</span><span class="num">{$vo['wanghuijia']|number_format=2} </span>
 
 					</div>
 					<div class="order">
 						<div class="number">可选{$vo['count']}</div>
 						<div class="btn2 btn2_center"
 							style="width: 90%; float: right; margin: 10px 0px;">
-							<a href="#">视频</a>	
+							<!-- <a href="#" videoURL="<?php echo video($vo['dengji'],$dianma); ?> " onClick="javascript:palyVideo(this);">视频</a> -->	
 							{if condition="$vo['count'] gt 0"}
 							 <a href="listByCatelog?dengji={$vo['dengji']}&dianma={$dianma}">选房</a>							 
 							{/if}							
@@ -43,6 +43,45 @@
 			</div>
 		</li> {/volist}
 	</ul>
+		
+	<div class="popWindow"  >
+	  <div style="height:30px;width:100%;text-align:right;background-color: #f8f4f4;padding-top:10px;"> 
+	  <a href="javascript:closeVideo();" style="margin-right: 10px;font-size: 12px;text-decoration: none">关闭</a> 
+	  </div>
+	     <video style="width:80%;height: 80%; margin: auto 0px;" id="video" src=""  autoplay="autoplay">
+            your browser does not support the video tag
+         </video>	
+	</div>
+<style type="text/css">
+ .popWindow {
+        background-color: #0d0d0d;;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+/*         opacity: 0.7; */
+        z-index: 1;
+        position: absolute;
+        display:none;
 
+    }
+</style>
 </body>
+<script language="javascript">
+ var palyVideo=function(obj){
+	var videoURL= $(obj).attr('videoURL');
+	$('#video').attr('src',videoURL);
+	$( ".popWindow" ).show();
+	//$( function() {
+	   // $( ".popWindow" ).dialog({width:'90%',height:400});
+	  //} );
+ }
+ var closeVideo=function(){
+	 
+	 $( ".popWindow" ).hide(); 
+ }
+ </script>
+
+
+
 </html>

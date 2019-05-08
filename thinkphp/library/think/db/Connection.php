@@ -297,7 +297,7 @@ abstract class Connection
                 }
             } catch (\PDOException $e) {
                 if ($autoConnection) {
-                    Log::record($e->getMessage(), 'error');
+                    Log::record($e);
                     return $this->connect($autoConnection, $linkNum);
                 } else {
                     throw $e;

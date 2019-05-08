@@ -32,7 +32,8 @@ class Djbz extends Model {
 			'图片格式' => 'tupiangeshi',
 			'视频' => 'shipin',
 			'视频格式' => 'shipingeshi',
-			'可售' => 'keshou' 
+			'可售' => 'keshou' ,
+			'说明'=>'shuoming'
 	];
 	private $enTozhMap = [ 
 			"dengji" => '等级',
@@ -56,7 +57,8 @@ class Djbz extends Model {
 			'tupiangeshi' => '图片格式',
 			'shipin' => '视频',
 			'shipingeshi' => '视频格式',
-			'keshou' => '可售' 
+			'keshou' => '可售' ,
+			'shuoming'=>'说明'
 	];
 	public function index() {
 		$shopInfos = Db::name ( 'tb_shop' )->select ();
@@ -116,7 +118,7 @@ class Djbz extends Model {
 		$shopInfo = Db::name ( 'tb_shop' )->where ( $condition )->find ();
 		$dbConfig = $this->getkefangDBConfig ( $dianma );
 		// Log::record ( $dbConfig );
-		$list = Db::connect ( $dbConfig )->name ( 'tb_DJWJ' )->order ( '序号' )->select ();
+		$list = Db::connect ( $dbConfig )->table('tb_djwj' )->order ( '序号' )->select ();
 		$convertedValues = array ();
 		foreach ( $list as $rowValue ) {
 			$row = array ();
@@ -157,6 +159,7 @@ class Djbz extends Model {
 		$condition = array ();
 		$condition ['店码'] = $dianma;
 		$shopInfo = Db::name ( 'tb_shop' )->where ( $condition )->find ();
+		Log::record ( $shopInfo );
 		$dbConfig = array ();
 		$dbType = config ( 'config_db' )['type'];
 		$dbConfig ['type'] = $dbType;
@@ -199,7 +202,7 @@ class Djbz extends Model {
 		$where = array ();
 		$where ["等级"] = $dengji;
 		$dbConfig = $this->getkefangDBConfig ( $dianma );
-		$info = Db::connect ( $dbConfig )->name ( 'tb_DJWJ' )->where ( $where )->find ();
+		$info = Db::connect ( $dbConfig )->name ( 'tb_djwj' )->where ( $where )->find ();
 		// 已经存在视频的话不写文件
 		$extName = $info ['视频格式'] == null ? 'mp4' : $info ['视频格式'];
 		$filePath = ROOT_PATH . '/uploads/' . $info ['等级'] . '.' . $extName;
@@ -222,7 +225,7 @@ class Djbz extends Model {
 		$where = array ();
 		$where ["等级"] = $dengji;
 		$dbConfig = $this->getkefangDBConfig ( $dianma );
-		$info = Db::connect ( $dbConfig )->name ( 'tb_DJWJ' )->where ( $where )->find ();
+		$info = Db::connect ( $dbConfig )->name ( 'tb_djwj' )->where ( $where )->find ();
 		$extName = $info ['图片格式'] == null ? 'jpeg' : $info ['图片格式'];
 		$extName = 'jpeg';
 		// 已经存在则不写文件
@@ -248,7 +251,7 @@ class Djbz extends Model {
 		$kefangCondition = array ();
 		$dbConfig = $this->getkefangDBConfig ( $orderForm ['dianma'] );
 		$kefangCondition ["等级"] = $orderForm ['dengji'];
-		$kefangInfo = Db::connect ( $dbConfig )->name ( 'tb_DJWJ' )->where ( $kefangCondition )->find ();
+		$kefangInfo = Db::connect ( $dbConfig )->name ( 'tb_djwj' )->where ( $kefangCondition )->find ();
 		// 是否可以预定？
 		$dbType = config ( 'vip_db' )['type'];
 		if ($dbType == 'mysql') {
@@ -300,10 +303,10 @@ class Djbz extends Model {
 		} else {
 			$isVip = false;
 		}
-		$orderForm ['deposit'] = $kefangInfo ['网订价'];
+		$orderForm ['deposit'] = $kefangInfo ['预定金额'];
 		// 如果是 会员用什么价格去计算？
 		if ($isVip) {
-			$orderForm ['deposit'] = $kefangInfo ['网会价'];
+			$orderForm ['deposit'] = $kefangInfo ['预定金额'];
 		}
 		
 		$shopCondition = [ 
@@ -345,7 +348,7 @@ class Djbz extends Model {
 		$where = array ();
 		$where ["等级"] = $dengji;
 		$dbConfig = $this->getkefangDBConfig ( $dianma );
-		$info = Db::connect ( $dbConfig )->name ( 'tb_DJWJ' )->where ( $where )->find ();
+		$info = Db::connect ( $dbConfig )->name ( 'tb_djwj' )->where ( $where )->find ();
 		$condition = array ();
 		$condition ['店码'] = $dianma;
 		$shopInfo = Db::name ( 'tb_shop' )->where ( $condition )->find ();
@@ -359,7 +362,7 @@ class Djbz extends Model {
 	 *
 	 * @param unknown $orderId        	
 	 */
-	public function notify($orderId) {
+	public function notify($orderId,$transactionId) {
 		// 查看订单表 如果有未支付的订单则
 		$result = array ();
 		$condition = array ();
@@ -429,7 +432,7 @@ class Djbz extends Model {
 		//
 		$kefangCondition = array ();
 		$kefangCondition ["等级"] = $orderInfo ['dengji'];
-		$roomTypeInfo = Db::connect ( $dbConfig )->name ( 'tb_DJWJ' )->where ( $kefangCondition )->find ();
+		$roomTypeInfo = Db::connect ( $dbConfig )->name ( 'tb_djwj' )->where ( $kefangCondition )->find ();
 		
 		foreach ( $yudinghaos as $rowValue ) {
 			// $kefangInfo = $kefngList [$index];
@@ -453,25 +456,27 @@ class Djbz extends Model {
 			 */
 			
 			if ($isVip) {
-				$updateFields ['预交押金'] = $roomTypeInfo ['网会价'];
+				$updateFields ['登记房价']= $roomTypeInfo ['网会价'];
+				$updateFields ['预交押金'] = $roomTypeInfo ['预定金额'];
 			} else {
-				$updateFields ['预交押金'] = $roomTypeInfo ['网订价'];
+				$updateFields ['登记房价']= $roomTypeInfo ['网订价'];
+				$updateFields ['预交押金'] = $roomTypeInfo ['预定金额'];
 			}
 			// $updateFields ['网付流水'] = $orderInfo ['dingdanhao'];
 			// if ($banci != null && ! empty ( $banci )) {
 			// $updateFields ['班次'] = $banci [0] ['班次'];
 			// }
-			Log::record ( $updCondition );
-			Log::record ( $updateFields );
+			//Log::record ( $updCondition );
+			//Log::record ( $updateFields );
 			Db::connect ( $dbConfig )->execute ( " update tvhk set [姓名]='" . $orderInfo ['xingming'] . "' , [性别]='" . $orderInfo ['xingbie'] . "' , [证件] = '身份证' where [房号]='" . $rowValue . "'" );
-			Log::record ( " update tvhk set [证件编号]='" . $orderInfo ['shenfenzhenghao'] . "' , [入住天数]=" . $orderInfo ['yuzhutianshu'] . " , [宾客电话] = '" . $orderInfo ['dianhua'] . "' where [房号]='" . $rowValue . "'" );
+			//Log::record ( " update tvhk set [证件编号]='" . $orderInfo ['shenfenzhenghao'] . "' , [入住天数]=" . $orderInfo ['yuzhutianshu'] . " , [宾客电话] = '" . $orderInfo ['dianhua'] . "' where [房号]='" . $rowValue . "'" );
 			Db::connect ( $dbConfig )->execute ( " update tvhk set [证件编号]='" . $orderInfo ['shenfenzhenghao'] . "' , [入住天数]=" . $orderInfo ['yuzhutianshu'] . " , [宾客电话] = '" . $orderInfo ['dianhua'] . "' where [房号]='" . $rowValue . "'" );
-			Log::record ( " update tvhk set [宾客类别]='网订' , [入住天数]=" . $orderInfo ['yuzhutianshu'] . " where [房号]='" . $rowValue . "'" );
+			//Log::record ( " update tvhk set [宾客类别]='网订' , [入住天数]=" . $orderInfo ['yuzhutianshu'] . " where [房号]='" . $rowValue . "'" );
 			Db::connect ( $dbConfig )->execute ( " update tvhk set [宾客类别]='网订' , [入住天数]=" . $orderInfo ['yuzhutianshu'] . " where [房号]='" . $rowValue . "'" );
-			Log::record ( " update tvhk set [网付流水]='" . $orderInfo ['dingdanhao'] . "' , [网订]='是',[房态]='F' , [预交押金] = " . $updateFields ['预交押金'] . "  where [房号]='" . $rowValue . "'" );
-			Db::connect ( $dbConfig )->execute ( " update tvhk set [网付流水]='" . $orderInfo ['dingdanhao'] . "' , [网订]='是',[房态]='F' , [预交押金] = " . $updateFields ['预交押金'] . "  where [房号]='" . $rowValue . "'" );
-			Log::record ( " update tvhk set [登记房价]='" . $updateFields ['预交押金'] . "' , [预交押金]=" . $updateFields ['预交押金'] . ",[房态]='F' , [网付日期] = GETDATE()  where [房号]='" . $rowValue . "'" );
-			Db::connect ( $dbConfig )->execute ( " update tvhk set [登记房价]='" . $updateFields ['预交押金'] . "' , [预交押金]=" . $updateFields ['预交押金'] . ",[房态]='F' , [网付日期] = GETDATE()  where [房号]='" . $rowValue . "'" );
+			//Log::record ( " update tvhk set [网付流水]='" . $orderInfo ['dingdanhao'] . "' , [网订]='是',[房态]='F' , [预交押金] = " . $updateFields ['预交押金'] . "  where [房号]='" . $rowValue . "'" );
+			Db::connect ( $dbConfig )->execute ( " update tvhk set [押金类型]='微信', [网付流水]='" . $transactionId . "' , [网订]='是',[房态]='F' ,[验证号] ='".$orderInfo ['validcode']."',[网约单号]='".$orderInfo ['dingdanhao']."',[预交押金] = " . $updateFields ['预交押金'] . "  where [房号]='" . $rowValue . "'" );
+			//Log::record ( " update tvhk set [登记房价]='" . $updateFields ['登记房价'] . "' , [预交押金]=" . $updateFields ['预交押金'] . ",[房态]='F' , [验证号] = '".$orderInfo ['validcode']."',[网约单号]='".$orderInfo ['dingdanhao']."'  where [房号]='" . $rowValue . "'" );
+			Db::connect ( $dbConfig )->execute ( " update tvhk set [登记房价]='" . $updateFields ['登记房价'] . "' , [预交押金]=" . $updateFields ['预交押金'] . ",[房态]='F' , [网付日期] = GETDATE()  where [房号]='" . $rowValue . "'" );
 			
 			// $condition ['dingdanhao'] = $orderId;
 			// $setFileds=array();
@@ -498,14 +503,22 @@ class Djbz extends Model {
 			$TWYB ['证类'] = '身份证';
 			$TWYB ['证号'] = $orderInfo ['shenfenzhenghao'];
 			$TWYB ['付款金额'] = $orderInfo ['yudingjine'];
-			$TWYB ['付款类型'] = '微信支付';
-			$TWYB ['网付流水'] = $orderInfo ['dingdanhao'];
+			$TWYB ['付款类型'] = '微信';
+			$TWYB ['网付流水'] = $transactionId;
 			$TWYB ['网约单号'] = $orderInfo ['dingdanhao'];
 			$TWYB ['付款日期'] = date ( 'Y-m-d H:i:s' );
 			// $TWYB['付款日期']=date();
 			$TWYB ['开房数'] = sizeof ( $fanghaos );
+			//
+					//
 			$TWYB ['房型'] = $orderInfo ['dengji'];
-			$TWYB ['房价'] = $orderInfo ['yudingjine'] / sizeof ( $fanghaos );
+			if($isVip){
+				$TWYB ['房价']=$roomTypeInfo['网会价'];
+			}else{
+				$TWYB ['房价']=$roomTypeInfo['网订价'];
+				//$TWYB ['房价'] = $orderInfo ['yudingjine'] / sizeof ( $fanghaos );
+			}
+			
 			$TWYB ['预住天'] = $orderInfo ['yuzhutianshu'];
 			$TWYB ['验证号'] = $orderInfo ['validcode'];
 			Log::record ( $TWYB );
@@ -539,7 +552,7 @@ class Djbz extends Model {
 		$order ['dianming'] = $orderForm ['dianming'];
 		$order ['shenfenzhenghao'] = $orderForm ['shenfenzhenghao'];
 		$order ['dengji'] = $orderForm ['dengji'];
-		$order ['yudingjine'] = $orderForm ['deposit'] * $orderForm ['roomCount'];
+		$order ['yudingjine'] = $orderForm ['deposit'] * $orderForm ['roomCount']*$orderForm ['tianshu'];
 		$order ['yudingshijian'] = date ( 'Y-m-d H:i:s' );
 		$order ['yudinghao'] = $orderForm ['rooms'];
 		$order ['xingming'] = $orderForm ['xingming'];
@@ -587,7 +600,7 @@ class Djbz extends Model {
 		$result ['mess'] = $kefngList;
 		$kefangCondition = array ();
 		$kefangCondition ["等级"] = $dengji;
-		$kefangInfo = Db::connect ( $dbConfig )->name ( 'tb_DJWJ' )->where ( $kefangCondition )->find ();
+		$kefangInfo = Db::connect ( $dbConfig )->name ( 'tb_djwj' )->where ( $kefangCondition )->find ();
 		if (sizeof ( $kefngList ) < $roomCount) {
 			$result ['success'] = false;
 			$result ['mess'] = '房间数不够，总共有' . sizeof ( $kefngList ) . '间可预定房间';
@@ -606,32 +619,36 @@ class Djbz extends Model {
 			}
 			$result ['success'] = true;
 			if ($isVip) {
-				$result ['deposit'] = $kefangInfo ['网会价'] * $roomCount * $tianshu;
+				$result ['deposit'] = $kefangInfo ['预定金额'] * $roomCount * $tianshu;
 			} else {
-				$result ['deposit'] = $kefangInfo ['网订价'] * $roomCount * $tianshu;
+				$result ['deposit'] = $kefangInfo ['预定金额'] * $roomCount * $tianshu;
 			}
 		}
 		return $result;
 	}
-	public function queryOrders($shenfenzhenghao, $phone, $validCode) {
+	public function queryOrders($phone, $validCode) {
 		$condition = array ();
 		$condition ['dianhua'] = $phone;
 		$condition ['validcode'] = $validCode;
-		$condition ['shenfenzhenghao'] = $shenfenzhenghao;
-		$orderInfo = Db::name ( 'hotelorder' )->where ( $condition )->find ();
+		//$condition ['shenfenzhenghao'] = $shenfenzhenghao;
+		$orderInfos = Db::name ( 'hotelorder' )->where ( $condition )->select ();
 		$reault=array();
-		if(empty($orderInfo)||$orderInfo==null){
+		if(empty($orderInfos)||$orderInfos==null){
 			$reault['success']=false;
 			return $reault ;
 		}
+		$returnInfos=array();
 		
-		$dbConfig = $this->getkefangDBConfig ( $orderInfo ['dianma'] );
-		$dengji = $orderInfo ['dengji'];
-		$kefangCondition ["等级"] = $dengji;
-		$roomTypeInfo = Db::connect ( $dbConfig )->name ( 'tb_DJWJ' )->where ( $kefangCondition )->find ();
-		$orderInfo ['dengjiming'] = $roomTypeInfo ['名称'];
+		foreach ( $orderInfos as $orderInfo ) {
+			$dbConfig = $this->getkefangDBConfig ( $orderInfo ['dianma'] );
+			$dengji = $orderInfo ['dengji'];
+			$kefangCondition ["等级"] = $dengji;
+			$roomTypeInfo = Db::connect ( $dbConfig )->name ( 'tb_djwj' )->where ( $kefangCondition )->find ();
+			$orderInfo ['dengjiming'] = $roomTypeInfo ['名称'];
+			array_push ( $returnInfos, $orderInfo );
+		}
 		$reault['success']=true;
-		$reault['orderInfo']=$orderInfo;
+		$reault['orderInfos']=$returnInfos;
 		return $reault;
 	}
 	public function orderInfoById($orderId) {
@@ -641,7 +658,7 @@ class Djbz extends Model {
 		$dbConfig = $this->getkefangDBConfig ( $orderInfo ['dianma'] );
 		$dengji = $orderInfo ['dengji'];
 		$kefangCondition ["等级"] = $dengji;
-		$roomTypeInfo = Db::connect ( $dbConfig )->name ( 'tb_DJWJ' )->where ( $kefangCondition )->find ();
+		$roomTypeInfo = Db::connect ( $dbConfig )->name ( 'tb_djwj' )->where ( $kefangCondition )->find ();
 		$orderInfo ['dengjiming'] = $roomTypeInfo ['名称'];
 		return $orderInfo;
 	}

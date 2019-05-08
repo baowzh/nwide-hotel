@@ -3,7 +3,7 @@
 	<div>
 		<h3>{$shopInfo['店名']}</h3>
 		<div class="tpcj">
-			<img src="__IMG__/jd01.jpg" title="酒店外观" width="100%" />
+			<img src="<?php echo hotelImg($dianma); ?>" title="酒店外观" width="100%" />
 		</div>
 	</div>
 	<div title="酒店介绍" class="suggest">
@@ -12,10 +12,12 @@
 			<p statue="0" class="text close_text">
 			{$jdjs['酒店简介']}
 			</p>
-			<div class="show_more">
-				<a href="catalog?dianma={$dianma}" class="show_more_btn">选房</a>
-			</div>
+			
 		</div>
+		<div class="show_more">
+				<a href="catalog?dianma={$dianma}" class="show_more_btn">选房</a>
+				<a href="orderInfo" class="show_more_btn">查单</a>
+			</div>
 
 	</div>
 	<div title="酒店设施和服务" class="serve">
@@ -27,7 +29,7 @@
 	<div title="酒店活动" class="serve" style="min-height: 500px;">
 		<h4 class="tit03">酒店活动</h4>
 		<div class="serve03">
-			<img src="__IMG__/hd01.jpg" title="酒店活动" width="100%" height="auto">
+			<img src="<?php echo hotelActiveImg($dianma); ?>" title="酒店活动" width="100%" height="auto">
 		</div>
 	</div>
 	<!-- 底部投诉电话 -->

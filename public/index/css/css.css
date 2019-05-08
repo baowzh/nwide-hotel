@@ -65,6 +65,7 @@ body, input, select, textarea {
 .suggest {
 	padding: 1em;
 	background-color: #fff;
+	padding-bottom: 30px;
 }
 
 .jdbj h4 {
@@ -110,11 +111,15 @@ body, input, select, textarea {
 	background-color: #f55;
 /* 	font-size: .8rem; */
 	border-radius: 5px;
+	width: 45%;
+    margin-left: 5px;
+    float: left;
 }
 
 .show_more {
 	width: 100%;
 	text-align: right;
+	height: 40px;
 }
 
 .show_more a {

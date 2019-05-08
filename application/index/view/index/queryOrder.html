@@ -19,7 +19,7 @@
 				<form action="orderInfo" method="post" id="orderForm">
 					<article class="order-content">
 						<section class="order-fill">
-							
+							<!-- 
 							<div class="contact-person">
 								<ul>
 									<li>
@@ -33,6 +33,7 @@
 									<div class="person-choose"></div>
 								</div>
 							</div>
+							 -->
 
 							<!-- 身份证号-->
 							<div class="order-contact">
@@ -73,14 +74,15 @@
 </body>
 <script language="javascript">
  var validAndQuery=function(){
-	 var shenfenzhenghao=$('#shenfenzhenghao').val();
+	 //var shenfenzhenghao=$('#shenfenzhenghao').val();
 	 var phone=$('#phone').val();
 	 var validcode=$('#validcode').val();
-	 
+	 /*
 	 if(shenfenzhenghao==null||shenfenzhenghao==''){
 		 alert('请填写身份证号');
 		 return ;
 	 }
+	 */
 	 if(phone==null||phone==''){
 		 alert('请填写手机号');
 		 return ;

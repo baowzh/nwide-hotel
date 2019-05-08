@@ -270,14 +270,11 @@
 			function(res){
 				if(res.err_msg == "get_brand_wcpay_request:ok"){
 					alert('支付成功。');
-					
+					$('#mobilesubmit').attr({'onClick':'void(0);'})
 					window.location.href='orderInfoById?orderId='+$('#out_trade_no').val();
-					//$('#out_trade_no')
-					//setTimeout(alert('orderInfo?shenfenzhenghao='+$('#shenfenzhenghao').val()+"&phone="+$('#dianhua').val()+"&validcode="+$('#validCode').val()),200);
-					//window.location.href='orderInfo?shenfenzhenghao='+$('#shenfenzhenghao').val()+"&phone="+$('#dianhua').val()+"&validcode="+$('#validCode').val();
+					
 				}
-				//WeixinJSBridge.log(res.err_msg);
-				//alert(res.err_code+res.err_desc+res.err_msg);
+				
 			}
 		);
 	}

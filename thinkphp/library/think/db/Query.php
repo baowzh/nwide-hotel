@@ -2476,12 +2476,13 @@ class Query
             } else {
                 // 执行查询
                 $resultSet = $this->query($sql, $bind, $options['master'], $options['fetch_pdo']);
-
+                print_r($resultSet);
                 if ($resultSet instanceof \PDOStatement) {
                     // 返回PDOStatement对象
                     return $resultSet;
                 }
                 $result = isset($resultSet[0]) ? $resultSet[0] : null;
+                print_r($result);
             }
 
             if (isset($cache) && false !== $result) {
@@ -2489,13 +2490,16 @@ class Query
                 $this->cacheData($key, $result, $cache);
             }
         }
-
+       
         // 数据处理
         if (!empty($result)) {
             if (!empty($this->model)) {
                 // 返回模型对象
+            	
                 $model  = $this->model;
+                //print_r($result);
                 $result = new $model($result);
+                //print_r($result);
                 $result->isUpdate(true, isset($options['where']['AND']) ? $options['where']['AND'] : null);
                 // 关联查询
                 if (!empty($options['relation'])) {

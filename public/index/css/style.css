@@ -40,7 +40,7 @@
 	/* 	background-image: url(source/no_pic.png); */
 	background-repeat: no-repeat;
 	position: relative;
-	z-index: 1000;
+/* 	z-index: 1000; */
 	background-size: 92px 92px;
 	box-sizing: border-box;
 	-webkit-tap-highlight-color: transparent;
@@ -54,7 +54,7 @@
 .hotel ul li .wrap .left .picroom-info {
 	margin-left: 83px;
 	position: relative;
-	z-index: 1000;
+/* 	z-index: 1000; */
 	padding-top: 3px;
 	padding-left: 20px;
 	box-sizing: border-box;
@@ -181,4 +181,21 @@
 	-webkit-transform: rotate(-135deg);
 	-ms-transform: rotate(-135deg);
 	transform: rotate(-135deg);
+}
+.icon-play{
+	position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 52px;
+    height: 52px;
+    margin: -26px 0 0 -26px;
+    background: url(http://vs6.bdstatic.com/browse_static/v3/videoChannelCommon/img/icon/play_821ce903.png) no-repeat 50% 50%;
+    opacity: 2;
+    z-index: 1;
+    cursor: pointer;
+    -webkit-transition: opacity .4s ease-in;
+    -moz-transition: opacity .4s ease-in;
+    -ms-transition: opacity .4s ease-in;
+    transition: opacity .4s ease-in;
+	
 }
