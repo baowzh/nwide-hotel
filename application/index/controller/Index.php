@@ -127,6 +127,7 @@ class Index extends Controller {
 	/**
 	 * 把客房相关的视频文件读出来并写入本地磁盘，同时返回相对路径用于播放视频
 	 */
+	/*
 	public function video($id,$dianma) {
 		$djbz = new \app\index\model\Djbz ();
 		$videoPath = $djbz->getVideo ( $id );
@@ -135,11 +136,12 @@ class Index extends Controller {
 				"success" => true,
 				'videoPath' => $videoPath 
 		] );
-	}
+	}*/
 	
 	/**
 	 * 把客房相关的图片写入本地磁盘并返回相对路径用于显示图片
 	 */
+	/*
 	public function image($id,$dianma) {
 		$djbz = new \app\index\model\Djbz ();
 		$imagePath = $djbz->getImage ( $id ,$dianma);
@@ -149,6 +151,7 @@ class Index extends Controller {
 				'imagePath' => $imagePath 
 		] );
 	}
+	*/
 	/**
 	 * 订购房间
 	 *

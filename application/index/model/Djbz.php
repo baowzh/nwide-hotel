@@ -117,8 +117,9 @@ class Djbz extends Model {
 		$condition ['店码'] = $dianma;
 		$shopInfo = Db::name ( 'tb_shop' )->where ( $condition )->find ();
 		$dbConfig = $this->getkefangDBConfig ( $dianma );
-		// Log::record ( $dbConfig );
-		$list = Db::connect ( $dbConfig )->table('tb_djwj' )->order ( '序号' )->select ();
+		$djCondition=array();
+		$djCondition['可售']=1;
+		$list = Db::connect ( $dbConfig )->table('tb_djwj' )->where($djCondition)->order ( '序号' )->select ();
 		$convertedValues = array ();
 		foreach ( $list as $rowValue ) {
 			$row = array ();
@@ -631,7 +632,7 @@ class Djbz extends Model {
 		$condition ['dianhua'] = $phone;
 		$condition ['validcode'] = $validCode;
 		//$condition ['shenfenzhenghao'] = $shenfenzhenghao;
-		$orderInfos = Db::name ( 'hotelorder' )->where ( $condition )->select ();
+		$orderInfos = Db::name ( 'hotelorder' )->where ( $condition )->order ( 'yudingshijian desc' )->select ();
 		$reault=array();
 		if(empty($orderInfos)||$orderInfos==null){
 			$reault['success']=false;

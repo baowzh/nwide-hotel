@@ -29,7 +29,7 @@
 	-webkit-box-flex: 1;
 	flex: 1;
 	float: left;
-	width: 60%;
+	width: 65%;
 	box-sizing: border-box;
 }
 
@@ -72,13 +72,14 @@
 	line-height: 0.625rem;
 	color: #898989;
 	margin-top: 8px;
-	white-space: nowrap;
+/* 	white-space: nowrap; */
+width: 120px;
 }
 
 .hotel ul li .wrap .right {
 	display: block;
 	margin-right: 3px;
-	width: 40%;
+	width: 35%;
 	height: 100%;
 	float: left;
 }
@@ -104,7 +105,7 @@
 
 .hotel .wrap .right .order .number{
 	float: right;
-	margin-right:10px;
+	margin-right:4px;
 }
 
 .hotel .wrap .right .order .btn2 {

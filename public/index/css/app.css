@@ -9,7 +9,7 @@ html {
 
 body {
     display: none;
-    font-family: Microsoft Yahei,Arial,sans-serif;
+/*     font-family: Microsoft Yahei,Arial,sans-serif; */
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -33,7 +33,7 @@ body {
 .header p {
     font-size: .3rem;
     line-height: .54rem;
-    color: #333333;
+    color: #898989;
     margin-left: .15rem;
 }
 
@@ -50,7 +50,7 @@ body {
 
 .tittle div p {
     float: left;
-    color: #2f2f2f;
+    color: #353535;
     font-size: .26rem;
     margin-left: .1rem;
 }
@@ -265,7 +265,7 @@ color: #fff;
 
 .header b{
     font-size: 1.5em;
-    color: #191919;
+    color: #898989;
 }
 .header i{
     color: #ee1c27;
