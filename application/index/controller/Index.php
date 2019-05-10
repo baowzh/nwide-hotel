@@ -28,7 +28,7 @@ class Index extends Controller {
 			$openId = Session::get ( 'openId' );
 			if($openId==null){
 				$openId = $jsApiPay->GetOpenid ();
-				Log::record ( ' the user openId is ' . $openId );
+				//Log::record ( ' the user openId is ' . $openId );
 				Session::set ( 'openId', $openId );
 			}
 			$djbz = new \app\index\model\Djbz ();
@@ -112,8 +112,8 @@ class Index extends Controller {
 	private function convertDateFm($date){
 		$month=substr($date,0,2);
 		$day=substr($date,2);
-		Log::record ($day);
-		Log::record ($month);
+		//Log::record ($day);
+		//Log::record ($month);
 		if(strpos($month,'0')== 0){
 			$month=substr($month,1);
 		}
@@ -180,7 +180,7 @@ class Index extends Controller {
 		$orderForm ['dianma'] = $dianma;
 		$orderForm ['validCode'] = $validCode;
 		$oderIfo = $djbz->order ( $orderForm );
-		Log::record ($oderIfo);
+		//Log::record ($oderIfo);
 		header ( 'Content-Type:application/json; charset=utf-8' );
 		$result=array();
 		if($oderIfo['success']){
@@ -209,9 +209,9 @@ class Index extends Controller {
 		$input->SetTrade_type ( "JSAPI" ); // 支付类型
 		$input->SetOpenid ( $openId ); // 用户openid
 		$wxConfig = new \WxPayConfig ();
-		Log::record ( ' order inof is： ' . $input->GetBody () . $input->GetTotal_fee () . '   app id is :' . $wxConfig->GetAppId () );
+		//Log::record ( ' order inof is： ' . $input->GetBody () . $input->GetTotal_fee () . '   app id is :' . $wxConfig->GetAppId () );
 		$order = \WxPayApi::unifiedOrder ( $wxConfig, $input ); // 统一下单，该方法中包含了签名算法
-		Log::record ($order  );
+		//Log::record ($order  );
 		$tools = new \JsApiPay ();
 		$jsApiParameters = $tools->GetJsApiParameters ( $order ); // 统一下单参数
 		return $jsApiParameters;
@@ -233,9 +233,9 @@ class Index extends Controller {
 			$djbz->notify ( $out_trade_no ,$transaction_id);
 		}
 	}
-	public function testNotify($orderId = '1555153030032054') {
+	public function testNotify($orderId = '1555153030032054',$transaction_id='4200000290201905097169270634') {
 		$djbz = new \app\index\model\Djbz ();
-		$djbz->notify ( $orderId );
+		$djbz->notify ( $orderId,$transaction_id );
 	}
 	private function parseXml($xml) {
 		libxml_disable_entity_loader ( true );

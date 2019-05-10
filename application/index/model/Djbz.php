@@ -160,7 +160,7 @@ class Djbz extends Model {
 		$condition = array ();
 		$condition ['店码'] = $dianma;
 		$shopInfo = Db::name ( 'tb_shop' )->where ( $condition )->find ();
-		Log::record ( $shopInfo );
+		//Log::record ( $shopInfo );
 		$dbConfig = array ();
 		$dbType = config ( 'config_db' )['type'];
 		$dbConfig ['type'] = $dbType;
@@ -239,7 +239,7 @@ class Djbz extends Model {
 		if (! file_exists ( $filePath )) {
 			$file = fopen ( $filePath, 'w' );
 			$txt = $info ['图片'];
-			Log::record ( $txt );
+			//Log::record ( $txt );
 			fwrite ( $file, $txt );
 		}
 		return '/uploads/' . $dianma . "/" . $info ['等级'] . '.' . $extName;
@@ -275,7 +275,7 @@ class Djbz extends Model {
 			if ($dbType == 'mysql') {
 				$kefngList = Db::connect ( $dbConfig )->query ( "select * from tvhk where `等级`='" . $orderInfo ['dengji'] . "' and ( `房态`= 'A' and `净`='')  and '房号'='" . $rowValue . "'" );
 			} else if ($dbType == 'sqlsrv') {
-				Log::record ( $rowValue );
+				//Log::record ( $rowValue );
 				// Log::record ( "select * from tvhk where [等级]='" . $orderForm ['dengji'] . "' and ( [房态]= 'A' and [净]='') and [房号]='" . $rowValue . "'" );
 				$kefngList = Db::connect ( $dbConfig )->query ( "select * from tvhk where [等级]='" . $orderForm ['dengji'] . "' and ( [房态]= 'A' and [净]='') and [房号]='" . $rowValue . "'" );
 			} else {
@@ -474,7 +474,7 @@ class Djbz extends Model {
 			Db::connect ( $dbConfig )->execute ( " update tvhk set [证件编号]='" . $orderInfo ['shenfenzhenghao'] . "' , [入住天数]=" . $orderInfo ['yuzhutianshu'] . " , [宾客电话] = '" . $orderInfo ['dianhua'] . "' where [房号]='" . $rowValue . "'" );
 			//Log::record ( " update tvhk set [宾客类别]='网订' , [入住天数]=" . $orderInfo ['yuzhutianshu'] . " where [房号]='" . $rowValue . "'" );
 			Db::connect ( $dbConfig )->execute ( " update tvhk set [宾客类别]='网订' , [入住天数]=" . $orderInfo ['yuzhutianshu'] . " where [房号]='" . $rowValue . "'" );
-			//Log::record ( " update tvhk set [网付流水]='" . $orderInfo ['dingdanhao'] . "' , [网订]='是',[房态]='F' , [预交押金] = " . $updateFields ['预交押金'] . "  where [房号]='" . $rowValue . "'" );
+			Log::record (" update tvhk set [押金类型]='微信', [网付流水]='" . $transactionId . "' , [网订]='是',[房态]='F' ,[验证号] ='".$orderInfo ['validcode']."',[网约单号]='".$orderInfo ['dingdanhao']."',[预交押金] = " . $updateFields ['预交押金'] . "  where [房号]='" . $rowValue . "'"  );
 			Db::connect ( $dbConfig )->execute ( " update tvhk set [押金类型]='微信', [网付流水]='" . $transactionId . "' , [网订]='是',[房态]='F' ,[验证号] ='".$orderInfo ['validcode']."',[网约单号]='".$orderInfo ['dingdanhao']."',[预交押金] = " . $updateFields ['预交押金'] . "  where [房号]='" . $rowValue . "'" );
 			//Log::record ( " update tvhk set [登记房价]='" . $updateFields ['登记房价'] . "' , [预交押金]=" . $updateFields ['预交押金'] . ",[房态]='F' , [验证号] = '".$orderInfo ['validcode']."',[网约单号]='".$orderInfo ['dingdanhao']."'  where [房号]='" . $rowValue . "'" );
 			Db::connect ( $dbConfig )->execute ( " update tvhk set [登记房价]='" . $updateFields ['登记房价'] . "' , [预交押金]=" . $updateFields ['预交押金'] . ",[房态]='F' , [网付日期] = GETDATE()  where [房号]='" . $rowValue . "'" );
@@ -522,12 +522,12 @@ class Djbz extends Model {
 			
 			$TWYB ['预住天'] = $orderInfo ['yuzhutianshu'];
 			$TWYB ['验证号'] = $orderInfo ['validcode'];
-			Log::record ( $TWYB );
+			//Log::record ( $TWYB );
 			$insertSql = "insert into twyb(店码,店名,房号,姓名,
 					手机号,证类,证号,付款金额,付款类型,网付流水,网约单号,
 					付款日期,开房数,房型,房价,
 					预住天,验证号 ) values('" . $TWYB ['店码'] . "','" . $TWYB ['店名'] . "','" . $TWYB ['房号'] . "','" . $TWYB ['姓名'] . "','" . $TWYB ['手机号'] . "','" . $TWYB ['证类']."','".$TWYB ['证号']."',".$TWYB ['付款金额'].",'".$TWYB ['付款类型']."','".$TWYB ['网付流水']."','".$TWYB ['网约单号']."',GETDATE(),".$TWYB ['开房数'].",'".$TWYB ['房型']."',".$TWYB ['房价'].",".$TWYB ['预住天'].",'".$TWYB ['验证号']."')";
-			Log::record ( $insertSql );
+			//Log::record ( $insertSql );
 			Db::execute ($insertSql);
 			Db::connect ( $dbConfig )->execute ($insertSql );
 		}
@@ -562,7 +562,7 @@ class Djbz extends Model {
 		$order ['yuzhutianshu'] = $orderForm ['tianshu'];
 		$order ['status'] = '0';
 		$order ['validcode'] = $orderForm ['validCode'];
-		Log::record ( $order );
+		//Log::record ( $order );
 		// $orderModel = new \app\index\model\HotelOrder ();
 		// $orderModel->save ( $order );
 		Db::name ( 'hotelorder' )->insert ( $order );
@@ -575,7 +575,7 @@ class Djbz extends Model {
 		// $currentTime=str_replace('-','',$currentTime);
 		// $currentTime=str_replace(':','',$currentTime);
 		// $currentTime=str_replace(' ','',$currentTime);
-		return $currentTime . substr ( $shenfenzhenghao, - 6, 6 );
+		return $currentTime . substr ( $shenfenzhenghao, - 5 );
 	}
 	/**
 	 * 计算出需要交的定金金额
@@ -667,7 +667,7 @@ class Djbz extends Model {
 	public function jdjs($dianma){
 		$dbConfig = $this->getkefangDBConfig ($dianma);
 		$jdjs = Db::connect ( $dbConfig )->name ( 'tb_sp' )->find ();
-		Log::record ($jdjs);
+		//Log::record ($jdjs);
 		$condition = array ();
 		$condition ['店码'] = $dianma;
 		$shopInfo = Db::name ( 'tb_shop' )->where ( $condition )->find ();

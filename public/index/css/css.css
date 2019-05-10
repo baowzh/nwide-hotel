@@ -79,7 +79,7 @@ body, input, select, textarea {
 	line-height: 1.6rem;
 	color: #505050;
 	-webkit-box-orient: vertical;
-	-webkit-line-clamp: 3;
+/* 	-webkit-line-clamp: 3; */
 	word-break: break-all;
 	overflow: hidden;
 	margin: 0 0 15px;
