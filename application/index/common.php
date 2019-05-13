@@ -1,5 +1,6 @@
 <?php
 use think\Db;
+use Think\Log;
 function img($dengji, $dianma) {
 	$extName = 'jpeg';
 	// 已经存在则不写文件
@@ -8,7 +9,7 @@ function img($dengji, $dianma) {
 	if (! file_exists ( $dir )) {
 		mkdir ( $dir, 0777, true );
 	}
-	synHotelImgAndVide ( $dengji, $dianma );
+	synHouseImgAndVide ( $dengji, $dianma );
 	$filePath = $dir . "\\" . $dengji . "." . $extName;
 	if (! file_exists ( $filePath )) {
 		$dbConfig = getkefangDBConfig ( $dianma );
@@ -36,7 +37,7 @@ function video($dengji, $dianma) {
 	if (! file_exists ( $dir )) {
 		mkdir ( $dir, 0777, true );
 	}
-	synHotelImgAndVide ( $dengji, $dianma );
+	synHouseImgAndVide ( $dengji, $dianma );
 	$filePath = $dir . "\\" . $dengji . "." . $extName;
 	if (! file_exists ( $filePath )) {
 		//
@@ -57,7 +58,7 @@ function video($dengji, $dianma) {
 	}
 	return '/uploads/' . $dianma . "/" . $dengji . '.' . $extName;
 }
-function synHotelImgAndVide($dengji, $dianma) {
+function synHouseImgAndVide($dengji, $dianma) {
 	$dbConfig = getkefangDBConfig ( $dianma );
 	$where = array ();
 	$where ["等级"] = $dengji;
@@ -102,6 +103,12 @@ function hotelImg($dianma) {
 	if (! file_exists ( $dir )) {
 		mkdir ( $dir, 0777, true );
 	}
+	synhotelImg($dianma);
+	$dir = $dir . '\\'.$dianma.'\\';
+	if (! file_exists ( $dir )) {
+		mkdir ( $dir, 0777, true );
+	}
+	
 	$filePath = $dir . "\\" . $dianma . "." . $extName;
 	if (! file_exists ( $filePath )) {
 		//
@@ -117,17 +124,22 @@ function hotelImg($dianma) {
 			return '/public/index/images/jd01.jpg';
 		}
 	}
-	return '/uploads/jiudian/' . $dianma . "." . $extName;
+	Log::record ('/uploads/jiudian/' . $dianma . "/".$dianma."." . $extName);
+	return '/uploads/jiudian/' . $dianma . "/".$dianma."." . $extName;
 }
 function hotelActiveImg($dianma) {
 	$extName = 'jpeg';
 	// 已经存在则不写文件
-	$dir = ROOT_PATH . 'uploads\\active\\';
+	$dir = ROOT_PATH . 'uploads\\jiudian\\';
 	if (! file_exists ( $dir )) {
 		mkdir ( $dir, 0777, true );
 	}
-	
-	$filePath = $dir . "\\" . $dianma . "." . $extName;
+    synhotelImg($dianma);
+	$dir = $dir . '\\'.$dianma.'\\';
+	if (! file_exists ( $dir )) {
+		mkdir ( $dir, 0777, true );
+	}
+	$filePath = $dir . "\\" . 'active' . "." . $extName;
 	if (! file_exists ( $filePath )) {
 		//
 		$dbConfig = getkefangDBConfig ( $dianma );
@@ -140,7 +152,23 @@ function hotelActiveImg($dianma) {
 			return '/public/index/images/jd01.jpg';
 		}
 	}
-	return '/uploads/active/' . $dianma . "." . $extName;
+	Log::record ('/uploads/jiudian/' . $dianma . "/active." . $extName);
+	return '/uploads/jiudian/' . $dianma . "/active." . $extName;
+}
+function synhotelImg($dianma) {
+	$dbConfig = getkefangDBConfig ( $dianma );
+	$info = Db::connect ( $dbConfig )->query ( 'select [生成状态] from tb_sp' );
+	//Log::record ($info);
+	if ($info[0]['生成状态'] == 0) {
+		// 删除整个目录并重建
+		$dir = ROOT_PATH . 'uploads\\jiudian\\'. $dianma."\\";
+		if (file_exists ( $dir )) {
+			deldir($dir);
+			//mkdir ( $dir, 0777, true );
+			// 修改 数据库状态
+			Db::connect ( $dbConfig )->execute("update tb_sp set [生成状态]=1 ");
+		}
+	}
 }
 function getkefangDBConfig($dianma) {
 	$condition = array ();
