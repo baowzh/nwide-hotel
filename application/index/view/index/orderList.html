@@ -1,10 +1,13 @@
 {include file="public/head" /}
 <link href="__CSS__/main.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__JS__/jquery-1.7.2.min.js"></script>
 <div class="pages page-fade" data-events="click">
 	<div class="page ab1181 page-on-center" data-blend="layer">
 		<div class="page-content  order-fill-top" style="padding-top: 10px;">
+			
+<!-- 			style="height: 425px;" -->
+			<article class="order-content" >
 			{volist name="orderInfos" id="vo" key="k"}
-			<article class="order-content" style="height:425px;">
 				<section class="order-fill" style="padding-bottom: 20px">
 
 					<div class="contact-person">
@@ -30,7 +33,7 @@
 							<div class="person-choose"></div>
 						</div>
 					</div>
-					
+
 					<div class="contact-person">
 						<ul>
 							<li>
@@ -42,9 +45,9 @@
 							<div class="person-choose"></div>
 						</div>
 					</div>
-					
-					
-					
+
+
+
 					<div class="contact-person">
 						<ul>
 							<li>
@@ -56,8 +59,8 @@
 							<div class="person-choose"></div>
 						</div>
 					</div>
-					
-					
+
+
 					<div class="contact-person">
 						<ul>
 							<li>
@@ -69,8 +72,8 @@
 							<div class="person-choose"></div>
 						</div>
 					</div>
-					
-					
+
+
 					<div class="contact-person">
 						<ul>
 							<li>
@@ -82,7 +85,7 @@
 							<div class="person-choose"></div>
 						</div>
 					</div>
-					
+
 					<div class="contact-person">
 						<ul>
 							<li>
@@ -94,8 +97,7 @@
 							<div class="person-choose"></div>
 						</div>
 					</div>
-					
-					
+
 					<div class="contact-person">
 						<ul>
 							<li>
@@ -107,12 +109,13 @@
 							<div class="person-choose"></div>
 						</div>
 					</div>
-					
+
 					<div class="contact-person">
 						<ul>
 							<li>
 								<div class="label">预定金额:</div>
-								<div class="content list-input"> ¥ {$vo['yudingjine']|number_format=2} </div>
+								<div class="content list-input">¥
+									{$vo['yudingjine']|number_format=2}</div>
 							</li>
 						</ul>
 						<div class="add-person-button" data-events="click">
@@ -120,12 +123,95 @@
 						</div>
 					</div>
 
+					<div class="contact-person">
+						<ul>
+							<li>
+								<div class="label">支付状态:</div>
+								<div class="content list-input">{$vo['statusStr']}</div>
+							</li>
+						</ul>
+						<div class="add-person-button" data-events="click">
+							<div class="person-choose"></div>
+						</div>
+					</div>
+					{if condition="$vo['needPay'] eq true "}
+
+					<div class="contact-person">
+						<ul>
+							<li style="height:40px;padding-bottom:10px;">
+							 <a href="javascript:pay('{$vo['dingdanhao']}');" style="display: block; line-height: 23px; color: #FFF;  background: #f55;border-radius: 3px;text-align:center; text-decoration: none;border-radius: 3px;width: 60px;margin:5px auto"> 立即支付</a>
+							</li>
+						</ul>
+					</div>
+					{/if}
+
 				</section>
+				<br /> 
+				 {/volist}
 			</article>
-			 {/volist}
 			
+			
+
 		</div>
 	</div>
 </div>
+
+<script language="javascript">
+ var pay=function(dingdanhao){
+	 $.ajax({
+			type : "POST",
+			url : 'orderPay',
+			data : {
+				'dingdanhao':dingdanhao
+			},
+			dataType : "json",
+			success : function(data) {
+				if(data.success){
+					jsApiCall(data.data);	
+				}else{
+					alert(data.mess);
+				}
+			},
+			error : function(info) {
+				console.log("连接异常，请检查！")
+			}
+		});
+	 
+ }
+ 
+ function jsApiCall(getBrandWCPayRequest)
+	{
+	    var out_trade_no=getBrandWCPayRequest.out_trade_no;
+		WeixinJSBridge.invoke(
+			'getBrandWCPayRequest',
+			getBrandWCPayRequest,
+			function(res){
+				if(res.err_msg == "get_brand_wcpay_request:ok"){
+					alert('支付成功。');
+					window.location.href='orderInfo?orderId='+'1';
+				}
+				
+			}
+		);
+	}
+
+	function callpay()
+	{
+		if (typeof WeixinJSBridge == "undefined"){
+		    if( document.addEventListener ){
+		        document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
+		    }else if (document.attachEvent){
+		        document.attachEvent('WeixinJSBridgeReady', jsApiCall); 
+		        document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
+		    }
+		}else{
+		    jsApiCall();
+		}
+	}
+ 
+
+ 
+ 
+</script>
 
 </html>

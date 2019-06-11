@@ -28,7 +28,7 @@ class Index extends Controller {
 			$openId = Session::get ( 'openId' );
 			if($openId==null){
 				$openId = $jsApiPay->GetOpenid ();
-				//Log::record ( ' the user openId is ' . $openId );
+				Log::record (  $openId );
 				Session::set ( 'openId', $openId );
 			}
 			$djbz = new \app\index\model\Djbz ();
@@ -179,6 +179,8 @@ class Index extends Controller {
 		$orderForm ['tianshu'] = $tianshu;
 		$orderForm ['dianma'] = $dianma;
 		$orderForm ['validCode'] = $validCode;
+		$openId = Session::get ( 'openId' );
+		$orderForm ['openId'] = $openId;
 		$oderIfo = $djbz->order ( $orderForm );
 		//Log::record ($oderIfo);
 		header ( 'Content-Type:application/json; charset=utf-8' );
@@ -210,8 +212,9 @@ class Index extends Controller {
 		$input->SetOpenid ( $openId ); // 用户openid
 		$wxConfig = new \WxPayConfig ();
 		//Log::record ( ' order inof is： ' . $input->GetBody () . $input->GetTotal_fee () . '   app id is :' . $wxConfig->GetAppId () );
+		Log::record ($input  );
 		$order = \WxPayApi::unifiedOrder ( $wxConfig, $input ); // 统一下单，该方法中包含了签名算法
-		//Log::record ($order  );
+		Log::record ($order  );
 		$tools = new \JsApiPay ();
 		$jsApiParameters = $tools->GetJsApiParameters ( $order ); // 统一下单参数
 		return $jsApiParameters;
@@ -312,8 +315,25 @@ class Index extends Controller {
 	 * @return \think\mixed
 	 */
 	public function orderInfo() {
-		if($this->request->isGet()){
-			//$shenfenzhenghao=$this->request->param("shenfenzhenghao");
+		$jsApiPay = new \JsApiPay ();
+		$openId = Session::get ( 'openId' );
+		if($openId==null){
+			$openId = $jsApiPay->GetOpenid ();
+			Log::record (  $openId );
+			Session::set ( 'openId', $openId );
+		}
+		$djbz = new \app\index\model\Djbz ();
+		$order=$djbz->queryOrders($openId);
+		if(!$order['success']){
+			$this->assign ( 'title', '订单查询' );
+			$this->error('没有符合条件的数据');
+		}
+		$this->assign('orderInfos',$order['orderInfos']);
+		$this->assign ( 'title', '订单信息' );
+		return $this->fetch('orderList');
+		
+		/*
+		if($this->request->isGet()){			
 			$phone=$this->request->param("phone");
 			$validcode=$this->request->param("validcode");
 			if(!empty($phone)&&!empty($validcode)){
@@ -321,8 +341,7 @@ class Index extends Controller {
 				$order=$djbz->queryOrders( $phone, $validcode);
 				if(!$order['success']){
 					$this->assign ( 'title', '订单查询' );
-					$this->error('没有符合条件的数据');
-					
+					$this->error('没有符合条件的数据');					
 				}
 				$this->assign('orderInfos',$order['orderInfos']);
 				$this->assign ( 'title', '订单信息' );
@@ -332,22 +351,16 @@ class Index extends Controller {
 				return $this->fetch ( 'queryOrder' );
 			}
 		}else{
-			//$shenfenzhenghao=$this->request->param("shenfenzhenghao");
+
 			$phone=$this->request->param("phone");
 			$validcode=$this->request->param("validcode");
-// 			if($shenfenzhenghao==null){
-// 				 $this->error('请填写身份证号');
-				
-// 			}
 			if($phone==null){
 				$this->assign ( 'title', '订单查询' );
-				 $this->error('请填写手机号');
-				
+				 $this->error('请填写手机号');				
 			}
 			if($validcode==null){
 				$this->assign ( 'title', '订单查询' );
-				$this->error('到场验证码');
-				
+				$this->error('到场验证码');				
 			}
 			$djbz = new \app\index\model\Djbz ();
 			$order=$djbz->queryOrders( $phone, $validcode);
@@ -359,16 +372,23 @@ class Index extends Controller {
 			$this->assign ( 'title', '订单查询' );
 			return $this->fetch('orderList');
 			
-		}
+		}*/
 		
 	}
 	
 	public  function orderInfoById($orderId){
 		$djbz = new \app\index\model\Djbz ();
 		$order=$djbz->orderInfoById($orderId);
-		$this->assign('vo',$order);
+		$list=array ();
+		array_push ( $list, $order );
+		$this->assign('orderInfos',$list);
 		$this->assign ( 'title', '订单信息' );
-		return $this->fetch('orderDetail');
+		return $this->fetch('orderList');
+		//
+		//$this->assign('vo',$order);
+		//$this->assign ( 'title', '订单信息' );
+		//return $this->fetch('orderDetail');
+		//
 	}
 	/**
 	 * 查询订单信息
@@ -398,4 +418,35 @@ class Index extends Controller {
 				'orderInfo' => $orderInfo 
 		] );
 	}
+	
+	public function task(){
+		$djbz = new \app\index\model\Djbz ();
+		$djbz->resetRoomState();
+		return json ( [
+				"success" => true,
+				'mess' => '调用成功'
+		] );
+	}
+	public function orderPay(){
+		$dingdanhao = $this->request->param ( 'dingdanhao' );
+		$djbz = new \app\index\model\Djbz ();
+		$oderIfo=$djbz->orderPay($dingdanhao);
+		header ( 'Content-Type:application/json; charset=utf-8' );
+		$result=array();
+		if($oderIfo['success']){
+			// 调用jsapi 进行支付
+			$result['data']= $this->pay ($oderIfo['data'] );
+			$result['success']= true;
+			$result['out_trade_no']= $oderIfo['data']['out_trade_no'];
+			return json($result);
+		}else{
+			return   json($oderIfo); ;
+		}
+		
+	}
+	/*
+	public function test(){
+		$hao=substr ( '152325198310032054', - 6 );
+		Log::record ( ' the user openId is ' . $hao );
+	}*/
 }

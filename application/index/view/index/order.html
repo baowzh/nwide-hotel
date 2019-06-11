@@ -188,10 +188,13 @@
 							<input type="hidden" name="rooms" id="rooms" value="{$rooms}" />
 							<input type="hidden" name="dengji" id="dengji" value="{$vo['等级']}" />
                             <input type="hidden" name="dianma" id="dianma" value="{$dianma}" />
-                             <input type="hidden" name="out_trade_no" id="out_trade_no" value="" />
+                            <input type="hidden" name="out_trade_no" id="out_trade_no" value="" />
 							
 						</section>
 					</article>
+					<div style="width:90%;height:20px; margin: 5px auto;width: 90%;font-size: 12px;">
+					 说明：请自行填写6位到场验证码、到店时与酒店核对验证码以验证身份、请牢记
+					</div>
 				</form>
 			</div>
 			<input type="hidden" class="createorder" name="arrivetime"
@@ -203,6 +206,12 @@
 </body>
 <script language="javascript">
  var validAndSubmit=function(){
+	 var out_trade_no=$('#out_trade_no').val();
+	 if(out_trade_no!=null&&out_trade_no!=''){
+		 alert('订单已经提交成功,请到订单中心支付');
+		 window.location.href='orderInfoById?orderId='+$('#out_trade_no').val(); 
+		 return ;  
+	 }
 	 
 	 var shenfenzhenghao=$('#shenfenzhenghao').val();
 	 var dianhua=$('#dianhua').val();
@@ -221,8 +230,17 @@
 		 return ;
 	 }
 	 
+	 if(dianhua.length!=11){
+		 alert('请填写正确的手机号。');
+		 return ;
+	 }
+	 
 	 if(validCode==null||validCode==''){
 		 alert('请填写到场验证码。');
+		 return ;
+	 }
+	 if(validCode.length!=6){
+		 alert('请填写6位到场验证码。');
 		 return ;
 	 }
 	 
@@ -243,11 +261,9 @@
 			},
 			dataType : "json",
 			success : function(data) {
-				
-				//alert(data.appId);
 				if(data.success){
-					//alert(data.out_trade_no);
 					$('#out_trade_no').val(data.out_trade_no);
+					alert('订单提交成功，请立即支付或者在5分钟内到订单中心进行支付。过5分钟不支付则系统自动取消订单');
 					jsApiCall(data.data);	
 				}else{
 					alert(data.mess);

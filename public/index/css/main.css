@@ -3961,7 +3961,7 @@ form {
     background: #f4f4f4;
     position: relative;
     font-size: 0.875rem;
-    padding-bottom: 200px; }
+    padding-bottom: 10px; }
     .order-content .order-fill.invoice-fill {
       padding: 6px 7.5px 62px;
       height: 100%; }
@@ -5919,7 +5919,7 @@ form {
           position: absolute;
           left: 0;
           top: 0;
-          width: 40%;
+          width: 35%;
           text-align: left;
           font-size: 14px;
           line-height: 45px;
@@ -5929,7 +5929,7 @@ form {
           position: absolute;
           right: 0;
           top: 0;
-          width: 60%;
+          width: 65%;
           padding: 8px 0 0 0; }
           .ab1181 .page-content .order-content .order-fill .contact-person ul li .content input {
             float: left;
